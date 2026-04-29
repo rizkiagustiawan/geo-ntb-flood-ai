@@ -24,15 +24,11 @@ class FloodOracle:
     def __init__(self):
         self.name = "Sumbawa-A.E.C.O"  # Autonomous ESG Compliance Oracle
 
-        # RTK binary: env var override, then PATH lookup, then hardcoded fallback
-        self.rtk_bin = (
-            os.environ.get("RTK_BIN")
-            or shutil.which("rtk")
-            or "/home/awan/.cargo/bin/rtk"
-        )
-        if not os.path.isfile(self.rtk_bin):
+        # RTK binary: env var override, then PATH lookup
+        self.rtk_bin = os.environ.get("RTK_BIN") or shutil.which("rtk")
+        if not self.rtk_bin or not os.path.isfile(self.rtk_bin):
             logger.warning(
-                "⚠️ RTK binary not found at %s — pipeline will fail", self.rtk_bin
+                "⚠️ RTK binary not found — set RTK_BIN env var or ensure rtk is on PATH"
             )
 
         # All paths anchored to PROJECT_ROOT, never relative to current working directory

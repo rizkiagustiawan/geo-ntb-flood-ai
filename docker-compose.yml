@@ -6,6 +6,9 @@ services:
       - "8000:8000"
     env_file:
       - .env
+    environment:
+      - PYTHONPATH=/app/src:/app/api
+      - RTK_BIN=${RTK_BIN:-}
     volumes:
       - ./outputs:/app/outputs
       - ./data:/app/data
