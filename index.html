@@ -2,7 +2,7 @@
 <html>
 
 <head>
-    <title>Sumbawa-A.E.C.O Dashboard</title>
+    <title>Sumbawa-A.E.C.O Dashboard | AWS Production</title>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
@@ -10,6 +10,7 @@
         :root {
             --primary-neon: #deff9a;
             --bg-dark: #121212;
+            --danger-red: #ff3b3b;
         }
 
         body {
@@ -17,142 +18,248 @@
             padding: 0;
             background: var(--bg-dark);
             font-family: 'Inter', sans-serif;
+            overflow: hidden;
         }
 
         #map {
             height: 100vh;
             width: 100vw;
-            background: #1a1a1a;
+            background: #111;
+        }
+
+        /* Scanline Radar Effect */
+        .scanlines {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%);
+            background-size: 100% 4px;
+            pointer-events: none;
+            z-index: 999;
+            opacity: 0.3;
         }
 
         .info-panel {
             position: absolute;
-            top: 20px;
-            left: 20px;
+            top: 30px;
+            left: 30px;
             z-index: 1000;
-            background: rgba(18, 18, 18, 0.9);
+            background: rgba(10, 10, 10, 0.8);
             color: white;
-            padding: 20px;
-            border-radius: 12px;
-            border: 1px solid rgba(222, 255, 154, 0.3);
-            backdrop-filter: blur(10px);
-            width: 300px;
+            padding: 25px;
+            border-radius: 16px;
+            border: 1px solid rgba(222, 255, 154, 0.2);
+            backdrop-filter: blur(15px);
+            width: 320px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6);
+        }
+
+        .panel-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .live-indicator {
+            display: flex;
+            align-items: center;
+            font-size: 10px;
+            color: var(--danger-red);
+            font-weight: bold;
+            letter-spacing: 1px;
+        }
+
+        .dot-blink {
+            height: 8px;
+            width: 8px;
+            background-color: var(--danger-red);
+            border-radius: 50%;
+            margin-right: 6px;
+            animation: blink 1.2s infinite ease-in-out;
+            box-shadow: 0 0 8px var(--danger-red);
+        }
+
+        @keyframes blink {
+
+            0%,
+            100% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0.3;
+            }
         }
 
         .metric-card {
-            margin-top: 15px;
+            margin-top: 20px;
             padding: 15px;
-            background: rgba(222, 255, 154, 0.1);
+            background: rgba(222, 255, 154, 0.05);
             border-radius: 8px;
             border-left: 4px solid var(--primary-neon);
         }
 
         .metric-value {
-            font-size: 24px;
-            font-weight: bold;
+            font-size: 32px;
+            font-weight: 800;
             color: var(--primary-neon);
-            display: block;
+            display: flex;
+            align-items: center;
         }
 
         .metric-label {
-            font-size: 11px;
+            font-size: 10px;
             text-transform: uppercase;
-            letter-spacing: 1px;
-            color: #aaa;
+            letter-spacing: 1.5px;
+            color: #888;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .spinner {
+            border: 2px solid rgba(222, 255, 154, 0.1);
+            border-top: 2px solid var(--primary-neon);
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            animation: spin 1s linear infinite;
+            margin-right: 15px;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
         }
 
         .stack-tags {
-            margin-top: 12px;
+            margin-top: 15px;
             display: flex;
             flex-wrap: wrap;
-            gap: 5px;
+            gap: 6px;
         }
 
         .tag {
-            font-size: 9px;
-            padding: 2px 7px;
-            border-radius: 3px;
-            letter-spacing: 0.5px;
+            font-size: 10px;
+            padding: 4px 8px;
+            border-radius: 4px;
             font-family: monospace;
+            font-weight: bold;
         }
 
         .tag-rust {
-            background: rgba(255, 111, 60, 0.15);
+            background: rgba(255, 111, 60, 0.1);
             color: #ff8c5a;
-            border: 1px solid rgba(255, 111, 60, 0.25);
+            border: 1px solid rgba(255, 111, 60, 0.3);
         }
 
         .tag-py {
             background: rgba(222, 255, 154, 0.1);
             color: var(--primary-neon);
-            border: 1px solid rgba(222, 255, 154, 0.2);
+            border: 1px solid rgba(222, 255, 154, 0.3);
         }
 
-        .tag-geo {
-            background: rgba(0, 212, 255, 0.1);
-            color: #00d4ff;
-            border: 1px solid rgba(0, 212, 255, 0.2);
+        .tag-aws {
+            background: rgba(255, 153, 0, 0.1);
+            color: #ff9900;
+            border: 1px solid rgba(255, 153, 0, 0.3);
         }
 
         .legend {
             position: absolute;
             bottom: 30px;
-            right: 20px;
+            right: 30px;
             z-index: 1000;
-            background: rgba(0, 0, 0, 0.8);
-            padding: 10px 15px;
-            border-radius: 6px;
+            background: rgba(10, 10, 10, 0.85);
+            padding: 15px 20px;
+            border-radius: 12px;
             color: white;
             font-size: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
         }
 
         .legend-item {
             display: flex;
             align-items: center;
-            margin: 5px 0;
+            margin: 8px 0;
         }
 
-        .dot {
-            height: 10px;
-            width: 10px;
+        .legend-dot {
+            height: 12px;
+            width: 12px;
             border-radius: 50%;
-            margin-right: 10px;
-            flex-shrink: 0;
+            margin-right: 12px;
+        }
+
+        /* Animasi poligon banjir */
+        .pulse-polygon {
+            animation: pulse-fill 2s infinite alternate;
+        }
+
+        @keyframes pulse-fill {
+            from {
+                fill-opacity: 0.2;
+            }
+
+            to {
+                fill-opacity: 0.6;
+            }
         }
     </style>
 </head>
 
 <body>
 
+    <div class="scanlines"></div>
+
     <div class="info-panel">
-        <h2 style="margin:0; color:var(--primary-neon); font-size: 20px;">Sumbawa-A.E.C.O</h2>
-        <p style="margin:5px 0 0 0; font-size:12px; color: #888;">Autonomous Flood Monitoring</p>
+        <div class="panel-header">
+            <div>
+                <h2 style="margin:0; color:var(--primary-neon); font-size: 22px;">A.E.C.O AWS</h2>
+                <p style="margin:2px 0 0 0; font-size:11px; color: #888;">Autonomous Flood AI</p>
+            </div>
+            <div class="live-indicator">
+                <div class="dot-blink"></div> LIVE AWS
+            </div>
+        </div>
 
         <div class="metric-card">
-            <span class="metric-label">Impacted Area</span>
-            <span class="metric-value" id="impact-value">0 Ha</span>
-            <p style="font-size: 10px; color: #aaa; margin: 5px 0 0 0;" id="methodology-note">
-                Fetching data from A.E.C.O API...
+            <span class="metric-label">Estimated Impact Area</span>
+            <span class="metric-value" id="impact-value">
+                <div class="spinner"></div> <span style="font-size: 14px; font-weight: normal;">Querying AWS...</span>
+            </span>
+            <p style="font-size: 10px; color: #777; margin: 8px 0 0 0; line-height: 1.4;" id="methodology-note">
+                Handshaking with t3.medium Instance...
             </p>
         </div>
 
-        <div style="margin-top:12px; font-size:11px; color:#666;">
-            System Time WITA: <span id="clock" style="color:#888;">--:--:--</span>
+        <div style="margin-top:15px; font-size:11px; color:#666; display: flex; justify-content: space-between;">
+            <span>System Clock (WITA):</span>
+            <span id="clock" style="color:#aaa; font-family: monospace;">--:--:--</span>
         </div>
 
         <div class="stack-tags">
-            <span class="tag tag-rust">Rust PyO3</span>
-            <span class="tag tag-py">XGBoost API</span>
-            <span class="tag tag-geo">Sentinel-1 NRT</span>
+            <span class="tag tag-rust">⚙️ Rust Engine</span>
+            <span class="tag tag-aws">☁️ AWS EC2</span>
+            <span class="tag tag-py">🛰️ S1-NRT</span>
         </div>
     </div>
 
     <div class="legend">
         <div class="legend-item">
-            <div class="dot" style="background:#ff3b3b;"></div> Critical Flood Zone
+            <div class="legend-dot" style="background:var(--danger-red); box-shadow: 0 0 10px var(--danger-red);"></div>
+            <span>Critical Flood Zone</span>
         </div>
         <div class="legend-item">
-            <div class="dot" style="background:rgba(222,255,154,0.5);"></div> Sumbawa Boundary
+            <div class="legend-dot" style="background:rgba(222,255,154,0.4); border: 1px dashed var(--primary-neon);">
+            </div>
+            <span>Sumbawa Region</span>
         </div>
     </div>
 
@@ -167,47 +274,47 @@
         }
         setInterval(updateClock, 1000); updateClock();
 
-        // Map
+        // Map setup
         var map = L.map('map', { zoomControl: false }).setView([-8.65, 117.8], 9);
-        L.control.zoom({ position: 'bottomleft' }).addTo(map);
-        L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', { attribution: '&copy; OpenStreetMap contributors &copy; CARTO' }).addTo(map);
+        L.control.zoom({ position: 'bottomright' }).addTo(map);
+        L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', { attribution: '&copy; CARTO' }).addTo(map);
 
-        // Sumbawa Boundary (statis)
-        L.polygon([[-8.05, 116.75], [-8.0, 117.0], [-8.05, 117.3], [-8.1, 117.6], [-8.2, 117.9], [-8.3, 118.2], [-8.45, 118.5], [-8.6, 118.75], [-8.75, 118.9], [-8.9, 118.85], [-9.05, 118.7], [-9.1, 118.4], [-9.05, 118.1], [-9.0, 117.8], [-8.95, 117.5], [-9.0, 117.2], [-9.0, 116.95], [-8.9, 116.75], [-8.75, 116.65], [-8.55, 116.65], [-8.35, 116.68], [-8.2, 116.7], [-8.1, 116.72], [-8.05, 116.75]], { color: 'rgba(222,255,154,0.35)', weight: 1.5, fillColor: 'rgba(222,255,154,0.02)', fillOpacity: 1, dashArray: '5,5' }).addTo(map);
+        // Region Boundary
+        L.polygon([[-8.05, 116.75], [-8.0, 117.0], [-8.05, 117.3], [-8.1, 117.6], [-8.2, 117.9], [-8.3, 118.2], [-8.45, 118.5], [-8.6, 118.75], [-8.75, 118.9], [-8.9, 118.85], [-9.05, 118.7], [-9.1, 118.4], [-9.05, 118.1], [-9.0, 117.8], [-8.95, 117.5], [-9.0, 117.2], [-9.0, 116.95], [-8.9, 116.75], [-8.75, 116.65], [-8.55, 116.65], [-8.35, 116.68], [-8.2, 116.7], [-8.1, 116.72], [-8.05, 116.75]],
+            { color: 'rgba(222,255,154,0.4)', weight: 1, fillColor: 'transparent', dashArray: '4,6' }).addTo(map);
 
-        // Link Ngrok dari Colab lu
-        const API_URL = 'https://badland-scoff-reenter.ngrok-free.dev/api/floods';
+        // DIRECT AWS IP - NO NGROK NEEDED
+        const API_URL = 'http://47.129.225.192:8000/api/floods';
 
-        // Fungsi buat ambil data dari API asli dengan bypass Ngrok
         async function fetchFloodData() {
             try {
-                // Bypass halaman warning Ngrok gratisan
-                const response = await fetch(API_URL, {
-                    headers: {
-                        "ngrok-skip-browser-warning": "69420"
-                    }
-                });
+                // Dramatic delay for video effect
+                await new Promise(resolve => setTimeout(resolve, 2000));
 
+                const response = await fetch(API_URL);
                 const data = await response.json();
 
-                // Update UI di kiri atas
-                document.getElementById('impact-value').textContent = data.total_ha + ' Ha';
-                document.getElementById('methodology-note').innerHTML = data.methodology;
+                // Update UI
+                document.getElementById('impact-value').innerHTML = data.total_ha + ' <span style="font-size:16px; margin-left:5px;">Ha</span>';
+                document.getElementById('methodology-note').innerHTML = `<span style="color:var(--primary-neon)">Connected:</span> ${data.methodology}`;
 
-                // Tambah poligon banjir dari GeoJSON API
+                // Add Flood Polygon
                 L.geoJSON(data.geojson, {
                     style: function (feature) {
-                        return { color: 'rgba(255,30,30,0.9)', weight: 1.5, fillColor: 'rgba(255,30,30,0.25)', fillOpacity: 1 };
+                        return { color: '#ff3b3b', weight: 2, fillColor: '#ff3b3b', fillOpacity: 0.3, className: 'pulse-polygon' };
                     }
-                }).addTo(map).bindPopup(layer => `Impacted Area: ${data.total_ha} Ha`);
+                }).addTo(map);
+
+                // Cinematic fly to Bima
+                map.flyTo([-8.48, 118.72], 11, { animate: true, duration: 2.5 });
 
             } catch (error) {
-                console.error("Failed to connect to A.E.C.O API", error);
-                document.getElementById('methodology-note').textContent = "⚠️ Error connecting to API. Is Colab running?";
+                console.error("AWS Connection Failed", error);
+                document.getElementById('impact-value').innerHTML = '<span style="color:var(--danger-red); font-size:18px;">SERVER OFFLINE</span>';
+                document.getElementById('methodology-note').textContent = "⚠️ Check AWS Security Group Port 8000.";
             }
         }
 
-        // GAS NYALAKAN SEDOTAN DATA
         fetchFloodData(); 
     </script>
 </body>
