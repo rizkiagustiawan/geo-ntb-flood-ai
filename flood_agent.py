@@ -1,3 +1,4 @@
+import math
 import signal
 import shutil
 import subprocess
@@ -64,9 +65,10 @@ class FloodOracle:
             # Get pixel dimensions (in degrees for EPSG:4326)
             px_x_deg, px_y_deg = src.res
 
-            # Convert degrees → meters (approximate for NTB region ~ -8°S)
-            # 1 degree lat ≈ 111,320m
-            px_x_m = px_x_deg * 111320.0
+            # Convert degrees → meters with cosine correction for NTB (~-8.5°S)
+            # 1 degree lat ≈ 111,320m; longitude shrinks by cos(lat)
+            cos_lat = math.cos(math.radians(-8.5))
+            px_x_m = px_x_deg * 111320.0 * cos_lat
             px_y_m = px_y_deg * 111320.0
             pixel_area_m2 = px_x_m * px_y_m
 

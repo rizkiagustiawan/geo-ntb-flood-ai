@@ -79,10 +79,13 @@ def compute_sar_threshold(vv_band, vh_band, vv_thresh=-15.0, vh_thresh=-20.0):
 
 def compute_slope(elevation, transform):
     """Compute slope from DEM elevation in degrees using numpy gradient.
-    Uses pixel spacing derived from affine transform."""
+    Uses pixel spacing derived from affine transform with cosine correction
+    for EPSG:4326 at NTB latitude (~-8.5°S)."""
+    import math
     elev = elevation.astype(np.float32)
-    # Pixel spacing in metres (approximate from degrees)
-    dx = abs(transform[0]) * 111320.0  # degrees to metres at equator
+    # Pixel spacing in metres (degrees → metres with cosine correction)
+    cos_lat = math.cos(math.radians(-8.5))
+    dx = abs(transform[0]) * 111320.0 * cos_lat  # longitude shrinks by cos(lat)
     dy = abs(transform[4]) * 111320.0
 
     grad_y, grad_x = np.gradient(elev, dy, dx)
