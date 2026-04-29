@@ -1,0 +1,25 @@
+# --- Geospatial & Data Engine ---
+numpy
+rasterio
+geopandas
+shapely
+earthengine-api
+numexpr          # Penting! Tadi di log lu muncul (buat optimasi performa)
+
+# --- Machine Learning ---
+scikit-learn
+xgboost
+
+# --- Web & API Stack ---
+fastapi
+uvicorn
+requests
+httpx            # Buat testing API secara asinkron
+
+# --- Automation & Development ---
+maturin          # Karena lu pake Rust integration
+pytest           # Buat jalanin 25 unit tests lu
+python-dotenv    # WAJIB! Buat baca file .env (GEE_KEY, dll)
+
+# --- Visualization ---
+matplotlib       # WAJIB! Tadi di log lu ada proses save preview .png
