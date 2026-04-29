@@ -175,20 +175,26 @@
         // Sumbawa Boundary (statis)
         L.polygon([[-8.05, 116.75], [-8.0, 117.0], [-8.05, 117.3], [-8.1, 117.6], [-8.2, 117.9], [-8.3, 118.2], [-8.45, 118.5], [-8.6, 118.75], [-8.75, 118.9], [-8.9, 118.85], [-9.05, 118.7], [-9.1, 118.4], [-9.05, 118.1], [-9.0, 117.8], [-8.95, 117.5], [-9.0, 117.2], [-9.0, 116.95], [-8.9, 116.75], [-8.75, 116.65], [-8.55, 116.65], [-8.35, 116.68], [-8.2, 116.7], [-8.1, 116.72], [-8.05, 116.75]], { color: 'rgba(222,255,154,0.35)', weight: 1.5, fillColor: 'rgba(222,255,154,0.02)', fillOpacity: 1, dashArray: '5,5' }).addTo(map);
 
-        // FASE 2: Nanti masukkan ngrok URL dari Colab di sini
+        // Link Ngrok dari Colab lu
         const API_URL = 'https://badland-scoff-reenter.ngrok-free.dev/api/floods';
 
-        // Fungsi buat ambil data dari API asli
+        // Fungsi buat ambil data dari API asli dengan bypass Ngrok
         async function fetchFloodData() {
             try {
-                const response = await fetch(API_URL);
+                // Bypass halaman warning Ngrok gratisan
+                const response = await fetch(API_URL, {
+                    headers: {
+                        "ngrok-skip-browser-warning": "69420"
+                    }
+                });
+
                 const data = await response.json();
 
-                // Update UI
+                // Update UI di kiri atas
                 document.getElementById('impact-value').textContent = data.total_ha + ' Ha';
                 document.getElementById('methodology-note').innerHTML = data.methodology;
 
-                // Tambah poligon banjir dari GeoJSON asli
+                // Tambah poligon banjir dari GeoJSON API
                 L.geoJSON(data.geojson, {
                     style: function (feature) {
                         return { color: 'rgba(255,30,30,0.9)', weight: 1.5, fillColor: 'rgba(255,30,30,0.25)', fillOpacity: 1 };
@@ -196,12 +202,13 @@
                 }).addTo(map).bindPopup(layer => `Impacted Area: ${data.total_ha} Ha`);
 
             } catch (error) {
-                logger.error("Failed to connect to A.E.C.O API");
-                document.getElementById('methodology-note').textContent = "⚠️ Error connecting to API.";
+                console.error("Failed to connect to A.E.C.O API", error);
+                document.getElementById('methodology-note').textContent = "⚠️ Error connecting to API. Is Colab running?";
             }
         }
 
-        fetchFloodData(); // Nanti nyalakan kalau Colab sudah jalan
+        // GAS NYALAKAN SEDOTAN DATA
+        fetchFloodData(); 
     </script>
 </body>
 
