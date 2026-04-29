@@ -20,26 +20,60 @@ PROCESSED_DIR = PROJECT_ROOT / "data" / "processed"
 
 def compute_ndwi(green_band, nir_band):
     """Compute Normalized Difference Water Index: (Green - NIR) / (Green + NIR).
-    Returns float32 array in [-1, 1]. NoData where denominator is zero."""
+    Returns float32 array in [-1, 1]. NoData where denominator is zero.
+
+    Heavy pixel-wise arithmetic is delegated to the Rust engine (flood_rs)
+    for parallel computation via Rayon. Falls back to NumPy if unavailable."""
     green = green_band.astype(np.float32)
     nir = nir_band.astype(np.float32)
-    denom = green + nir
-    ndwi = np.where(denom != 0, (green - nir) / denom, np.nan)
-    logger.info("NDWI computed: min=%.4f, max=%.4f, nan_count=%d",
-                np.nanmin(ndwi), np.nanmax(ndwi), np.count_nonzero(np.isnan(ndwi)))
+
+    try:
+        import flood_rs
+        # Rust expects 2-D arrays
+        orig_shape = green.shape
+        if green.ndim == 1:
+            green = green.reshape(1, -1)
+            nir = nir.reshape(1, -1)
+        ndwi = flood_rs.calculate_ndwi(green, nir)
+        ndwi = ndwi.reshape(orig_shape)
+        logger.info("NDWI computed via Rust engine: min=%.4f, max=%.4f, nan_count=%d",
+                    np.nanmin(ndwi), np.nanmax(ndwi), np.count_nonzero(np.isnan(ndwi)))
+    except ImportError:
+        logger.warning("flood_rs not available, falling back to NumPy for NDWI")
+        denom = green + nir
+        ndwi = np.where(denom != 0, (green - nir) / denom, np.nan)
+        logger.info("NDWI computed (NumPy fallback): min=%.4f, max=%.4f, nan_count=%d",
+                    np.nanmin(ndwi), np.nanmax(ndwi), np.count_nonzero(np.isnan(ndwi)))
     return ndwi
 
 
 def compute_sar_threshold(vv_band, vh_band, vv_thresh=-15.0, vh_thresh=-20.0):
     """Compute SAR flood mask using dB thresholds.
     Pixels with VV < vv_thresh AND VH < vh_thresh are classified as water (1).
-    Returns uint8 array: 1=water, 0=non-water."""
+    Returns uint8 array: 1=water, 0=non-water.
+
+    Heavy pixel-wise arithmetic is delegated to the Rust engine (flood_rs)
+    for parallel computation via Rayon. Falls back to NumPy if unavailable."""
     vv = vv_band.astype(np.float32)
     vh = vh_band.astype(np.float32)
-    mask = ((vv < vv_thresh) & (vh < vh_thresh)).astype(np.uint8)
-    water_pct = 100.0 * np.sum(mask) / mask.size
-    logger.info("SAR threshold mask: VV<%.1f & VH<%.1f -> %.2f%% water pixels",
-                vv_thresh, vh_thresh, water_pct)
+
+    try:
+        import flood_rs
+        orig_shape = vv.shape
+        if vv.ndim == 1:
+            vv = vv.reshape(1, -1)
+            vh = vh.reshape(1, -1)
+        mask = flood_rs.calculate_sar_flood_mask(vv, vh, vv_thresh, vh_thresh)
+        mask = mask.reshape(orig_shape)
+        water_pct = 100.0 * np.sum(mask) / mask.size
+        logger.info("SAR threshold mask via Rust: VV<%.1f & VH<%.1f -> %.2f%% water pixels",
+                    vv_thresh, vh_thresh, water_pct)
+    except ImportError:
+        logger.warning("flood_rs not available, falling back to NumPy for SAR mask")
+        mask = ((vv < vv_thresh) & (vh < vh_thresh)).astype(np.uint8)
+        water_pct = 100.0 * np.sum(mask) / mask.size
+        logger.info("SAR threshold mask (NumPy fallback): VV<%.1f & VH<%.1f -> %.2f%% water pixels",
+                    vv_thresh, vh_thresh, water_pct)
     return mask
 
 

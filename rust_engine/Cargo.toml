@@ -1,6 +1,13 @@
 [package]
-name = "rust_engine"
-version = "0.1.0"
-edition = "2024"
+name = "flood_rs"
+version = "0.2.0"
+edition = "2021"
+
+[lib]
+name = "flood_rs"
+crate-type = ["cdylib"]
 
 [dependencies]
+pyo3 = { version = "0.24", features = ["extension-module"] }
+numpy = "0.24"
+rayon = "1.10"
