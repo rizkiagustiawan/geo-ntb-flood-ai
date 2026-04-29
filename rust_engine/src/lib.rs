@@ -1,12 +1,191 @@
 //! flood_rs — Rust-accelerated geospatial index computation via PyO3.
 //!
-//! Exposes `calculate_ndwi` and `calculate_ndvi` as native Python functions.
-//! Heavy pixel-wise arithmetic runs in Rust with Rayon parallelism;
-//! numpy arrays are passed by reference (zero-copy read) from Python.
+//! Exposes `calculate_ndwi`, `calculate_ndvi`, and `compute_ndwi_io_rust`
+//! as native Python functions.
+//!
+//! **Zero-Copy Pipeline** (`compute_ndwi_io_rust`):
+//!   Reads raster bands directly from TIFF via GDAL into Rust memory,
+//!   computes NDWI in parallel (Rayon), and writes the result TIFF
+//!   with preserved GeoTransform + SpatialRef — no NumPy intermediary.
+//!
+//! **Array Pipeline** (`calculate_ndwi`, `calculate_ndvi`, `calculate_sar_flood_mask`):
+//!   Accepts numpy arrays by reference (zero-copy read) from Python,
+//!   computes pixel-wise indices with Rayon parallelism, returns numpy arrays.
 
 use numpy::{IntoPyArray, PyArray2, PyReadonlyArray2};
 use pyo3::prelude::*;
 use rayon::prelude::*;
+
+// GDAL imports for the zero-copy I/O pipeline
+use gdal::{Dataset, DriverManager, Metadata};
+
+// ---------------------------------------------------------------------------
+// Zero-Copy I/O Pipeline: GDAL → Rust → GDAL (no Python data transfer)
+// ---------------------------------------------------------------------------
+
+/// Compute NDWI entirely within Rust using GDAL file I/O (Zero-Copy Pipeline).
+///
+/// Opens the input TIFF, reads Band 1 (Green) and Band 2 (NIR) directly into
+/// Rust memory, computes (Green − NIR) / (Green + NIR) in parallel via Rayon,
+/// and writes the result to a new GeoTIFF with Float32 data type.
+///
+/// Spatial metadata (GeoTransform + Spatial Reference System) is copied from
+/// the input dataset to the output dataset, preserving georeferencing fidelity.
+///
+/// Parameters
+/// ----------
+/// input_path : str — Path to the input multi-band TIFF (Band 1=Green, Band 2=NIR).
+/// output_path : str — Path for the output single-band NDWI TIFF.
+///
+/// Raises
+/// ------
+/// RuntimeError — If the input file is missing, bands cannot be read, or I/O fails.
+#[pyfunction]
+fn compute_ndwi_io_rust(input_path: &str, output_path: &str) -> PyResult<()> {
+    // 1. Open input dataset
+    let ds_in = Dataset::open(input_path).map_err(|e| {
+        pyo3::exceptions::PyRuntimeError::new_err(format!(
+            "Failed to open input TIFF '{}': {}",
+            input_path, e
+        ))
+    })?;
+
+    let (cols, rows) = ds_in.raster_size();
+
+    // 2. Read Green (Band 1) and NIR (Band 2) as f32
+    let green_band = ds_in.rasterband(1).map_err(|e| {
+        pyo3::exceptions::PyRuntimeError::new_err(format!(
+            "Failed to read Band 1 (Green) from '{}': {}",
+            input_path, e
+        ))
+    })?;
+    let nir_band = ds_in.rasterband(2).map_err(|e| {
+        pyo3::exceptions::PyRuntimeError::new_err(format!(
+            "Failed to read Band 2 (NIR) from '{}': {}",
+            input_path, e
+        ))
+    })?;
+
+    let green_buf = green_band
+        .read_as::<f32>((0, 0), (cols, rows), (cols, rows), None)
+        .map_err(|e| {
+            pyo3::exceptions::PyRuntimeError::new_err(format!(
+                "Failed to read Green band pixel data from '{}': {}",
+                input_path, e
+            ))
+        })?;
+    let nir_buf = nir_band
+        .read_as::<f32>((0, 0), (cols, rows), (cols, rows), None)
+        .map_err(|e| {
+            pyo3::exceptions::PyRuntimeError::new_err(format!(
+                "Failed to read NIR band pixel data from '{}': {}",
+                input_path, e
+            ))
+        })?;
+
+    // 3. Extract spatial metadata before closing (we keep ds_in alive)
+    let geo_transform = ds_in.geo_transform().map_err(|e| {
+        pyo3::exceptions::PyRuntimeError::new_err(format!(
+            "Failed to read GeoTransform from '{}': {}",
+            input_path, e
+        ))
+    })?;
+
+    let spatial_ref = ds_in.spatial_ref().map_err(|e| {
+        pyo3::exceptions::PyRuntimeError::new_err(format!(
+            "Failed to read Spatial Reference from '{}': {}",
+            input_path, e
+        ))
+    })?;
+
+    // 4. Compute NDWI in parallel: (Green - NIR) / (Green + NIR)
+    let ndwi: Vec<f32> = green_buf
+        .data()
+        .par_iter()
+        .zip(nir_buf.data().par_iter())
+        .map(|(&g, &n)| {
+            let denom = g + n;
+            if denom == 0.0 {
+                f32::NAN
+            } else {
+                (g - n) / denom
+            }
+        })
+        .collect();
+
+    // 5. Create output GeoTIFF via GDAL DriverManager
+    let driver = DriverManager::get_driver_by_name("GTiff").map_err(|e| {
+        pyo3::exceptions::PyRuntimeError::new_err(format!(
+            "Failed to get GTiff driver: {}. Is GDAL installed correctly?",
+            e
+        ))
+    })?;
+
+    let mut ds_out = driver
+        .create_with_band_type::<f32, _>(output_path, cols, rows, 1)
+        .map_err(|e| {
+            pyo3::exceptions::PyRuntimeError::new_err(format!(
+                "Failed to create output TIFF '{}': {}",
+                output_path, e
+            ))
+        })?;
+
+    // 6. Copy spatial metadata to output
+    ds_out.set_geo_transform(&geo_transform).map_err(|e| {
+        pyo3::exceptions::PyRuntimeError::new_err(format!(
+            "Failed to set GeoTransform on output '{}': {}",
+            output_path, e
+        ))
+    })?;
+
+    ds_out.set_spatial_ref(&spatial_ref).map_err(|e| {
+        pyo3::exceptions::PyRuntimeError::new_err(format!(
+            "Failed to set Spatial Reference on output '{}': {}",
+            output_path, e
+        ))
+    })?;
+
+    // 7. Write NDWI result to Band 1
+    let mut out_band = ds_out.rasterband(1).map_err(|e| {
+        pyo3::exceptions::PyRuntimeError::new_err(format!(
+            "Failed to access output Band 1 in '{}': {}",
+            output_path, e
+        ))
+    })?;
+
+    let mut out_buf = gdal::raster::Buffer::new((cols, rows), ndwi);
+    out_band
+        .write((0, 0), (cols, rows), &mut out_buf)
+        .map_err(|e| {
+            pyo3::exceptions::PyRuntimeError::new_err(format!(
+                "Failed to write NDWI data to '{}': {}",
+                output_path, e
+            ))
+        })?;
+
+    // 8. Set band description and NoData
+    out_band.set_no_data_value(Some(f64::NAN)).map_err(|e| {
+        pyo3::exceptions::PyRuntimeError::new_err(format!(
+            "Failed to set NoData value on output '{}': {}",
+            output_path, e
+        ))
+    })?;
+    out_band
+        .set_description("NDWI")
+        .map_err(|e| {
+            pyo3::exceptions::PyRuntimeError::new_err(format!(
+                "Failed to set band description on output '{}': {}",
+                output_path, e
+            ))
+        })?;
+
+    // Dataset is flushed on drop
+    Ok(())
+}
+
+// ---------------------------------------------------------------------------
+// Array Pipeline: NumPy → Rust → NumPy (zero-copy read via PyO3)
+// ---------------------------------------------------------------------------
 
 /// Compute Normalized Difference Water Index: (Green − NIR) / (Green + NIR).
 ///
@@ -168,6 +347,7 @@ fn calculate_sar_flood_mask<'py>(
 /// Python module — registered as `flood_rs`.
 #[pymodule]
 fn flood_rs(m: &Bound<'_, PyModule>) -> PyResult<()> {
+    m.add_function(wrap_pyfunction!(compute_ndwi_io_rust, m)?)?;
     m.add_function(wrap_pyfunction!(calculate_ndwi, m)?)?;
     m.add_function(wrap_pyfunction!(calculate_ndvi, m)?)?;
     m.add_function(wrap_pyfunction!(calculate_sar_flood_mask, m)?)?;

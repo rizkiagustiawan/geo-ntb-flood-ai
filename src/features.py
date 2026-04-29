@@ -1,6 +1,10 @@
 """
 features.py - Feature Engineering for NTB Flood Detection.
 Computes NDWI, SAR threshold mask, DEM slope, and outputs multi-band feature stack.
+
+NDWI computation uses the **Zero-Copy Pipeline**: Python passes file paths to the
+Rust engine (flood_rs.compute_ndwi_io_rust), which reads bands via GDAL, computes
+NDWI in parallel with Rayon, and writes the result — no NumPy intermediary needed.
 """
 
 import gc
@@ -45,6 +49,43 @@ def compute_ndwi(green_band, nir_band):
         logger.info("NDWI computed (NumPy fallback): min=%.4f, max=%.4f, nan_count=%d",
                     np.nanmin(ndwi), np.nanmax(ndwi), np.count_nonzero(np.isnan(ndwi)))
     return ndwi
+
+
+def compute_ndwi_zero_copy(input_path: str, output_path: str):
+    """Compute NDWI via the Zero-Copy Pipeline (Rust GDAL I/O).
+
+    Delegates the entire read → compute → write cycle to flood_rs.compute_ndwi_io_rust,
+    which opens the TIFF with GDAL in Rust, reads bands into Rust memory, computes
+    NDWI in parallel (Rayon), and writes the result TIFF preserving GeoTransform + SRS.
+
+    Falls back to rasterio + NumPy if flood_rs is not available.
+
+    Parameters
+    ----------
+    input_path : str — Path to multi-band S2 TIFF (Band 1=Green, Band 2=NIR).
+    output_path : str — Path for the output single-band NDWI TIFF.
+    """
+    try:
+        import flood_rs
+        logger.info("Zero-Copy Pipeline: delegating NDWI to Rust GDAL I/O")
+        flood_rs.compute_ndwi_io_rust(input_path, output_path)
+        logger.info("NDWI written via Rust zero-copy pipeline: %s", output_path)
+    except ImportError:
+        logger.warning("flood_rs not available — falling back to rasterio + NumPy for NDWI")
+        with rasterio.open(input_path) as ds:
+            green = ds.read(1, out_dtype=np.float32)
+            nir = ds.read(2, out_dtype=np.float32)
+            profile = ds.profile.copy()
+
+        denom = green + nir
+        ndwi = np.where(denom != 0, (green - nir) / denom, np.nan).astype(np.float32)
+        ndwi = np.nan_to_num(ndwi, nan=0.0)
+
+        profile.update({"count": 1, "dtype": "float32"})
+        with rasterio.open(output_path, "w", **profile) as dst:
+            dst.write(ndwi, 1)
+            dst.set_band_description(1, "NDWI")
+        logger.info("NDWI written via rasterio fallback: %s", output_path)
 
 
 def compute_sar_threshold(vv_band, vh_band, vv_thresh=-15.0, vh_thresh=-20.0):
@@ -100,24 +141,33 @@ def build_feature_stack():
     """Build multi-band feature stack from preprocessed rasters.
     Output bands: [NDWI, SAR_mask, Slope, VV, VH]
     Saved as feature_stack.tif in data/processed/.
+
+    NDWI is computed via the Zero-Copy Pipeline: Rust reads the S2 TIFF with
+    GDAL, computes NDWI in parallel, and writes a standalone NDWI TIFF.
+    Python then reads the result back for the final feature stack assembly.
+
     Memory-optimized: writes bands sequentially instead of np.stack()."""
     logger.info("=" * 60)
     logger.info("BUILDING FEATURE STACK")
     logger.info("=" * 60)
 
-    # Load Sentinel-2 (B3=Green, B8=NIR)
+    # --- Step 1: NDWI via Zero-Copy Pipeline (Rust GDAL I/O) ---
     s2_path = PROCESSED_DIR / "sentinel2_reproj.tif"
+    ndwi_intermediate_path = PROCESSED_DIR / "ndwi_intermediate.tif"
+
     if not s2_path.exists():
         raise FileNotFoundError(f"Missing: {s2_path}")
+
+    compute_ndwi_zero_copy(str(s2_path), str(ndwi_intermediate_path))
+
+    # Read reference metadata from S2 for output profile
     with rasterio.open(s2_path) as ds:
-        green = ds.read(1, out_dtype=np.float32)
-        nir = ds.read(2, out_dtype=np.float32)
         ref_profile = ds.profile.copy()
         ref_transform = ds.transform
         ref_width = ds.width
         ref_height = ds.height
         ref_crs = ds.crs
-    logger.info("Loaded Sentinel-2: %dx%d", ref_width, ref_height)
+    logger.info("Loaded Sentinel-2 metadata: %dx%d", ref_width, ref_height)
 
     # Load Sentinel-1 (VV, VH)
     s1_path = PROCESSED_DIR / "sentinel1_reproj.tif"
@@ -136,12 +186,13 @@ def build_feature_stack():
     logger.info("Loaded DEM metadata")
 
     # Validate dimensions match
-    shapes = {"s2": green.shape, "s1": s1_shape, "dem": dem_shape}
+    ref_shape = (ref_height, ref_width)
+    shapes = {"s2": ref_shape, "s1": s1_shape, "dem": dem_shape}
     unique_shapes = set(shapes.values())
     if len(unique_shapes) > 1:
         logger.error("Shape mismatch across rasters: %s", shapes)
         raise RuntimeError(f"Raster shape mismatch: {shapes}. Run preprocess.py first.")
-    logger.info("All rasters aligned: %s", green.shape)
+    logger.info("All rasters aligned: %s", ref_shape)
 
     # Prepare output file
     out_path = PROCESSED_DIR / "feature_stack.tif"
@@ -155,13 +206,14 @@ def build_feature_stack():
     band_names = ["NDWI", "SAR_flood_mask", "Slope_deg", "VV_dB", "VH_dB"]
 
     with rasterio.open(out_path, "w", **profile) as dst:
-        # Band 1: NDWI (computed from S2 green + nir, then free them)
-        ndwi = compute_ndwi(green, nir)
+        # Band 1: NDWI (read from zero-copy pipeline output)
+        with rasterio.open(ndwi_intermediate_path) as ndwi_ds:
+            ndwi = ndwi_ds.read(1, out_dtype=np.float32)
         ndwi = np.nan_to_num(ndwi, nan=0.0)
         dst.write(ndwi, 1)
-        del green, nir, ndwi
+        del ndwi
         gc.collect()
-        logger.info("Written band 1/5: NDWI (freed S2 bands)")
+        logger.info("Written band 1/5: NDWI (from Rust zero-copy pipeline)")
 
         # Band 2: SAR flood mask (load S1, compute, free)
         with rasterio.open(s1_path) as s1_ds:
@@ -200,6 +252,13 @@ def build_feature_stack():
         # Set band descriptions
         for i, name in enumerate(band_names, 1):
             dst.set_band_description(i, name)
+
+    # Cleanup intermediate NDWI file
+    try:
+        ndwi_intermediate_path.unlink()
+        logger.info("Cleaned up intermediate NDWI file: %s", ndwi_intermediate_path)
+    except OSError:
+        logger.warning("Could not remove intermediate NDWI file: %s", ndwi_intermediate_path)
 
     logger.info("Feature stack saved: %s (5 bands, %dx%d)", out_path, ref_height, ref_width)
     logger.info("=" * 60)
