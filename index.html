@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Sumbawa-A.E.C.O Dashboard</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <style>
+        :root {
+            --primary-neon: #deff9a;
+            --bg-dark: #121212;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            background: var(--bg-dark);
+            font-family: 'Inter', sans-serif;
+        }
+
+        #map {
+            height: 100vh;
+            width: 100vw;
+            background: #1a1a1a;
+        }
+
+        .info-panel {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            z-index: 1000;
+            background: rgba(18, 18, 18, 0.9);
+            color: white;
+            padding: 20px;
+            border-radius: 12px;
+            border: 1px solid rgba(222, 255, 154, 0.3);
+            backdrop-filter: blur(10px);
+            width: 300px;
+        }
+
+        .metric-card {
+            margin-top: 15px;
+            padding: 15px;
+            background: rgba(222, 255, 154, 0.1);
+            border-radius: 8px;
+            border-left: 4px solid var(--primary-neon);
+        }
+
+        .metric-value {
+            font-size: 24px;
+            font-weight: bold;
+            color: var(--primary-neon);
+            display: block;
+        }
+
+        .metric-label {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #aaa;
+        }
+
+        .stack-tags {
+            margin-top: 12px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+        }
+
+        .tag {
+            font-size: 9px;
+            padding: 2px 7px;
+            border-radius: 3px;
+            letter-spacing: 0.5px;
+            font-family: monospace;
+        }
+
+        .tag-rust {
+            background: rgba(255, 111, 60, 0.15);
+            color: #ff8c5a;
+            border: 1px solid rgba(255, 111, 60, 0.25);
+        }
+
+        .tag-py {
+            background: rgba(222, 255, 154, 0.1);
+            color: var(--primary-neon);
+            border: 1px solid rgba(222, 255, 154, 0.2);
+        }
+
+        .tag-geo {
+            background: rgba(0, 212, 255, 0.1);
+            color: #00d4ff;
+            border: 1px solid rgba(0, 212, 255, 0.2);
+        }
+
+        .legend {
+            position: absolute;
+            bottom: 30px;
+            right: 20px;
+            z-index: 1000;
+            background: rgba(0, 0, 0, 0.8);
+            padding: 10px 15px;
+            border-radius: 6px;
+            color: white;
+            font-size: 12px;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            margin: 5px 0;
+        }
+
+        .dot {
+            height: 10px;
+            width: 10px;
+            border-radius: 50%;
+            margin-right: 10px;
+            flex-shrink: 0;
+        }
+
+        .demo-note {
+            position: absolute;
+            bottom: 30px;
+            left: 20px;
+            z-index: 1000;
+            background: rgba(0, 0, 0, 0.7);
+            border: 1px solid rgba(255, 184, 0, 0.3);
+            color: rgba(255, 184, 0, 0.8);
+            font-size: 9px;
+            font-family: monospace;
+            padding: 5px 10px;
+            border-radius: 4px;
+            letter-spacing: 0.5px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="info-panel">
+        <h2 style="margin:0; color:var(--primary-neon); font-size: 20px;">Sumbawa-A.E.C.O</h2>
+        <p style="margin:5px 0 0 0; font-size:12px; color: #888;">Autonomous Flood Monitoring v1.1</p>
+
+        <div class="metric-card">
+            <span class="metric-label">Estimated Impact</span>
+            <span class="metric-value">4,997 Ha</span>
+            <p style="font-size: 10px; color: #aaa; margin: 5px 0 0 0;">
+                Sentinel-1 SAR + Sentinel-2 NDWI fusion<br>
+                cos(−8.5°) EPSG:4326 correction applied
+            </p>
+        </div>
+
+        <div style="margin-top:12px; font-size:11px; color:#666;">
+            Last Cycle: <span id="clock" style="color:#888;">--:--:--</span> WITA
+        </div>
+
+        <div class="stack-tags">
+            <span class="tag tag-rust">Rust PyO3</span>
+            <span class="tag tag-rust">Rayon</span>
+            <span class="tag tag-py">XGBoost</span>
+            <span class="tag tag-py">Python 3.11</span>
+            <span class="tag tag-geo">Sentinel-1</span>
+            <span class="tag tag-geo">Sentinel-2</span>
+            <span class="tag tag-geo">DEMNAS</span>
+        </div>
+
+        <div
+            style="margin-top:14px; font-size:10px; color:#555; border-top:1px solid rgba(255,255,255,0.06); padding-top:10px;">
+            <a href="https://github.com/rizkiagustiawan/geo-ntb-flood-ai" target="_blank"
+                style="color:rgba(222,255,154,0.5); text-decoration:none; letter-spacing:0.5px;">
+                → View Source on GitHub
+            </a>
+        </div>
+    </div>
+
+    <div class="legend">
+        <div class="legend-item">
+            <div class="dot" style="background:#ff3b3b;"></div> Critical Flood Zone
+        </div>
+        <div class="legend-item">
+            <div class="dot" style="background:#ff7070;"></div> High Risk Zone
+        </div>
+        <div class="legend-item">
+            <div class="dot" style="background:#ffb800;"></div> Moderate Risk Zone
+        </div>
+        <div class="legend-item">
+            <div class="dot" style="background:rgba(222,255,154,0.5);"></div> Sumbawa Boundary
+        </div>
+    </div>
+
+    <div class="demo-note">⚠ DEMO — SIMULATED FLOOD ZONES</div>
+
+    <div id="map"></div>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script>
+        // Clock WITA (UTC+8)
+        function updateClock() {
+            var now = new Date();
+            var wita = new Date(now.getTime() + 8 * 3600 * 1000);
+            var h = String(wita.getUTCHours()).padStart(2, '0');
+            var m = String(wita.getUTCMinutes()).padStart(2, '0');
+            var s = String(wita.getUTCSeconds()).padStart(2, '0');
+            document.getElementById('clock').textContent = h + ':' + m + ':' + s;
+        }
+        setInterval(updateClock, 1000);
+        updateClock();
+
+        // Map
+        var map = L.map('map', { zoomControl: false }).setView([-8.65, 117.8], 9);
+        L.control.zoom({ position: 'bottomleft' }).addTo(map);
+
+        L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+            attribution: '&copy; OpenStreetMap contributors &copy; CARTO',
+            subdomains: 'abcd',
+            maxZoom: 19
+        }).addTo(map);
+
+        // Sumbawa boundary (approximate)
+        L.polygon([
+            [-8.05, 116.75], [-8.0, 117.0], [-8.05, 117.3], [-8.1, 117.6],
+            [-8.2, 117.9], [-8.3, 118.2], [-8.45, 118.5], [-8.6, 118.75],
+            [-8.75, 118.9], [-8.9, 118.85], [-9.05, 118.7], [-9.1, 118.4],
+            [-9.05, 118.1], [-9.0, 117.8], [-8.95, 117.5], [-9.0, 117.2],
+            [-9.0, 116.95], [-8.9, 116.75], [-8.75, 116.65], [-8.55, 116.65],
+            [-8.35, 116.68], [-8.2, 116.7], [-8.1, 116.72], [-8.05, 116.75]
+        ], {
+            color: 'rgba(222,255,154,0.35)',
+            weight: 1.5,
+            fillColor: 'rgba(222,255,154,0.02)',
+            fillOpacity: 1,
+            dashArray: '5,5'
+        }).addTo(map);
+
+        // Flood zones — GeoJSON polygons (no server needed, GitHub Pages compatible)
+        // Berdasarkan area rawan banjir nyata: Brang Beh, Bima, Taliwang, Empang, Dompu
+        var zones = [
+            {
+                coords: [[-8.45, 117.35], [-8.42, 117.42], [-8.47, 117.52], [-8.55, 117.55], [-8.60, 117.48], [-8.58, 117.38], [-8.52, 117.32]],
+                name: 'Sumbawa Besar Basin', area: '1,247 Ha', risk: 'HIGH',
+                detail: 'Sentinel-1 VV/VH backscatter · NDWI > 0.15'
+            },
+            {
+                coords: [[-8.42, 118.62], [-8.38, 118.72], [-8.44, 118.82], [-8.54, 118.84], [-8.60, 118.75], [-8.56, 118.64], [-8.48, 118.60]],
+                name: 'Bima Coastal Plain', area: '1,893 Ha', risk: 'CRITICAL',
+                detail: 'Sentinel-1 VV/VH backscatter · NDWI > 0.22'
+            },
+            {
+                coords: [[-8.78, 116.85], [-8.74, 116.92], [-8.80, 117.00], [-8.88, 116.98], [-8.90, 116.88], [-8.84, 116.82]],
+                name: 'Taliwang Lowland', area: '687 Ha', risk: 'MODERATE',
+                detail: 'Sentinel-2 NDWI · slope < 5° (DEMNAS)'
+            },
+            {
+                coords: [[-8.85, 117.90], [-8.80, 117.98], [-8.86, 118.06], [-8.94, 118.04], [-8.96, 117.95], [-8.90, 117.88]],
+                name: 'Empang Estuary', area: '523 Ha', risk: 'HIGH',
+                detail: 'Sentinel-1 SAR · DEM terrain masking'
+            },
+            {
+                coords: [[-8.52, 118.42], [-8.47, 118.50], [-8.53, 118.58], [-8.62, 118.56], [-8.65, 118.46], [-8.60, 118.39]],
+                name: 'Dompu Valley', area: '647 Ha', risk: 'HIGH',
+                detail: 'Sentinel-1 VV/VH · NDWI multisensor fusion'
+            }
+        ];
+
+        var styles = {
+            'CRITICAL': { color: 'rgba(255,30,30,0.9)', fill: 'rgba(255,30,30,0.25)' },
+            'HIGH': { color: 'rgba(255,80,80,0.85)', fill: 'rgba(255,80,80,0.2)' },
+            'MODERATE': { color: 'rgba(255,184,0,0.8)', fill: 'rgba(255,184,0,0.15)' }
+        };
+
+        var riskColor = { 'CRITICAL': '#ff3b3b', 'HIGH': '#ff7070', 'MODERATE': '#ffb800' };
+
+        zones.forEach(function (z) {
+            var s = styles[z.risk];
+            L.polygon(z.coords, {
+                color: s.color, weight: 1.5,
+                fillColor: s.fill, fillOpacity: 1
+            }).addTo(map).bindPopup(
+                '<b style="color:#deff9a;font-size:13px">' + z.name + '</b><br><br>' +
+                '<span style="color:#888;font-size:10px;font-family:monospace;letter-spacing:1px">FLOOD EXTENT</span><br>' +
+                '<b style="font-size:18px;color:white">' + z.area + '</b><br><br>' +
+                'Risk: <b style="color:' + riskColor[z.risk] + '">● ' + z.risk + '</b><br><br>' +
+                '<span style="color:#555;font-size:9px;font-family:monospace">' + z.detail + '</span>'
+            );
+        });
+    </script>
+</body>
+
+</html>
