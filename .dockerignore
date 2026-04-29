@@ -1,0 +1,24 @@
+# Rust build artifacts (massive)
+rust_engine/target/
+*.so
+*.pyd
+
+# Python artifacts
+__pycache__/
+*.egg-info/
+*.pyc
+venv/
+
+# Data and outputs (mounted as volumes)
+data/
+outputs/
+
+# Git
+.git/
+
+# Environment secrets
+.env
+
+# IDE
+.cursorrules
+.pytest_cache/
