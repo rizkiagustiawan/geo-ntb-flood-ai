@@ -37,6 +37,10 @@ app = FastAPI(
     version="1.0.0",
 )
 
+# --- BYPASS 404 LEAFLET ---
+import base64
+TRANSPARENT_PNG = base64.b64decode("iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=")
+
 
 # ---------------------------------------------------------------------------
 # Models
@@ -44,7 +48,6 @@ app = FastAPI(
 class PredictRequest(BaseModel):
     lat: float
     lon: float
-
 
 class BboxRequest(BaseModel):
     west: float
@@ -63,7 +66,6 @@ def _get_map_path():
     if RAW_MAP.exists():
         return RAW_MAP
     return None
-
 
 def _point_query(map_path, lon, lat):
     """Query flood status at a single coordinate. Returns (value, valid)."""
@@ -139,7 +141,6 @@ def get_metrics():
     """Return evaluation metrics JSON."""
     metrics_path = MODELS_DIR / "evaluation_metrics.json"
     if not metrics_path.exists():
-        # Try xgboost metrics
         metrics_path = MODELS_DIR / "xgboost_metrics.json"
     if not metrics_path.exists():
         raise HTTPException(404, "No metrics available. Run evaluate.py.")
@@ -168,7 +169,7 @@ def get_stats():
         "map": map_path.name,
         "crs": crs,
         "bounds": {"west": bounds.left, "south": bounds.bottom,
-                    "east": bounds.right, "north": bounds.top},
+                   "east": bounds.right, "north": bounds.top},
         "shape": list(data.shape),
         "total_pixels": total,
         "flood_pixels": n_flood,
@@ -182,7 +183,7 @@ async def get_tile(z: int, x: int, y: int):
     """Serve XYZ map tiles from flood GeoTIFF with cyan-blue flood overlay."""
     map_path = _get_map_path()
     if map_path is None:
-        raise HTTPException(404, "No flood map available.")
+        return Response(content=TRANSPARENT_PNG, media_type="image/png")
 
     try:
         from rio_tiler.io import Reader
@@ -191,21 +192,25 @@ async def get_tile(z: int, x: int, y: int):
     except ImportError:
         raise HTTPException(500, "rio-tiler not installed. pip install rio-tiler")
 
-    with Reader(str(map_path)) as dst:
-        try:
+    try:
+        with Reader(str(map_path)) as dst:
             img = dst.tile(x, y, z)
-        except TileOutsideBounds:
-            raise HTTPException(404, "Tile outside bounds")
-
-        data = img.data[0]
-        alpha = (data == 1).astype(np.uint8) * 255
-        rgb = np.zeros((3, img.height, img.width), dtype=np.uint8)
-        rgb[0] = 0    # R
-        rgb[1] = 180  # G
-        rgb[2] = 216  # B
-        content = render(rgb, alpha, img_format="PNG")
-
-    return Response(content=content, media_type="image/png")
+            data = img.data[0]
+            alpha = (data == 1).astype(np.uint8) * 255
+            rgb = np.zeros((3, img.height, img.width), dtype=np.uint8)
+            rgb[0] = 0   # R
+            rgb[1] = 180 # G
+            rgb[2] = 216 # B
+            content = render(rgb, alpha, img_format="PNG")
+            
+        return Response(content=content, media_type="image/png")
+        
+    except TileOutsideBounds:
+        # Jika di luar batas, kirim gambar kosong (bypass 404)
+        return Response(content=TRANSPARENT_PNG, media_type="image/png")
+    except Exception as e:
+        # Jaga-jaga error lain, tetap kirim gambar kosong
+        return Response(content=TRANSPARENT_PNG, media_type="image/png")
 
 
 @app.get("/", response_class=HTMLResponse)

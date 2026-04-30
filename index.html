@@ -337,42 +337,46 @@
             })
             .catch(err => console.error("Gagal load base map GADM:", err));
 
-        // ---------------------------------------------------------
-        // 2. DIRECT AWS IP - FETCH FLOOD DATA (RUST/PYTHON ENGINE)
-        // ---------------------------------------------------------
-        const API_URL = 'http://47.129.225.192:8000/api/floods';
+       // ---------------------------------------------------------
+    // 3. AWS RASTER TILE & STATS INTEGRATION
+    // ---------------------------------------------------------
 
-        async function fetchFloodData() {
-            try {
-                await new Promise(resolve => setTimeout(resolve, 2000));
+    const floodTiles = L.tileLayer('/tiles/{z}/{x}/{y}.png', {
+      maxZoom: 19,
+      className: 'pulse-layer'
+    }).addTo(map);
 
-                const response = await fetch(API_URL);
-                const data = await response.json();
+    async function fetchSystemStats() {
+      try {
+        await new Promise(resolve => setTimeout(resolve, 1500));
 
-                // Update UI Info Panel
-                document.getElementById('impact-value').innerHTML = data.total_ha + ' <span style="font-size:16px; margin-left:5px;">Ha</span>';
-                document.getElementById('methodology-note').innerHTML = `<span style="color:var(--primary-neon)">Connected:</span> ${data.methodology}`;
+        const response = await fetch('/stats');
+        if (!response.ok) throw new Error('API Offline');
 
-                // Add Flood Polygon from AWS
-                const floodLayer = L.geoJSON(data.geojson, {
-                    style: function (feature) {
-                        return { color: '#ff3b3b', weight: 2, fillColor: '#ff3b3b', fillOpacity: 0.3, className: 'pulse-polygon' };
-                    }
-                }).addTo(map);
+        const data = await response.json();
+        
+        // Hitung Hektar
+        const pixelToHa = 0.01;
+        const ha_area = (data.flood_pixels * pixelToHa).toLocaleString('id-ID', { minimumFractionDigits: 2 });
 
-                // FIX ANIMASI TERBANG: Otomatis terbang ke lokasi banjir terdeteksi
-                if (floodLayer.getLayers().length > 0) {
-                    map.flyToBounds(floodLayer.getBounds(), { padding: [50, 50], animate: true, duration: 2.0 });
-                }
+        // PAKE BACKTICK (`) DI SINI BIAR AMAN DARI ENTER NYASAR!
+        document.getElementById('impact-value').innerHTML = `${ha_area} <span style="font-size:16px; margin-left:5px;">Ha</span>`;
+        
+        document.getElementById('methodology-note').innerHTML = `<span style="color:var(--primary-neon)">Connected:</span> ${data.map}`;
 
-            } catch (error) {
-                console.error("AWS Connection Failed", error);
-                document.getElementById('impact-value').innerHTML = '<span style="color:var(--danger-red); font-size:18px;">SERVER OFFLINE</span>';
-                document.getElementById('methodology-note').textContent = "⚠️ Check AWS Security Group Port 8000.";
-            }
-        }
+        // Auto Zoom ke Bima/Area Banjir
+        map.flyToBounds([
+          [data.bounds.south, data.bounds.west],
+          [data.bounds.north, data.bounds.east]
+        ], { padding: [50, 50], animate: true, duration: 2 });
 
-        fetchFloodData(); 
+      } catch (error) {
+        console.error(error);
+        document.getElementById('impact-value').innerHTML = `<span style="color:#ff3b3b; font-size:18px;">API OFFLINE</span>`;
+      }
+    }
+
+    fetchSystemStats();
     </script>
 </body>
 
