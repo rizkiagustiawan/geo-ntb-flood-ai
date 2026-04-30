@@ -211,6 +211,22 @@
                 fill-opacity: 0.6;
             }
         }
+
+        /* Custom Popup Styling */
+        .leaflet-popup-content-wrapper {
+            background: var(--bg-dark);
+            border: 1px solid rgba(222, 255, 154, 0.3);
+            border-radius: 8px;
+        }
+
+        .leaflet-popup-tip {
+            background: var(--bg-dark);
+            border: 1px solid rgba(222, 255, 154, 0.3);
+        }
+
+        .leaflet-container a.leaflet-popup-close-button {
+            color: var(--primary-neon);
+        }
     </style>
 </head>
 
@@ -269,7 +285,8 @@
     <script>
         // Clock WITA
         function updateClock() {
-            var now = new Date(); var wita = new Date(now.getTime() + 8 * 3600 * 1000);
+            var now = new Date();
+            var wita = new Date(now.getTime() + 8 * 3600 * 1000);
             document.getElementById('clock').textContent = String(wita.getUTCHours()).padStart(2, '0') + ':' + String(wita.getUTCMinutes()).padStart(2, '0') + ':' + String(wita.getUTCSeconds()).padStart(2, '0');
         }
         setInterval(updateClock, 1000); updateClock();
@@ -277,36 +294,76 @@
         // Map setup
         var map = L.map('map', { zoomControl: false }).setView([-8.65, 117.8], 9);
         L.control.zoom({ position: 'bottomright' }).addTo(map);
-        L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', { attribution: '&copy; CARTO' }).addTo(map);
 
-        // Region Boundary
-        L.polygon([[-8.05, 116.75], [-8.0, 117.0], [-8.05, 117.3], [-8.1, 117.6], [-8.2, 117.9], [-8.3, 118.2], [-8.45, 118.5], [-8.6, 118.75], [-8.75, 118.9], [-8.9, 118.85], [-9.05, 118.7], [-9.1, 118.4], [-9.05, 118.1], [-9.0, 117.8], [-8.95, 117.5], [-9.0, 117.2], [-9.0, 116.95], [-8.9, 116.75], [-8.75, 116.65], [-8.55, 116.65], [-8.35, 116.68], [-8.2, 116.7], [-8.1, 116.72], [-8.05, 116.75]],
-            { color: 'rgba(222,255,154,0.4)', weight: 1, fillColor: 'transparent', dashArray: '4,6' }).addTo(map);
+        // FIX BUG ABU-ABU: Hilangkan '{r}' dari URL CartoDB & Batasi MaxZoom
+        L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png', {
+            attribution: '&copy; CARTO',
+            maxZoom: 19
+        }).addTo(map);
 
-        // DIRECT AWS IP - NO NGROK NEEDED
+        // FIX BUG ABU-ABU ke-2: Pancing Leaflet untuk re-render size peta
+        setTimeout(function () { map.invalidateSize(); }, 500);
+
+        // ---------------------------------------------------------
+        // 1. LOAD GADM LEVEL 2 GEOJSON (BATAS PRESISI SUMBAWA)
+        // ---------------------------------------------------------
+        fetch('./data/sumbawa_island.geojson')
+            .then(res => res.json())
+            .then(data => {
+                L.geoJSON(data, {
+                    style: function (feature) {
+                        return {
+                            color: 'rgba(222,255,154,0.6)',
+                            weight: 1.5,
+                            fillColor: 'transparent',
+                            dashArray: '4,6'
+                        };
+                    },
+                    onEachFeature: function (feature, layer) {
+                        layer.on('mouseover', function () {
+                            this.setStyle({ fillColor: 'rgba(222,255,154,0.1)' });
+                        });
+                        layer.on('mouseout', function () {
+                            this.setStyle({ fillColor: 'transparent' });
+                        });
+                        layer.bindPopup(`
+                            <div style="font-family:'Inter',sans-serif; text-align:center;">
+                                <strong style="font-size:14px; color:var(--primary-neon);">${feature.properties.NAME_2}</strong><br>
+                                <span style="color:#aaa; font-size:10px;">A.E.C.O Monitored Zone</span>
+                            </div>
+                        `);
+                    }
+                }).addTo(map);
+            })
+            .catch(err => console.error("Gagal load base map GADM:", err));
+
+        // ---------------------------------------------------------
+        // 2. DIRECT AWS IP - FETCH FLOOD DATA (RUST/PYTHON ENGINE)
+        // ---------------------------------------------------------
         const API_URL = 'http://47.129.225.192:8000/api/floods';
 
         async function fetchFloodData() {
             try {
-                // Dramatic delay for video effect
                 await new Promise(resolve => setTimeout(resolve, 2000));
 
                 const response = await fetch(API_URL);
                 const data = await response.json();
 
-                // Update UI
+                // Update UI Info Panel
                 document.getElementById('impact-value').innerHTML = data.total_ha + ' <span style="font-size:16px; margin-left:5px;">Ha</span>';
                 document.getElementById('methodology-note').innerHTML = `<span style="color:var(--primary-neon)">Connected:</span> ${data.methodology}`;
 
-                // Add Flood Polygon
-                L.geoJSON(data.geojson, {
+                // Add Flood Polygon from AWS
+                const floodLayer = L.geoJSON(data.geojson, {
                     style: function (feature) {
                         return { color: '#ff3b3b', weight: 2, fillColor: '#ff3b3b', fillOpacity: 0.3, className: 'pulse-polygon' };
                     }
                 }).addTo(map);
 
-                // Cinematic fly to Bima
-                map.flyTo([-8.48, 118.72], 11, { animate: true, duration: 2.5 });
+                // FIX ANIMASI TERBANG: Otomatis terbang ke lokasi banjir terdeteksi
+                if (floodLayer.getLayers().length > 0) {
+                    map.flyToBounds(floodLayer.getBounds(), { padding: [50, 50], animate: true, duration: 2.0 });
+                }
 
             } catch (error) {
                 console.error("AWS Connection Failed", error);
