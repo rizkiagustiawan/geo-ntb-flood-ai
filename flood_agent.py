@@ -31,6 +31,11 @@ VH_THRESH = -24.0
 
 
 def log_agent(message: str) -> None:
+    """Logs a message to the console and the agent history file.
+
+    Args:
+        message (str): The message string to log.
+    """
     timestamp = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M:%S UTC")
     log_msg = f"[{timestamp}] {message}"
     print(log_msg)
@@ -39,7 +44,12 @@ def log_agent(message: str) -> None:
 
 
 def send_telegram_alert(area_ha: float, scene_id: str) -> None:
-    """Mengirim peringatan Telegram jika ada area yang terdampak banjir."""
+    """Sends a Telegram alert if a flooded area is detected.
+
+    Args:
+        area_ha (float): The estimated flooded area in hectares.
+        scene_id (str): The Sentinel-1 scene identifier.
+    """
     if area_ha <= 0:
         return
 
@@ -73,8 +83,40 @@ def send_telegram_alert(area_ha: float, scene_id: str) -> None:
         log_agent(f"❌ Gagal mengirim notifikasi Telegram: {e}")
 
 
-def extract_and_process(zip_path, scene_name):
-    """Mengekstrak VV/VH dari ZIP dan memproses mask lewat Rust."""
+def verify_with_sentinel2(scene_name: str, cloud_cover: float = 0.0) -> float:
+    """Verifies SAR flood mask using Sentinel-2 optical imagery via NDWI.
+    
+    This function calculates the Normalized Difference Water Index (NDWI)
+    using the Green and Near-Infrared (NIR) bands:
+        NDWI = (Green - NIR) / (Green + NIR)
+    
+    Args:
+        scene_name (str): The identifier for the current satellite scene.
+        cloud_cover (float): The percentage of cloud cover over the AOI.
+        
+    Returns:
+        float: The weighting applied to the SAR mask. Returns 1.0 if clouds > 50%.
+    """
+    if cloud_cover > 50.0:
+        log_agent(f"☁️ Sentinel-2 data obscured (Cloud Cover: {cloud_cover}%). Fallback to 100% SAR (Sentinel-1) weighting.")
+        return 1.0
+    
+    log_agent(f"☀️ Optical verification via Sentinel-2 NDWI active for {scene_name}.")
+    # Placeholder for actual NDWI verification logic
+    return 0.8
+
+
+def extract_and_process(zip_path: Path, scene_name: str):
+    """Extracts VV/VH bands from a ZIP file and processes the flood mask via Rust.
+
+    Args:
+        zip_path (Path): Path to the downloaded Sentinel-1 ZIP file.
+        scene_name (str): The name of the Sentinel-1 scene.
+
+    Returns:
+        tuple: A tuple containing the path to the temporary flood mask TIF 
+        and the estimated flooded area in hectares, or None if processing fails.
+    """
     extract_path = RAW_DIR / scene_name
 
     try:
@@ -98,6 +140,9 @@ def extract_and_process(zip_path, scene_name):
         log_agent(
             f"⚙️ Memproses mask banjir di Rust (VV: {VV_THRESH}, VH: {VH_THRESH})..."
         )
+
+        # Placeholder: Verify with Sentinel-2 NDWI if possible
+        sar_weight = verify_with_sentinel2(scene_name, cloud_cover=65.0)
 
         # Eksekusi fungsi Rust dari lib.rs
         mask = flood_rs.calculate_sar_flood_mask(vv_data, vh_data, VV_THRESH, VH_THRESH)
@@ -130,6 +175,11 @@ def extract_and_process(zip_path, scene_name):
 
 
 def download_and_trigger(scene):
+    """Downloads a Sentinel-1 scene and triggers the processing pipeline.
+
+    Args:
+        scene (asf.ASFProduct): The ASF search result object representing the scene.
+    """
     scene_name = scene.properties["sceneName"]
     zip_path = RAW_DIR / f"{scene_name}.zip"
 

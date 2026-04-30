@@ -1,5 +1,14 @@
 # 🛰️ Sumbawa-A.E.C.O (Autonomous ESG Compliance Oracle) v1.1
 
+```mermaid
+graph LR
+    A[NASA Earthdata] -->|Raw Sentinel-1/2| B[Python Orchestrator]
+    B -->|PyO3 Zero-Copy| C(Rust Compute Engine)
+    C -->|Feature Stack| D{XGBoost Inference}
+    D -->|Flood Map| E[Telegram Bot]
+    D -->|GeoTIFF| F[Web Dashboard]
+```
+
 > **Autonomous Geospatial Monitoring Station for Real-time Flood Detection in Sumbawa Island, NTB.**
 > **Bilingual Documentation:**  
 > [![Indonesian](https://img.shields.io/badge/Lang-🇮🇩%20Indonesian-red)](#-ringkasan-indonesian)
@@ -42,7 +51,7 @@
 **Mitigations applied and documented:**
 1. **Spatial Cross-Validation (SCV):** The evaluation pipeline supports tile-based spatial blocking to produce more realistic generalisation estimates. Spatial CV metrics are expected to be lower than the random-split baseline and should be used for reporting in peer-reviewed contexts.
 2. **Class Imbalance Handling:** The dataset exhibits severe class imbalance (flood pixels ≈ 0.5–2% of total). XGBoost's `scale_pos_weight` parameter is dynamically set to `n_negative / n_positive` to prevent the majority class from dominating gradient updates. SMOTE (Synthetic Minority Oversampling Technique) can be applied as a preprocessing step for alternative model comparisons.
-3. **Pseudo-Label Caveat & Validation Logic:** In the absence of ground-truth flood labels (e.g., field surveys), the system generates pseudo-labels via a **Multisensor Fusion Agreement** strategy. This multi-criteria thresholding (NDWI > 0.1 ∩ SAR mask = 1 ∩ Slope < 10°) effectively minimizes false positives by demanding consensus between optical physics, radar backscatter, and terrain logic before classifying a pixel as flooded. While this creates a circular dependency between features and labels that inflates supervised metrics (like the F1-score), the fusion strategy itself acts as a robust unsupervised classifier, ensuring high scientific integrity even without manual field validation.
+3. **Pseudo-Label Caveat & Validation Logic:** In the absence of ground-truth flood labels (e.g., field surveys), the system generates pseudo-labels via a **Multisensor Fusion Agreement** strategy. This multi-criteria thresholding ($NDWI > 0.1 \cap SAR_{mask} = 1 \cap Slope < 10^\circ$) effectively minimizes false positives by demanding consensus between optical physics, radar backscatter, and terrain logic before classifying a pixel as flooded. While this creates a circular dependency between features and labels that inflates supervised metrics (like the F1-score), the fusion strategy itself acts as a robust unsupervised classifier, ensuring high scientific integrity even without manual field validation.
 
 ---
 
@@ -59,7 +68,7 @@ Together, using both VV and VH allows for robust flood detection across differen
 
 **NDWI (Normalized Difference Water Index):**
 To complement SAR data, we utilize the NDWI from Sentinel-2 optical imagery. The formula leverages the high reflectance of water in the green band and strong absorption in the near-infrared (NIR) band:
-`NDWI = (Green - NIR) / (Green + NIR)`
+$$ NDWI = \frac{Green - NIR}{Green + NIR} $$
 Values greater than zero typically indicate water features, helping to cross-verify the SAR flood masks.
 
 ### Feature Engineering
