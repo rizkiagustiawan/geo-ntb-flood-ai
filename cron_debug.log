@@ -1,0 +1,10 @@
+
+/home/ubuntu/geo-ntb-flood-ai/venv/lib/python3.12/site-packages/rasterio/__init__.py:377: NotGeoreferencedWarning: The given matrix is equal to Affine.identity or its flipped counterpart. GDAL may ignore this matrix and save no geotransform without raising an error. This behavior is somewhat driver-specific.
+  dataset = writer(
+[2026-04-30 22:00:01 UTC] 🕵️‍♂️ Memindai satelit untuk wilayah NTB...
+[2026-04-30 22:00:05 UTC] ⬇️ Mengunduh S1A_IW_GRDH_1SDV_20260428T104128_20260428T104146_064278_0817B1_01A4...
+[2026-04-30 22:00:56 UTC] ⚙️ Memproses mask banjir di Rust (VV: -18.0, VH: -24.0)...
+[2026-04-30 22:00:58 UTC] 📡 Dashboard Updated: /var/www/html/data/floods/final_flood_map.tif
+[2026-04-30 22:00:58 UTC] 🧹 Cleanup: ZIP dihapus. Storage aman.
+[2026-04-30 22:00:58 UTC] 🏁 Agen kembali ke mode siaga.
+

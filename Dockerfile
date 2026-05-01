@@ -1,16 +1,23 @@
 # ============================================================
-# 🛰️ Sumbawa-A.E.C.O — Production Dockerfile
+# 🛰 Sumbawa-A.E.C.O — Production Dockerfile
 # Multi-stage: build Rust engine, then deploy lightweight Python image
 # ============================================================
 
 # --- Stage 1: Build the Rust/PyO3 engine ---
 FROM python:3.11-slim AS builder
 
+# Install system dependencies (Termasuk Clang untuk bindgen, GDAL, dan patchelf)
 RUN apt-get update && apt-get install -y \
+    python3-dev \
+    libssl-dev \
+    pkg-config \
     curl \
     build-essential \
     libgdal-dev \
     gdal-bin \
+    clang \
+    libclang-dev \
+    patchelf \
     && rm -rf /var/lib/apt/lists/*
 
 # Install Rust toolchain
@@ -29,7 +36,7 @@ RUN cd rust_engine && maturin build --release --out /build/wheels/
 # --- Stage 2: Runtime image ---
 FROM python:3.11-slim
 
-# Install system dependencies (GDAL for rasterio)
+# Install runtime dependencies (GDAL & G++ untuk library python)
 RUN apt-get update && apt-get install -y \
     libgdal-dev \
     gdal-bin \
@@ -38,7 +45,7 @@ RUN apt-get update && apt-get install -y \
 
 WORKDIR /app
 
-# Set GDAL environment variables to prevent rasterio installation errors
+# Set GDAL environment variables
 ENV CPLUS_INCLUDE_PATH=/usr/include/gdal
 ENV C_INCLUDE_PATH=/usr/include/gdal
 
@@ -46,18 +53,17 @@ ENV C_INCLUDE_PATH=/usr/include/gdal
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Install the pre-built Rust wheel from the builder stage
+# Install the pre-built Rust wheel dari stage builder
 COPY --from=builder /build/wheels/*.whl /tmp/
 RUN pip install /tmp/*.whl && rm /tmp/*.whl
 
 # Copy the rest of the source code
 COPY . .
 
-# Create output directories to prevent permission issues during runtime
-RUN mkdir -p outputs/predictions outputs/models data/processed
+# Create output directories (Penting untuk persistence data NTB)
+RUN mkdir -p outputs/predictions outputs/models data/processed outputs/web
 
-# RTK binary discovery: container should set RTK_BIN or have rtk on PATH
-# No hardcoded local paths
+# Environment configuration
 ENV PYTHONPATH="/app/src:/app/api:${PYTHONPATH}"
 
 # Expose FastAPI port
