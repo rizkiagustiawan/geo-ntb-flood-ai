@@ -4,7 +4,8 @@ rasterio
 geopandas
 shapely
 earthengine-api
-numexpr          # Penting! Tadi di log lu muncul (buat optimasi performa)
+numexpr
+rio-tiler==7.0.0
 
 # --- Machine Learning ---
 scikit-learn
@@ -14,12 +15,14 @@ xgboost
 fastapi
 uvicorn
 requests
-httpx            # Buat testing API secara asinkron
+httpx
+pydantic
+python-multipart
 
 # --- Automation & Development ---
-maturin          # Karena lu pake Rust integration
-pytest           # Buat jalanin 25 unit tests lu
-python-dotenv    # WAJIB! Buat baca file .env (GEE_KEY, dll)
+maturin
+pytest
+python-dotenv
 
 # --- Visualization ---
-matplotlib       # WAJIB! Tadi di log lu ada proses save preview .png
+matplotlib
