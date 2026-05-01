@@ -1,73 +1,35 @@
-# ============================================================
-# 🛰 Sumbawa-A.E.C.O — Production Dockerfile
-# Multi-stage: build Rust engine, then deploy lightweight Python image
-# ============================================================
-
-# --- Stage 1: Build the Rust/PyO3 engine ---
-FROM python:3.11-slim AS builder
-
-# Install system dependencies (Termasuk Clang untuk bindgen, GDAL, dan patchelf)
-RUN apt-get update && apt-get install -y \
-    python3-dev \
-    libssl-dev \
-    pkg-config \
-    curl \
-    build-essential \
-    libgdal-dev \
-    gdal-bin \
-    clang \
-    libclang-dev \
-    patchelf \
-    && rm -rf /var/lib/apt/lists/*
-
-# Install Rust toolchain
-RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
-ENV PATH="/root/.cargo/bin:${PATH}"
-
-# Install maturin
-RUN pip install --no-cache-dir maturin
-
-WORKDIR /build
-
-# Copy Rust engine source and build the wheel
-COPY rust_engine/ ./rust_engine/
-RUN cd rust_engine && maturin build --release --out /build/wheels/
-
-# --- Stage 2: Runtime image ---
+# Base Image
 FROM python:3.11-slim
 
-# Install runtime dependencies (GDAL & G++ untuk library python)
-RUN apt-get update && apt-get install -y \
-    libgdal-dev \
+# Environment
+ENV DEBIAN_FRONTEND=noninteractive
+ENV PATH="/root/.cargo/bin:${PATH}"
+
+# System Dependencies & Rust Toolchain
+RUN apt-get update && apt-get install -y --no-install-recommends \
     gdal-bin \
-    g++ \
+    libgdal-dev \
+    build-essential \
+    curl \
+    && curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y \
+    && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
 
-# Set GDAL environment variables
-ENV CPLUS_INCLUDE_PATH=/usr/include/gdal
-ENV C_INCLUDE_PATH=/usr/include/gdal
-
-# Copy requirements and install dependencies
+# Python Dependencies (Layer Caching)
 COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt maturin
 
-# Install the pre-built Rust wheel dari stage builder
-COPY --from=builder /build/wheels/*.whl /tmp/
-RUN pip install /tmp/*.whl && rm /tmp/*.whl
+# Rust Engine Compilation
+COPY rust_engine/ ./rust_engine/
+RUN cd rust_engine && maturin build --release --out dist && pip install dist/*.whl
 
-# Copy the rest of the source code
-COPY . .
+# App Code (Tanpa folder data/)
+COPY api/ ./api/
+COPY assets/ ./assets/
+COPY index.html .
 
-# Create output directories (Penting untuk persistence data NTB)
-RUN mkdir -p outputs/predictions outputs/models data/processed outputs/web
-
-# Environment configuration
-ENV PYTHONPATH="/app/src:/app/api:${PYTHONPATH}"
-
-# Expose FastAPI port
+# Execution
 EXPOSE 8000
-
-# Launch the application
-CMD ["python", "api/main.py"]
+CMD ["uvicorn", "api.main:app", "--host", "0.0.0.0", "--port", "8000"]

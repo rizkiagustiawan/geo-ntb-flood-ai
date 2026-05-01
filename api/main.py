@@ -21,9 +21,9 @@ import rasterio
 import rasterio.mask
 import rasterio.windows
 import uvicorn
-from fastapi import FastAPI, HTTPException, Query, Response
+from fastapi import FastAPI, HTTPException, Query, Request, Response
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import HTMLResponse
+from fastapi.responses import HTMLResponse, JSONResponse, FileResponse
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel, Field
 
@@ -34,6 +34,10 @@ try:
     RUST_READY = True
 except ImportError:
     RUST_READY = False
+
+import sys
+sys.path.append(str(Path(__file__).parent))
+from report_generator import generate_esg_pdf
 
 # --- Logging ---
 logging.basicConfig(
@@ -122,6 +126,14 @@ app = FastAPI(
     version="0.3.0",
     description="Zero-copy Rust-accelerated flood detection API for NTB, Indonesia.",
 )
+
+@app.exception_handler(Exception)
+async def global_exception_handler(request: Request, exc: Exception):
+    logger.error(f"Unhandled Exception: {exc}", exc_info=True)
+    return JSONResponse(
+        status_code=500,
+        content={"detail": "Internal Server Error"}
+    )
 
 app.add_middleware(
     CORSMiddleware,
@@ -374,6 +386,17 @@ def predict_area(feature: GeoJSONFeature):
         geometry_type=geom_type,
         timestamp=datetime.now(timezone.utc).isoformat(),
     )
+
+
+# ---------------------------------------------------------------------------
+# /predict/report — Generate ESG PDF Report
+# ---------------------------------------------------------------------------
+@app.post("/predict/report")
+def predict_report(feature: GeoJSONFeature):
+    report = predict_area(feature)
+    report_dict = report.dict() if hasattr(report, "dict") else report.model_dump()
+    pdf_path = generate_esg_pdf(report_dict)
+    return FileResponse(pdf_path, media_type="application/pdf", filename="esg_report.pdf")
 
 
 def _geom_centroid_lat(geom: dict) -> float:

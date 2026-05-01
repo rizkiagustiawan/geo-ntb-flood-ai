@@ -1,6 +1,6 @@
 [package]
 name = "flood_rs"
-version = "0.2.0"
+version = "0.3.0"
 edition = "2021"
 
 [lib]
@@ -8,7 +8,6 @@ name = "flood_rs"
 crate-type = ["cdylib"]
 
 [dependencies]
-pyo3 = { version = "0.24", features = ["extension-module"] }
-numpy = "0.24"
+pyo3 = { version = "0.28", features = ["extension-module"] }
+numpy = "0.28"
 rayon = "1.10"
-gdal = { version = "0.19", features = ["bindgen"] }

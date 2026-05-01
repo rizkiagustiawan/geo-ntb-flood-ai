@@ -26,3 +26,4 @@ python-dotenv
 
 # --- Visualization ---
 matplotlib
+fpdf2

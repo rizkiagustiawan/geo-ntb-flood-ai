@@ -509,7 +509,15 @@
     // ---------------------------------------------------------
     // 4. RTK POINT VALIDATION — Click-to-Predict
     // ---------------------------------------------------------
+    let currentFetchCtrl = null;
+
     map.on('click', async function (e) {
+      if (currentFetchCtrl) {
+        currentFetchCtrl.abort();
+      }
+      currentFetchCtrl = new AbortController();
+      const signal = currentFetchCtrl.signal;
+
       const { lat, lng } = e.latlng;
       const popup = L.popup({ maxWidth: 280, className: 'rtk-popup' })
         .setLatLng(e.latlng)
@@ -523,7 +531,7 @@
         .openOn(map);
 
       try {
-        const res = await fetch(`/predict/at?lat=${lat}&lon=${lng}`);
+        const res = await fetch(`/predict/at?lat=${lat}&lon=${lng}`, { signal });
 
         if (res.status === 422) {
           popup.setContent(`
@@ -590,6 +598,10 @@
         `);
 
       } catch (err) {
+        if (err.name === 'AbortError') {
+          console.log('Fetch aborted for a new request.');
+          return;
+        }
         popup.setContent(`
           <div style="font-family:'Inter',sans-serif; text-align:center; padding:8px;">
             <strong style="color:var(--danger-red); font-size:13px;">CONNECTION FAILED</strong><br>

@@ -10,6 +10,7 @@ from pathlib import Path
 from datetime import datetime, timezone, timedelta
 from dotenv import load_dotenv
 
+
 # --- INTEGRASI MODUL RUST ---
 try:
     import flood_rs
@@ -21,14 +22,18 @@ except ImportError:
 # --- KONFIGURASI PATH ---
 PROJECT_ROOT = Path(__file__).resolve().parent
 RAW_DIR = PROJECT_ROOT / "outputs" / "predictions"
-# PERBAIKAN: Diarahkan ke folder lokal agar tidak kena PermissionError /var/www di laptop lokal
 WEB_DIR = PROJECT_ROOT / "outputs" / "web"
 LOG_FILE = PROJECT_ROOT / "agent_history.log"
+DATA_DIR = PROJECT_ROOT / "data"
 
-# --- RUTE B: TUNING PARAMETER (SAR Thresholds) ---
-# Sesuaikan angka ini berdasarkan observasi di Sumbawa/Bima
+# --- TUNING PARAMETERS ---
 VV_THRESH = -18.0
 VH_THRESH = -24.0
+NDWI_THRESH = 0.3
+SAR_VV_THRESH = -15.0
+
+# --- SENTINEL-2 CO-REGISTERED RASTER ---
+S2_REPROJ = DATA_DIR / "processed" / "sentinel2_reproj.tif"
 
 
 def log_agent(message: str) -> None:
@@ -171,36 +176,34 @@ def extract_and_process(zip_path: Path, scene_name: str):
             vh_data = src_vh.read(1).astype(np.float32)
             profile = src_vv.profile
 
-        log_agent(
-            f"⚙️ Memproses mask banjir di Rust (VV: {VV_THRESH}, VH: {VH_THRESH})..."
-        )
+        # --- PRIMARY: Fused Multisensor (NDWI + SAR) via Rust ---
+        if S2_REPROJ.exists():
+            log_agent("⚙️ Fused multisensor path: NDWI + SAR → compute_ndwi_and_mask")
+            with rasterio.open(S2_REPROJ) as src_s2:
+                green = src_s2.read(1).astype(np.float32)
+                nir = src_s2.read(2).astype(np.float32)
+            mask = flood_rs.compute_ndwi_and_mask(
+                green, nir, vv_data, NDWI_THRESH, SAR_VV_THRESH
+            )
+        else:
+            # --- FALLBACK: SAR-only mask ---
+            log_agent(
+                f"⚙️ SAR-only fallback (VV: {VV_THRESH}, VH: {VH_THRESH})"
+            )
+            mask = flood_rs.calculate_sar_flood_mask(
+                vv_data, vh_data, VV_THRESH, VH_THRESH
+            )
 
-        # Verify with Sentinel-2 NDWI if possible
-        today = datetime.now(timezone.utc)
-        start_date = (today - timedelta(days=7)).strftime("%Y-%m-%d")
-        end_date = today.strftime("%Y-%m-%d")
-        sar_weight = verify_with_sentinel2(
-            scene_name=scene_name, 
-            aoi_wkt="POLYGON((116.5 -9.0, 119.5 -9.0, 119.5 -8.0, 116.5 -8.0, 116.5 -9.0))",
-            start_date=start_date,
-            end_date=end_date,
-            cloud_cover=20.0
-        )
-
-        # Eksekusi fungsi Rust dari lib.rs
-        mask = flood_rs.calculate_sar_flood_mask(vv_data, vh_data, VV_THRESH, VH_THRESH)
-
-        # Hitung area terdampak banjir (Area in Hectares)
+        # --- Area Calculation (Hectares) ---
         flood_pixels = int(np.sum(mask > 0))
         dx = abs(profile["transform"][0])
         dy = abs(profile["transform"][4])
-        # Aproksimasi meter ke derajat jika menggunakan sistem koordinat geografi (WGS84)
         if src_vv.crs and src_vv.crs.is_geographic:
             dx *= 111320.0
             dy *= 111320.0
         area_ha = float(flood_pixels * dx * dy / 10000.0)
 
-        # Simpan hasil sementara
+        # --- Write flood mask GeoTIFF ---
         temp_tif = RAW_DIR / f"flood_mask_{scene_name}.tif"
         profile.update(dtype=rasterio.uint8, count=1, nodata=0)
         with rasterio.open(temp_tif, "w", **profile) as dst:
