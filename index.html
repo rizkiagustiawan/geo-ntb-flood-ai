@@ -505,6 +505,99 @@
     }
 
     fetchSystemStats();
+
+    // ---------------------------------------------------------
+    // 4. RTK POINT VALIDATION — Click-to-Predict
+    // ---------------------------------------------------------
+    map.on('click', async function (e) {
+      const { lat, lng } = e.latlng;
+      const popup = L.popup({ maxWidth: 280, className: 'rtk-popup' })
+        .setLatLng(e.latlng)
+        .setContent(`
+          <div style="font-family:'Inter',sans-serif; text-align:center; padding:8px;">
+            <div class="spinner" style="margin:0 auto 8px auto;"></div>
+            <span style="color:#aaa; font-size:11px;">Querying Rust Engine...</span><br>
+            <span style="color:#555; font-size:10px; font-family:monospace;">${lat.toFixed(5)}, ${lng.toFixed(5)}</span>
+          </div>
+        `)
+        .openOn(map);
+
+      try {
+        const res = await fetch(`/predict/at?lat=${lat}&lon=${lng}`);
+
+        if (res.status === 422) {
+          popup.setContent(`
+            <div style="font-family:'Inter',sans-serif; text-align:center; padding:8px;">
+              <div style="font-size:18px; margin-bottom:6px;">🚫</div>
+              <strong style="color:#ff9900; font-size:13px;">OUT OF BOUNDS</strong><br>
+              <span style="color:#888; font-size:10px; font-family:monospace;">${lat.toFixed(5)}, ${lng.toFixed(5)}</span><br>
+              <span style="color:#666; font-size:10px;">Point outside raster coverage</span>
+            </div>
+          `);
+          return;
+        }
+
+        if (!res.ok) {
+          const errData = await res.json().catch(() => ({}));
+          popup.setContent(`
+            <div style="font-family:'Inter',sans-serif; text-align:center; padding:8px;">
+              <strong style="color:var(--danger-red); font-size:13px;">ERROR ${res.status}</strong><br>
+              <span style="color:#888; font-size:10px;">${errData.detail || 'Service unavailable'}</span>
+            </div>
+          `);
+          return;
+        }
+
+        const d = await res.json();
+        const isFlood = d.flood === 1;
+        const accent = isFlood ? '#ff3b3b' : '#00e676';
+        const glow = isFlood ? 'rgba(255,59,59,0.3)' : 'rgba(0,230,118,0.2)';
+        const icon = isFlood ? '🚨' : '✅';
+        const label = isFlood ? 'CRITICAL: FLOOD DETECTED' : 'SAFE: NO FLOOD';
+        const ndwiStr = d.ndwi !== null ? d.ndwi.toFixed(4) : 'N/A';
+        const sarStr = d.sar_vv !== null ? d.sar_vv.toFixed(2) + ' dB' : 'N/A';
+
+        popup.setContent(`
+          <div style="font-family:'Inter',sans-serif; padding:10px; min-width:220px;">
+            <div style="text-align:center; margin-bottom:10px;">
+              <span style="font-size:22px;">${icon}</span><br>
+              <strong style="color:${accent}; font-size:13px; letter-spacing:0.5px; text-shadow:0 0 12px ${glow};">${label}</strong>
+            </div>
+            <div style="background:rgba(255,255,255,0.04); border-radius:6px; padding:8px 10px; border-left:3px solid ${accent};">
+              <table style="width:100%; font-size:11px; color:#ccc; border-collapse:collapse;">
+                <tr>
+                  <td style="padding:3px 0; color:#888;">Coordinates</td>
+                  <td style="text-align:right; font-family:monospace; font-size:10px;">${d.lat.toFixed(5)}, ${d.lon.toFixed(5)}</td>
+                </tr>
+                <tr>
+                  <td style="padding:3px 0; color:#888;">NDWI</td>
+                  <td style="text-align:right; font-family:monospace; color:${d.ndwi !== null && d.ndwi > 0.3 ? '#00b0ff' : '#aaa'};">${ndwiStr}</td>
+                </tr>
+                <tr>
+                  <td style="padding:3px 0; color:#888;">SAR VV</td>
+                  <td style="text-align:right; font-family:monospace; color:${d.sar_vv !== null && d.sar_vv < -15 ? '#ff6e40' : '#aaa'};">${sarStr}</td>
+                </tr>
+                <tr>
+                  <td style="padding:3px 0; color:#888;">Method</td>
+                  <td style="text-align:right; font-size:9px; color:#666;">${d.method.split(' ')[0]}</td>
+                </tr>
+              </table>
+            </div>
+            <div style="text-align:center; margin-top:8px; font-size:9px; color:#555; font-family:monospace;">
+              CRS: ${d.crs} | ${new Date(d.timestamp).toLocaleTimeString('en-GB')} UTC
+            </div>
+          </div>
+        `);
+
+      } catch (err) {
+        popup.setContent(`
+          <div style="font-family:'Inter',sans-serif; text-align:center; padding:8px;">
+            <strong style="color:var(--danger-red); font-size:13px;">CONNECTION FAILED</strong><br>
+            <span style="color:#888; font-size:10px;">${err.message}</span>
+          </div>
+        `);
+      }
+    });
     </script>
 </body>
 
