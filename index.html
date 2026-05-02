@@ -9,149 +9,126 @@
     <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <style>
         :root {
+            --bg-base: #121212;
+            --panel-bg: rgba(10, 10, 10, 0.85);
+            --panel-border: rgba(222, 255, 154, 0.2);
+            --text-main: #ffffff;
+            --text-muted: #aaaaaa;
             --primary-neon: #deff9a;
-            --bg-dark: #121212;
+            --primary-neon-dim: rgba(222, 255, 154, 0.1);
             --danger-red: #ff3b3b;
+            --danger-glow: rgba(255, 59, 59, 0.3);
+            --info-blue: #00d2ff;
+            --card-bg: rgba(255, 255, 255, 0.05);
+            --map-bg: #111111;
+            --popup-bg: var(--bg-base);
+        }
+
+        [data-theme="light"] {
+            --bg-base: #f8f9fa;
+            --panel-bg: rgba(255, 255, 255, 0.95);
+            --panel-border: rgba(0, 0, 0, 0.1);
+            --text-main: #212529;
+            --text-muted: #495057;
+            --primary-neon: #2b8a3e;
+            --primary-neon-dim: rgba(43, 138, 62, 0.1);
+            --danger-red: #e03131;
+            --danger-glow: rgba(224, 49, 49, 0.3);
+            --info-blue: #1c7ed6;
+            --card-bg: rgba(0, 0, 0, 0.03);
+            --map-bg: #e9ecef;
+            --popup-bg: #ffffff;
         }
 
         body {
             margin: 0;
             padding: 0;
-            background: var(--bg-dark);
-            font-family: 'Inter', sans-serif;
+            background: var(--bg-base);
+            font-family: 'Inter', -apple-system, sans-serif;
             overflow: hidden;
+            color: var(--text-main);
+            transition: background-color 0.3s, color 0.3s;
         }
 
         #map {
             height: 100vh;
             width: 100vw;
-            background: #111;
+            background: var(--map-bg);
+            z-index: 1;
+            position: absolute;
+            top: 0;
+            left: 0;
         }
 
-        .right-panel {
+        /* Panel Layout */
+        .panel-container {
             position: absolute;
-            top: 30px;
-            right: 30px;
             z-index: 1000;
-            background: rgba(10, 10, 10, 0.85);
-            color: white;
-            padding: 20px;
-            border-radius: 12px;
-            border: 1px solid rgba(222, 255, 154, 0.2);
-            backdrop-filter: blur(15px);
-            width: 350px;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6);
-            max-height: calc(100vh - 60px);
-            overflow-y: auto;
-        }
-
-        .section-title {
-            font-size: 14px;
-            color: var(--primary-neon);
-            margin-bottom: 10px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            border-bottom: 1px solid rgba(222, 255, 154, 0.2);
-            padding-bottom: 5px;
-        }
-
-        .log-window {
-            background: #000;
-            padding: 10px;
-            border-radius: 6px;
-            font-family: monospace;
-            font-size: 10px;
-            color: #0f0;
-            margin-top: 10px;
-            border: 1px solid #333;
-            height: 80px;
-            overflow-y: auto;
-        }
-
-        .log-entry {
-            margin-bottom: 4px;
-        }
-
-        /* Toggle Switch */
-        .switch {
-            position: relative;
-            display: inline-block;
-            width: 34px;
-            height: 20px;
-        }
-
-        .switch input {
-            opacity: 0;
-            width: 0;
-            height: 0;
-        }
-
-        .slider {
-            position: absolute;
-            cursor: pointer;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background-color: #333;
-            transition: .4s;
-            border-radius: 20px;
-        }
-
-        .slider:before {
-            position: absolute;
-            content: "";
-            height: 14px;
-            width: 14px;
-            left: 3px;
-            bottom: 3px;
-            background-color: white;
-            transition: .4s;
-            border-radius: 50%;
-        }
-
-        input:checked+.slider {
-            background-color: var(--primary-neon);
-        }
-
-        input:checked+.slider:before {
-            transform: translateX(14px);
-            background-color: #000;
-        }
-
-        /* Scanline Radar Effect */
-        .scanlines {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%);
-            background-size: 100% 4px;
             pointer-events: none;
-            z-index: 999;
-            opacity: 0.3;
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            height: 100vh;
+            height: 100dvh;
+            padding: 20px;
+            box-sizing: border-box;
         }
 
-        .info-panel {
+        .panel {
+            pointer-events: auto;
+            background: var(--panel-bg);
+            border: 1px solid var(--panel-border);
+            border-radius: 16px;
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            max-height: 100%;
+            overflow-y: auto;
+            transition: all 0.3s ease;
+        }
+
+        .info-panel { width: 340px; }
+        .right-panel { width: 360px; }
+
+        .legend {
             position: absolute;
-            top: 30px;
+            bottom: 30px;
             left: 30px;
             z-index: 1000;
-            background: rgba(10, 10, 10, 0.8);
-            color: white;
-            padding: 25px;
-            border-radius: 16px;
-            border: 1px solid rgba(222, 255, 154, 0.2);
+            pointer-events: auto;
+            background: var(--panel-bg);
+            padding: 15px 20px;
+            border-radius: 12px;
+            border: 1px solid var(--panel-border);
             backdrop-filter: blur(15px);
-            width: 320px;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6);
+            -webkit-backdrop-filter: blur(15px);
+            font-size: 12px;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            color: var(--text-main);
+        }
+
+        /* Typography & Elements */
+        .section-title {
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--primary-neon);
+            text-transform: uppercase;
+            letter-spacing: 1.2px;
+            border-bottom: 1px solid var(--panel-border);
+            padding-bottom: 8px;
+            margin-bottom: 5px;
+            margin-top: 5px;
         }
 
         .panel-header {
             display: flex;
             justify-content: space-between;
-            align-items: center;
+            align-items: flex-start;
         }
 
         .live-indicator {
@@ -161,267 +138,297 @@
             color: var(--danger-red);
             font-weight: bold;
             letter-spacing: 1px;
+            background: var(--danger-glow);
+            padding: 4px 8px;
+            border-radius: 12px;
+            white-space: nowrap;
         }
 
         .dot-blink {
-            height: 8px;
-            width: 8px;
+            height: 6px;
+            width: 6px;
             background-color: var(--danger-red);
             border-radius: 50%;
             margin-right: 6px;
             animation: blink 1.2s infinite ease-in-out;
-            box-shadow: 0 0 8px var(--danger-red);
+            box-shadow: 0 0 6px var(--danger-red);
         }
 
         @keyframes blink {
-
-            0%,
-            100% {
-                opacity: 1;
-            }
-
-            50% {
-                opacity: 0.3;
-            }
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
         }
 
         .metric-card {
-            margin-top: 20px;
             padding: 15px;
-            background: rgba(222, 255, 154, 0.05);
-            border-radius: 8px;
+            background: var(--card-bg);
+            border-radius: 10px;
             border-left: 4px solid var(--primary-neon);
+            transition: transform 0.2s;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
         }
+        .metric-card:hover { transform: translateY(-2px); }
 
         .metric-value {
-            font-size: 32px;
+            font-size: 28px;
             font-weight: 800;
             color: var(--primary-neon);
             display: flex;
             align-items: center;
+            margin-top: 5px;
         }
 
         .metric-label {
             font-size: 10px;
+            font-weight: 700;
             text-transform: uppercase;
             letter-spacing: 1.5px;
-            color: #888;
+            color: var(--text-muted);
             display: block;
-            margin-bottom: 5px;
         }
+
+        .scanlines {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: linear-gradient(to bottom, rgba(255,255,255,0), rgba(255,255,255,0) 50%, rgba(0,0,0,0.1) 50%, rgba(0,0,0,0.1));
+            background-size: 100% 4px;
+            pointer-events: none;
+            z-index: 999;
+            opacity: 0.2;
+        }
+        [data-theme="light"] .scanlines { display: none; }
 
         .spinner {
-            border: 2px solid rgba(222, 255, 154, 0.1);
+            border: 2px solid var(--primary-neon-dim);
             border-top: 2px solid var(--primary-neon);
             border-radius: 50%;
-            width: 20px;
-            height: 20px;
+            width: 18px;
+            height: 18px;
             animation: spin 1s linear infinite;
-            margin-right: 15px;
-        }
-
-        @keyframes spin {
-            0% {
-                transform: rotate(0deg);
-            }
-
-            100% {
-                transform: rotate(360deg);
-            }
-        }
-
-        .stack-tags {
-            margin-top: 15px;
-            display: flex;
-            flex-wrap: wrap;
-            gap: 6px;
-        }
-
-        .tag {
-            font-size: 10px;
-            padding: 4px 8px;
-            border-radius: 4px;
-            font-family: monospace;
-            font-weight: bold;
-        }
-
-        .tag-rust {
-            background: rgba(255, 111, 60, 0.1);
-            color: #ff8c5a;
-            border: 1px solid rgba(255, 111, 60, 0.3);
-        }
-
-        .tag-py {
-            background: rgba(222, 255, 154, 0.1);
-            color: var(--primary-neon);
-            border: 1px solid rgba(222, 255, 154, 0.3);
-        }
-
-        .tag-aws {
-            background: rgba(255, 153, 0, 0.1);
-            color: #ff9900;
-            border: 1px solid rgba(255, 153, 0, 0.3);
-        }
-
-        .legend {
-            position: absolute;
-            bottom: 30px;
-            left: 30px;
-            right: auto;
-            z-index: 1000;
-            background: rgba(10, 10, 10, 0.85);
-            padding: 15px 20px;
-            border-radius: 12px;
-            color: white;
-            font-size: 12px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .legend-item {
-            display: flex;
-            align-items: center;
-            margin: 8px 0;
-        }
-
-        .legend-dot {
-            height: 12px;
-            width: 12px;
-            border-radius: 50%;
             margin-right: 12px;
         }
+        @keyframes spin { 100% { transform: rotate(360deg); } }
 
-        /* Animasi poligon banjir */
-        .pulse-polygon {
-            animation: pulse-fill 2s infinite alternate;
+        .btn-primary {
+            width: 100%;
+            padding: 12px;
+            background: var(--primary-neon);
+            color: #111;
+            border: none;
+            font-weight: 700;
+            font-size: 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 12px var(--primary-neon-dim);
+            margin-top: 15px;
+        }
+        [data-theme="light"] .btn-primary { color: #fff; }
+        .btn-primary:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 6px 16px rgba(222, 255, 154, 0.3);
+            filter: brightness(1.1);
         }
 
-        @keyframes pulse-fill {
-            from {
-                fill-opacity: 0.2;
-            }
-
-            to {
-                fill-opacity: 0.6;
-            }
+        .theme-toggle-btn {
+            background: var(--card-bg);
+            border: 1px solid var(--panel-border);
+            color: var(--text-main);
+            border-radius: 50%;
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 14px;
+            margin-right: 10px;
         }
+        .theme-toggle-btn:hover { background: var(--primary-neon-dim); }
+
+        .log-window {
+            background: rgba(0, 0, 0, 0.4);
+            padding: 12px;
+            border-radius: 8px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 10px;
+            color: var(--info-blue);
+            border: 1px solid var(--panel-border);
+            height: 90px;
+            overflow-y: auto;
+        }
+        [data-theme="light"] .log-window {
+            background: #f1f3f5;
+            color: #0b7285;
+        }
+        .log-entry { margin-bottom: 6px; line-height: 1.4; }
+
+        /* Toggle Switch */
+        .switch { position: relative; display: inline-block; width: 36px; height: 20px; }
+        .switch input { opacity: 0; width: 0; height: 0; }
+        .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: var(--text-muted); transition: .4s; border-radius: 20px; }
+        .slider:before { position: absolute; content: ""; height: 14px; width: 14px; left: 3px; bottom: 3px; background-color: white; transition: .4s; border-radius: 50%; box-shadow: 0 2px 4px rgba(0,0,0,0.2); }
+        input:checked + .slider { background-color: var(--primary-neon); }
+        input:checked + .slider:before { transform: translateX(16px); background-color: #111; }
+
+        .stack-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+        .tag { font-size: 10px; padding: 4px 10px; border-radius: 20px; font-weight: 600; }
+        .tag-rust { background: rgba(255, 111, 60, 0.1); color: #ff6f3c; border: 1px solid rgba(255, 111, 60, 0.2); }
+        .tag-aws { background: rgba(255, 153, 0, 0.1); color: #ff9900; border: 1px solid rgba(255, 153, 0, 0.2); }
+        .tag-py { background: var(--primary-neon-dim); color: var(--primary-neon); border: 1px solid var(--panel-border); }
+
+        .legend-item { display: flex; align-items: center; margin: 8px 0; color: var(--text-main); font-size: 12px; }
+        .legend-dot { height: 10px; width: 10px; border-radius: 50%; margin-right: 10px; }
+        
+        .pulse-polygon { animation: pulse-fill 2s infinite alternate; }
+        @keyframes pulse-fill { from { fill-opacity: 0.2; } to { fill-opacity: 0.6; } }
 
         /* Custom Popup Styling */
-        .leaflet-popup-content-wrapper {
-            background: var(--bg-dark);
-            border: 1px solid rgba(222, 255, 154, 0.3);
-            border-radius: 8px;
-        }
+        .leaflet-popup-content-wrapper { background: var(--popup-bg) !important; color: var(--text-main) !important; border: 1px solid var(--panel-border); border-radius: 12px !important; box-shadow: 0 10px 25px rgba(0,0,0,0.2) !important; }
+        .leaflet-popup-tip { background: var(--popup-bg) !important; border: 1px solid var(--panel-border); }
+        .leaflet-container a.leaflet-popup-close-button { color: var(--text-muted) !important; }
 
-        .leaflet-popup-tip {
-            background: var(--bg-dark);
-            border: 1px solid rgba(222, 255, 154, 0.3);
-        }
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: var(--panel-border); border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--text-muted); }
 
-        .leaflet-container a.leaflet-popup-close-button {
-            color: var(--primary-neon);
+        /* Mobile Responsiveness */
+        @media (max-width: 850px) {
+            .panel-container {
+                flex-direction: column;
+                justify-content: flex-end;
+                padding: 10px;
+                gap: 10px;
+            }
+            .panel {
+                width: 100%;
+                max-width: none;
+                max-height: 40vh;
+                padding: 15px;
+                border-radius: 16px;
+                gap: 10px;
+            }
+            .info-panel { order: 2; }
+            .right-panel { order: 1; }
+            .legend {
+                bottom: auto;
+                top: 70px;
+                left: 10px;
+                padding: 10px;
+                font-size: 10px;
+            }
+            .metric-value { font-size: 24px; }
+            .leaflet-control-zoom { display: none; }
         }
     </style>
 </head>
 
 <body>
 
+    
     <div class="scanlines"></div>
 
-    <div class="info-panel">
-        <div class="panel-header">
-            <div>
-                <h2 style="margin:0; color:var(--primary-neon); font-size: 22px;">A.E.C.O AWS</h2>
-                <p style="margin:2px 0 0 0; font-size:11px; color: #888;">Autonomous Flood AI</p>
+    <div class="panel-container">
+        <!-- Left Panel -->
+        <div class="panel info-panel">
+            <div class="panel-header">
+                <div>
+                    <h2 style="margin:0; color:var(--primary-neon); font-size: 22px;">A.E.C.O AWS</h2>
+                    <p style="margin:2px 0 0 0; font-size:11px; color: var(--text-muted);">Autonomous Flood AI</p>
+                </div>
+                <div style="display: flex; align-items: center;">
+                    <button class="theme-toggle-btn" id="theme-btn" onclick="toggleTheme()" title="Toggle Dark/Light Mode">🌞</button>
+                    <div class="live-indicator">
+                        <div class="dot-blink"></div> LIVE AWS
+                    </div>
+                </div>
             </div>
-            <div class="live-indicator">
-                <div class="dot-blink"></div> LIVE AWS
+
+            <div class="metric-card">
+                <span class="metric-label">Estimated Impact Area</span>
+                <span class="metric-value" id="impact-value">
+                    <div class="spinner"></div> <span style="font-size: 14px; font-weight: normal;">Querying AWS...</span>
+                </span>
+                <p style="font-size: 10px; color: var(--text-muted); margin: 8px 0 0 0; line-height: 1.4;" id="methodology-note">
+                    Handshaking with t3.medium Instance...
+                </p>
+            </div>
+
+            <div class="metric-card" style="border-left-color: var(--info-blue);">
+                <span class="metric-label" style="color: var(--info-blue);">System Performance</span>
+                <button onclick="downloadPDF()" class="btn-primary">
+                    📥 DOWNLOAD ESG AUDIT REPORT (PDF)
+                </button>
+                <div style="font-size: 12px; margin-top: 10px; line-height: 1.5; color: var(--text-main);">
+                    <strong>F1-Score:</strong> 93.54% <br>
+                    <strong>Precision:</strong> 94.81% <br>
+                    <strong>Recall:</strong> 92.31%
+                </div>
+                <p style="font-size: 10px; color: var(--info-blue); margin: 8px 0 0 0; font-weight: bold;">
+                    Verified against Historical Ground-Truth (BPBD NTB 2024)
+                </p>
+                <div style="font-size: 11px; margin-top: 8px; color: var(--text-muted); text-align: center;">
+                    $$ NDWI = rac{Green - NIR}{Green + NIR} $$
+                </div>
+            </div>
+
+            <div style="font-size:11px; color:var(--text-muted); display: flex; justify-content: space-between;">
+                <span>System Clock (WITA):</span>
+                <span id="clock" style="color:var(--text-main); font-family: monospace; font-weight: bold;">--:--:--</span>
+            </div>
+
+            <div class="stack-tags">
+                <span class="tag tag-rust">⚙️ Rust Engine</span>
+                <span class="tag tag-aws">☁️ AWS EC2</span>
+                <span class="tag tag-py">🛰️ S1-NRT</span>
             </div>
         </div>
 
-        <div class="metric-card">
-            <span class="metric-label">Estimated Impact Area</span>
-            <span class="metric-value" id="impact-value">
-                <div class="spinner"></div> <span style="font-size: 14px; font-weight: normal;">Querying AWS...</span>
-            </span>
-            <p style="font-size: 10px; color: #777; margin: 8px 0 0 0; line-height: 1.4;" id="methodology-note">
-                Handshaking with t3.medium Instance...
-            </p>
-        </div>
-
-        <div class="metric-card" style="border-left-color: #00d2ff;">
-            <span class="metric-label" style="color: #00d2ff;">System Performance</span>
-            <button onclick="downloadPDF()"
-                style="margin-top: 15px; width: 100%; padding: 12px; background-color: #d4e040; color: #1a1a1a; border: none; font-weight: bold; border-radius: 4px; cursor: pointer;">
-                📥 DOWNLOAD ESG AUDIT REPORT (PDF)
-            </button>
-            <div style="font-size: 12px; margin-top: 5px; line-height: 1.5;">
-                <strong>F1-Score:</strong> 93.54% <br>
-                <strong>Precision:</strong> 94.81% <br>
-                <strong>Recall:</strong> 92.31%
+        <!-- Right Panel -->
+        <div class="panel right-panel">
+            <div class="section-title">Industrial Monitoring: Batu Hijau</div>
+            <div style="font-size: 11px; color: var(--text-muted); margin-bottom: 5px;">
+                <strong>AOI Coordinates:</strong> [116.7, -9.0, 116.9, -8.8]
             </div>
-            <p style="font-size: 10px; color: #00d2ff; margin: 8px 0 0 0; font-weight: bold;">
-                Verified against Historical Ground-Truth (BPBD NTB 2024)
-            </p>
-            <div style="font-size: 11px; margin-top: 8px; color: #aaa; text-align: center;">
-                $$ NDWI = \frac{Green - NIR}{Green + NIR} $$
+
+            <div style="display: flex; align-items: center; justify-content: space-between; background: var(--card-bg); padding: 10px; border-radius: 8px; margin-bottom: 5px;">
+                <span style="font-size: 12px; font-weight: bold; color: var(--text-main);">Tailing Dam Integrity</span>
+                <label class="switch">
+                    <input type="checkbox" id="tsf-toggle" onchange="toggleTSF(this)">
+                    <span class="slider"></span>
+                </label>
             </div>
-        </div>
+            <div id="tsf-status" style="font-size: 10px; color: var(--primary-neon); margin-bottom: 10px; display: none;">
+                Perimeter monitoring active via SAR Backscatter (-18dB Threshold)
+            </div>
 
-        <div style="margin-top:15px; font-size:11px; color:#666; display: flex; justify-content: space-between;">
-            <span>System Clock (WITA):</span>
-            <span id="clock" style="color:#aaa; font-family: monospace;">--:--:--</span>
-        </div>
+            <div class="section-title" style="margin-top: 5px;">Recent Analysis</div>
+            <img src="assets/visual_proof/comparison_plot.png" alt="Comparison Plot" style="width: 100%; border-radius: 8px; border: 1px solid var(--panel-border); display: block;">
 
-        <div class="stack-tags">
-            <span class="tag tag-rust">⚙️ Rust Engine</span>
-            <span class="tag tag-aws">☁️ AWS EC2</span>
-            <span class="tag tag-py">🛰️ S1-NRT</span>
+            <div class="section-title" style="margin-top: 10px;">Telegram Alert Log</div>
+            <div class="log-window">
+                <div class="log-entry">[12:45:00] Alert: Standing water detected near TSF Perimeter - Verification Pending</div>
+                <div class="log-entry">[12:42:15] Notice: Sentinel-2 NDWI Cross-Verification Initialized</div>
+                <div class="log-entry">[12:40:02] System: Cycle #482 Completed successfully</div>
+            </div>
         </div>
     </div>
 
     <div class="legend">
-        <div class="section-title" style="font-size: 11px; margin-bottom: 5px; color: white;">Multisensor Fusion Logic
-        </div>
+        <div class="section-title" style="margin-top:0; border:none; padding:0; font-size:11px;">Multisensor Fusion Logic</div>
         <div class="legend-item">
             <div class="legend-dot" style="background:var(--danger-red); box-shadow: 0 0 10px var(--danger-red);"></div>
             <span>Critical Flood Zone</span>
         </div>
-        <div class="legend-item"
-            style="font-size: 10px; color: #aaa; display: block; line-height: 1.6; margin-top: 10px;">
+        <div style="font-size: 10px; color: var(--text-muted); line-height: 1.6; margin-top: 5px;">
             • Sentinel-1: Radar detection (All-weather)<br>
             • Sentinel-2: NDWI verification (Optical)<br>
             • DEM: Terrain-aware noise reduction
-        </div>
-    </div>
-
-    <div class="right-panel">
-        <div class="section-title">Industrial Monitoring: Batu Hijau Operations</div>
-        <div style="font-size: 11px; color: #ccc; margin-bottom: 15px;">
-            <strong>AOI Coordinates:</strong> [116.7, -9.0, 116.9, -8.8]
-        </div>
-
-        <div
-            style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; background: rgba(255,255,255,0.05); padding: 10px; border-radius: 6px;">
-            <span style="font-size: 12px; font-weight: bold;">Tailing Dam Integrity</span>
-            <label class="switch">
-                <input type="checkbox" id="tsf-toggle" onchange="toggleTSF(this)">
-                <span class="slider"></span>
-            </label>
-        </div>
-        <div id="tsf-status" style="font-size: 10px; color: #deff9a; margin-bottom: 20px; display: none;">
-            Perimeter monitoring active via SAR Backscatter (-18dB Threshold)
-        </div>
-
-        <div class="section-title">Recent Analysis</div>
-        <img src="assets/visual_proof/comparison_plot.png" alt="Comparison Plot"
-            style="width: 100%; border-radius: 6px; margin-bottom: 20px; border: 1px solid rgba(255,255,255,0.1);">
-
-        <div class="section-title">Telegram Alert Log</div>
-        <div class="log-window">
-            <div class="log-entry">[12:45:00] Alert: Standing water detected near TSF Perimeter - Verification Pending
-            </div>
-            <div class="log-entry">[12:42:15] Notice: Sentinel-2 NDWI Cross-Verification Initialized</div>
-            <div class="log-entry">[12:40:02] System: Cycle #482 Completed successfully</div>
         </div>
     </div>
 
@@ -724,6 +731,26 @@
         `);
             }
         });
+    
+        // --- Dark/Light Mode Theme Toggle ---
+        function toggleTheme() {
+            const htmlEl = document.documentElement;
+            const currentTheme = htmlEl.getAttribute('data-theme') || 'dark';
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            htmlEl.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+            
+            const btn = document.getElementById('theme-btn');
+            if(btn) btn.textContent = newTheme === 'dark' ? '🌞' : '🌙';
+        }
+
+        // Initialize theme on load
+        (function() {
+            const savedTheme = localStorage.getItem('theme') || 'dark';
+            document.documentElement.setAttribute('data-theme', savedTheme);
+            const btn = document.getElementById('theme-btn');
+            if(btn) btn.textContent = savedTheme === 'dark' ? '🌞' : '🌙';
+        })();
     </script>
 </body>
 
