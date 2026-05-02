@@ -1,6 +1,10 @@
 version: '3.8'
+
 services:
-  flood-ai:
+  # -----------------------------------------------------------------------
+  # 1. FastAPI Web Server (Uvicorn)
+  # -----------------------------------------------------------------------
+  web:
     build: .
     ports:
       - "8000:8000"
@@ -9,7 +13,54 @@ services:
     environment:
       - PYTHONPATH=/app/src:/app/api
       - RTK_BIN=${RTK_BIN:-}
+      - CELERY_BROKER_URL=redis://redis:6379/0
+      - CELERY_RESULT_BACKEND=redis://redis:6379/1
     volumes:
       - ./outputs:/app/outputs
       - ./data:/app/data
-    restart: always # Automatic restart on failure for high availability
+      - report_cache:/tmp/reports
+    depends_on:
+      - redis
+    restart: always
+
+  # -----------------------------------------------------------------------
+  # 2. Redis Message Broker + Result Backend
+  # -----------------------------------------------------------------------
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    command: redis-server --save 60 1 --loglevel warning
+    restart: always
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 3s
+      retries: 3
+
+  # -----------------------------------------------------------------------
+  # 3. Celery Worker (Heavy Geoprocessing)
+  # -----------------------------------------------------------------------
+  worker:
+    build: .
+    command: celery -A api.tasks worker --loglevel=info --concurrency=2
+    env_file:
+      - .env
+    environment:
+      - PYTHONPATH=/app/src:/app/api
+      - CELERY_BROKER_URL=redis://redis:6379/0
+      - CELERY_RESULT_BACKEND=redis://redis:6379/1
+    volumes:
+      - ./outputs:/app/outputs
+      - ./data:/app/data
+      - report_cache:/tmp/reports
+    depends_on:
+      redis:
+        condition: service_healthy
+    restart: always
+
+volumes:
+  redis_data:
+  report_cache:

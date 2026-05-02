@@ -19,6 +19,8 @@ requests
 httpx
 pydantic
 python-multipart
+celery[redis]
+redis
 
 # --- Automation & Development ---
 maturin

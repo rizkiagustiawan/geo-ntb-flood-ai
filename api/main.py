@@ -20,7 +20,9 @@ import numpy as np
 import rasterio
 import rasterio.mask
 import rasterio.windows
+from rasterio.warp import reproject, Resampling
 import uvicorn
+from pyproj import Transformer, CRS
 from fastapi import FastAPI, HTTPException, Query, Request, Response
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import HTMLResponse, JSONResponse, FileResponse
@@ -38,6 +40,8 @@ except ImportError:
 import sys
 sys.path.append(str(Path(__file__).parent))
 from report_generator import compute_aoi_flood_stats, generate_esg_pdf
+from notifier import send_flood_alert
+from tasks import celery_app, task_compute_aoi_stats, task_generate_report
 
 # --- Logging ---
 logging.basicConfig(
@@ -52,9 +56,12 @@ DATA_DIR = PROJECT_ROOT / "data"
 ASSETS_DIR = PROJECT_ROOT / "assets"
 FINAL_MAP = PREDICTIONS_DIR / "final_flood_map.tif"
 
-# Co-registered rasters (same CRS, shape, bounds)
+# Co-registered rasters (may differ in resolution)
+# S1: ~30m GRD    |   S2: ~10m MSI
+# Phase 2: S1 is resampled to S2's 10m grid at runtime via bilinear interpolation
 S1_RASTER = DATA_DIR / "processed" / "sentinel1_reproj.tif"  # Band1=VV, Band2=VH
 S2_RASTER = DATA_DIR / "processed" / "sentinel2_reproj.tif"  # Band1=Green, Band2=NIR
+DEM_PATH = DATA_DIR / "dem_sumbawa.tif"
 
 # Thresholds (matching flood_agent.py)
 NDWI_THRESH = 0.3
@@ -69,6 +76,7 @@ class FloodPrediction(BaseModel):
     lat: float = Field(..., description="Query latitude (WGS84)")
     lon: float = Field(..., description="Query longitude (WGS84)")
     flood: Literal[0, 1] = Field(..., description="0=safe, 1=flood")
+    status: str | None = Field(None, description="Status classification (e.g., 'permanent_water', 'flood_detected', 'safe')")
     ndwi: float | None = Field(None, description="NDWI value at point")
     sar_vv: float | None = Field(None, description="SAR VV backscatter (dB)")
     method: str = Field(..., description="Compute method used")
@@ -132,6 +140,14 @@ class AOIStatsResponse(BaseModel):
     raster_crs: str = Field(..., description="CRS of the source raster")
     geometry_type: str = Field(..., description="Input GeoJSON geometry type")
     timestamp: str = Field(..., description="ISO-8601 UTC")
+
+
+class TaskResponse(BaseModel):
+    """Immediate response when a task is dispatched to Celery."""
+
+    task_id: str = Field(..., description="Celery task ID for polling")
+    status: str = Field("PENDING", description="Initial task state")
+    poll_url: str = Field(..., description="URL to check task progress")
 
 
 # --- App ---
@@ -268,11 +284,37 @@ def predict_at(
         g, n = float(green_pixel[0, 0]), float(nir_pixel[0, 0])
         denom = g + n
         ndwi_val = (g - n) / denom if denom != 0.0 else None
+        
+        flood_val = int(mask[0, 0])
+        status_label = "flood_detected" if flood_val == 1 else "safe"
+        
+        # --- DEM Ocean Masking ---
+        if DEM_PATH.exists():
+            with rasterio.open(DEM_PATH) as dem_src:
+                dem_crs = CRS.from_user_input(dem_src.crs)
+                wgs84_crs = CRS.from_epsg(4326)
+                
+                query_lon, query_lat = lon, lat
+                if not dem_crs.equals(wgs84_crs):
+                    transformer = Transformer.from_crs(wgs84_crs, dem_crs, always_xy=True)
+                    query_lon, query_lat = transformer.transform(lon, lat)
+                
+                try:
+                    d_row, d_col = dem_src.index(query_lon, query_lat)
+                    d_win = rasterio.windows.Window(d_col, d_row, 1, 1)
+                    dem_val = dem_src.read(1, window=d_win)[0, 0]
+                    if dem_val <= 0 and flood_val == 1:
+                        flood_val = 0
+                        status_label = "permanent_water"
+                except Exception as e:
+                    # Ignore out-of-bounds DEM queries gracefully
+                    pass
 
         return FloodPrediction(
             lat=lat,
             lon=lon,
-            flood=int(mask[0, 0]),
+            flood=flood_val,
+            status=status_label,
             ndwi=round(ndwi_val, 4) if ndwi_val is not None else None,
             sar_vv=round(float(vv_pixel[0, 0]), 2),
             method="fused_ndwi_sar (compute_ndwi_and_mask)",
@@ -333,22 +375,49 @@ def predict_area(feature: GeoJSONFeature):
     shapes = [geom]
 
     try:
-        # --- Crop S1 (VV) to polygon ---
-        with rasterio.open(S1_RASTER) as src_s1:
-            vv_masked, vv_transform = rasterio.mask.mask(
-                src_s1, shapes, indexes=[1],
-                crop=True, filled=True, nodata=np.nan,
-            )
-        # --- Crop S2 (Green, NIR) to polygon ---
+        # --- Crop S2 (Green, NIR) to polygon — 10m reference grid ---
         with rasterio.open(S2_RASTER) as src_s2:
             s2_masked, s2_transform = rasterio.mask.mask(
                 src_s2, shapes, indexes=[1, 2],
                 crop=True, filled=True, nodata=np.nan,
             )
+            s2_crs = src_s2.crs
+
+        # --- Crop S1 (VV) to polygon — may be 30m ---
+        with rasterio.open(S1_RASTER) as src_s1:
+            vv_masked, vv_transform = rasterio.mask.mask(
+                src_s1, shapes, indexes=[1],
+                crop=True, filled=True, nodata=np.nan,
+            )
+            s1_crs = src_s1.crs
     except ValueError:
         raise HTTPException(
             422, "Polygon does not overlap with raster bounds"
         )
+
+    # --- Phase 2: Resample S1 (30m) → S2 (10m) via bilinear interpolation ---
+    # S2 grid is the authoritative reference (higher resolution)
+    s2_height, s2_width = s2_masked.shape[1], s2_masked.shape[2]
+
+    if vv_masked.shape[1:] != (s2_height, s2_width):
+        logger.info(
+            "Resolution mismatch: S1=%s, S2=%s. Resampling S1 to 10m grid.",
+            vv_masked.shape[1:], (s2_height, s2_width),
+        )
+        vv_resampled = np.full(
+            (1, s2_height, s2_width), np.nan, dtype=np.float32
+        )
+        reproject(
+            source=vv_masked,
+            destination=vv_resampled,
+            src_transform=vv_transform,
+            src_crs=s1_crs,
+            dst_transform=s2_transform,
+            dst_crs=s2_crs,
+            resampling=Resampling.bilinear,
+        )
+        vv_masked = vv_resampled
+        vv_transform = s2_transform  # Now aligned to S2 grid
 
     # Extract 2D arrays — (bands, H, W) → (H, W)
     vv_2d = vv_masked[0].astype(np.float32)
@@ -370,8 +439,8 @@ def predict_area(feature: GeoJSONFeature):
 
     # --- Pixel area calculation (degrees → meters → hectares) ---
     # Pixel resolution in degrees
-    dx_deg = abs(vv_transform[0])
-    dy_deg = abs(vv_transform[4])
+    dx_deg = abs(s2_transform[0])   # Use S2 10m transform (authoritative)
+    dy_deg = abs(s2_transform[4])
 
     # Approximate center latitude from the cropped window
     center_lat = _geom_centroid_lat(geom)
@@ -422,6 +491,18 @@ def predict_aoi_stats(feature: GeoJSONFeature):
 
     try:
         stats = compute_aoi_flood_stats(feature.model_dump())
+        
+        # --- Telegram EWS Trigger ---
+        if stats.get('flooded_area_ha', 0) > 1.0:
+            c_lat = _geom_centroid_lat(geom)
+            c_lon = _geom_centroid_lon(geom)
+            send_flood_alert(
+                area_ha=stats['flooded_area_ha'],
+                lat=c_lat,
+                lon=c_lon,
+                timestamp=stats.get('timestamp', datetime.now(timezone.utc).isoformat())
+            )
+            
     except FileNotFoundError as exc:
         raise HTTPException(404, str(exc))
     except ValueError as exc:
@@ -458,6 +539,82 @@ def predict_report(feature: GeoJSONFeature):
     )
 
 
+# ---------------------------------------------------------------------------
+# /predict/aoi-stats/async — Non-blocking AOI Stats (Celery)
+# ---------------------------------------------------------------------------
+@app.post("/predict/aoi-stats/async", response_model=TaskResponse)
+def predict_aoi_stats_async(feature: GeoJSONFeature):
+    """Dispatch AOI flood stats to background Celery worker.
+
+    Returns a task_id immediately. Poll /predict/status/{task_id}
+    for results.
+    """
+    geom = feature.geometry
+    geom_type = geom.get("type", "")
+    if geom_type not in ("Polygon", "MultiPolygon"):
+        raise HTTPException(
+            422, f"Geometry must be Polygon or MultiPolygon, got '{geom_type}'"
+        )
+
+    task = task_compute_aoi_stats.delay(feature.model_dump())
+    return TaskResponse(
+        task_id=task.id,
+        status="PENDING",
+        poll_url=f"/predict/status/{task.id}",
+    )
+
+
+# ---------------------------------------------------------------------------
+# /predict/report/async — Non-blocking PDF Report (Celery)
+# ---------------------------------------------------------------------------
+@app.post("/predict/report/async", response_model=TaskResponse)
+def predict_report_async(feature: GeoJSONFeature):
+    """Dispatch PDF report generation to background Celery worker."""
+    geom = feature.geometry
+    geom_type = geom.get("type", "")
+    if geom_type not in ("Polygon", "MultiPolygon"):
+        raise HTTPException(
+            422, f"Geometry must be Polygon or MultiPolygon, got '{geom_type}'"
+        )
+
+    task = task_generate_report.delay(feature.model_dump())
+    return TaskResponse(
+        task_id=task.id,
+        status="PENDING",
+        poll_url=f"/predict/status/{task.id}",
+    )
+
+
+# ---------------------------------------------------------------------------
+# /predict/status/{task_id} — Poll Celery Task Progress
+# ---------------------------------------------------------------------------
+@app.get("/predict/status/{task_id}")
+def get_task_status(task_id: str):
+    """Check the status of a background geoprocessing task.
+
+    Returns:
+        - PENDING: Task is queued but not yet started.
+        - PROCESSING: Task is actively running (with step metadata).
+        - SUCCESS: Task completed — result included in response.
+        - FAILURE: Task crashed — error message included.
+    """
+    result = celery_app.AsyncResult(task_id)
+
+    response = {
+        "task_id": task_id,
+        "status": result.state,
+    }
+
+    if result.state == "PROCESSING":
+        response["meta"] = result.info
+    elif result.state == "SUCCESS":
+        response["result"] = result.result
+    elif result.state == "FAILURE":
+        response["error"] = str(result.result)
+
+    return response
+
+
 def _geom_centroid_lat(geom: dict) -> float:
     """Extract approximate centroid latitude from GeoJSON geometry."""
     coords = geom.get("coordinates", [])
@@ -470,6 +627,19 @@ def _geom_centroid_lat(geom: dict) -> float:
         return -8.5  # Sumbawa fallback
     lats = [c[1] for c in coords]
     return sum(lats) / len(lats)
+
+
+def _geom_centroid_lon(geom: dict) -> float:
+    """Extract approximate centroid longitude from GeoJSON geometry."""
+    coords = geom.get("coordinates", [])
+    if geom["type"] == "MultiPolygon":
+        coords = coords[0][0] if coords else []
+    elif geom["type"] == "Polygon":
+        coords = coords[0] if coords else []
+    if not coords:
+        return 116.8  # Sumbawa fallback
+    lons = [c[0] for c in coords]
+    return sum(lons) / len(lons)
 
 
 # ---------------------------------------------------------------------------
