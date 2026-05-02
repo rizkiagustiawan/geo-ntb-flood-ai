@@ -91,6 +91,53 @@
             transition: all 0.3s ease;
         }
 
+        .panel-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+            height: 100%;
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            pointer-events: none;
+        }
+        .left-wrapper.collapsed {
+            transform: translateX(calc(-100% + 24px));
+        }
+        .right-wrapper.collapsed {
+            transform: translateX(calc(100% - 24px));
+        }
+        .panel-toggle {
+            pointer-events: auto;
+            background: var(--panel-bg);
+            border: 1px solid var(--panel-border);
+            color: var(--text-main);
+            width: 24px;
+            height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            z-index: 1001;
+            transition: background 0.2s, color 0.2s;
+            font-size: 18px;
+            font-weight: bold;
+        }
+        .left-toggle {
+            border-radius: 0 8px 8px 0;
+            border-left: none;
+            box-shadow: 4px 0 12px rgba(0,0,0,0.1);
+        }
+        .right-toggle {
+            border-radius: 8px 0 0 8px;
+            border-right: none;
+            box-shadow: -4px 0 12px rgba(0,0,0,0.1);
+        }
+        .panel-toggle:hover {
+            background: var(--primary-neon-dim);
+            color: var(--primary-neon);
+        }
+
         .info-panel { width: 340px; }
         .right-panel { width: 360px; }
 
@@ -299,6 +346,8 @@
 
         /* Mobile Responsiveness */
         @media (max-width: 850px) {
+            .panel-wrapper { transform: none !important; width: 100%; flex-direction: column; height: auto; }
+            .panel-toggle { display: none; }
             .panel-container {
                 flex-direction: column;
                 justify-content: flex-end;
@@ -335,7 +384,8 @@
 
     <div class="panel-container">
         <!-- Left Panel -->
-        <div class="panel info-panel">
+        <div class="panel-wrapper left-wrapper" id="left-wrapper">
+            <div class="panel info-panel">
             <div class="panel-header">
                 <div>
                     <h2 style="margin:0; color:var(--primary-neon); font-size: 22px;">A.E.C.O AWS</h2>
@@ -373,7 +423,7 @@
                     Verified against Historical Ground-Truth (BPBD NTB 2024)
                 </p>
                 <div style="font-size: 11px; margin-top: 8px; color: var(--text-muted); text-align: center;">
-                    $$ NDWI = rac{Green - NIR}{Green + NIR} $$
+                    $$ NDWI = \\frac{Green - NIR}{Green + NIR} $$
                 </div>
             </div>
 
@@ -387,11 +437,15 @@
                 <span class="tag tag-aws">☁️ AWS EC2</span>
                 <span class="tag tag-py">🛰️ S1-NRT</span>
             </div>
+            </div>
+            <div class="panel-toggle left-toggle" onclick="toggleSidePanel('left')" title="Toggle Left Panel">‹</div>
         </div>
 
         <!-- Right Panel -->
-        <div class="panel right-panel">
-            <div class="section-title">Industrial Monitoring: Batu Hijau</div>
+        <div class="panel-wrapper right-wrapper" id="right-wrapper">
+            <div class="panel-toggle right-toggle" onclick="toggleSidePanel('right')" title="Toggle Right Panel">›</div>
+            <div class="panel right-panel">
+                <div class="section-title">Industrial Monitoring: Batu Hijau</div>
             <div style="font-size: 11px; color: var(--text-muted); margin-bottom: 5px;">
                 <strong>AOI Coordinates:</strong> [116.7, -9.0, 116.9, -8.8]
             </div>
@@ -416,19 +470,27 @@
                 <div class="log-entry">[12:42:15] Notice: Sentinel-2 NDWI Cross-Verification Initialized</div>
                 <div class="log-entry">[12:40:02] System: Cycle #482 Completed successfully</div>
             </div>
+            </div>
         </div>
     </div>
 
-    <div class="legend">
-        <div class="section-title" style="margin-top:0; border:none; padding:0; font-size:11px;">Multisensor Fusion Logic</div>
-        <div class="legend-item">
-            <div class="legend-dot" style="background:var(--danger-red); box-shadow: 0 0 10px var(--danger-red);"></div>
-            <span>Critical Flood Zone</span>
+    <div class="legend" id="fusion-legend">
+        <div class="legend-header" onclick="toggleLegend()" style="display: flex; justify-content: space-between; align-items: center; cursor: pointer; border-bottom: none; margin-bottom: 0;">
+            <div class="section-title" style="margin: 0; border: none; padding: 0; font-size: 11px; display: flex; align-items: center; gap: 6px;">
+                <span style="font-size: 14px;">ℹ️</span> Multisensor Fusion Logic
+            </div>
+            <span id="legend-chevron" style="transition: transform 0.3s; font-size: 12px; margin-left: 10px; color: var(--text-muted);">▼</span>
         </div>
-        <div style="font-size: 10px; color: var(--text-muted); line-height: 1.6; margin-top: 5px;">
-            • Sentinel-1: Radar detection (All-weather)<br>
-            • Sentinel-2: NDWI verification (Optical)<br>
-            • DEM: Terrain-aware noise reduction
+        <div id="legend-content" style="overflow: hidden; transition: max-height 0.3s ease, opacity 0.3s ease, margin-top 0.3s ease; max-height: 200px; opacity: 1; margin-top: 10px;">
+            <div class="legend-item">
+                <div class="legend-dot" style="background:var(--danger-red); box-shadow: 0 0 10px var(--danger-red);"></div>
+                <span>Critical Flood Zone</span>
+            </div>
+            <div style="font-size: 10px; color: var(--text-muted); line-height: 1.6; margin-top: 5px;">
+                • Sentinel-1: Radar detection (All-weather)<br>
+                • Sentinel-2: NDWI verification (Optical)<br>
+                • DEM: Terrain-aware noise reduction
+            </div>
         </div>
     </div>
 
@@ -469,6 +531,24 @@
             }
         }
         // Toggle TSF Integrity
+        
+        // Toggle Legend
+        function toggleLegend() {
+            const content = document.getElementById('legend-content');
+            const chevron = document.getElementById('legend-chevron');
+            if (content.style.maxHeight === '0px' || content.style.maxHeight === 0) {
+                content.style.maxHeight = '200px';
+                content.style.opacity = '1';
+                content.style.marginTop = '10px';
+                chevron.style.transform = 'rotate(0deg)';
+            } else {
+                content.style.maxHeight = '0px';
+                content.style.opacity = '0';
+                content.style.marginTop = '0px';
+                chevron.style.transform = 'rotate(-90deg)';
+            }
+        }
+
         function toggleTSF(checkbox) {
             const status = document.getElementById('tsf-status');
             if (checkbox.checked) {
@@ -678,45 +758,68 @@
                 }
 
                 const d = await res.json();
-                const isFlood = d.flood === 1;
-                const accent = isFlood ? '#ff3b3b' : '#00e676';
-                const glow = isFlood ? 'rgba(255,59,59,0.3)' : 'rgba(0,230,118,0.2)';
-                const icon = isFlood ? '🚨' : '✅';
-                const label = isFlood ? 'CRITICAL: FLOOD DETECTED' : 'SAFE: NO FLOOD';
+                let accent, glow, icon, label, extraMsg = '';
+
+                if (d.status === "permanent_water") {
+                    accent = 'var(--info-blue)';
+                    glow = 'rgba(0, 210, 255, 0.3)';
+                    icon = '🌊';
+                    label = 'OCEAN / PERMANENT WATER';
+                    extraMsg = '<div style="font-size: 9px; color: var(--text-muted); margin-top: 6px; text-align: center; line-height: 1.3;">Excluded from monitoring (Elevation &le; 0m)</div>';
+                } else if (d.status === "flood_detected" || d.flood === 1) {
+                    accent = 'var(--danger-red)';
+                    glow = 'var(--danger-glow)';
+                    icon = '🚨';
+                    label = 'CRITICAL: FLOOD DETECTED';
+                } else {
+                    accent = '#00e676';
+                    glow = 'rgba(0,230,118,0.2)';
+                    icon = '✅';
+                    label = 'SAFE: DRY LAND';
+                }
+
                 const ndwiStr = d.ndwi !== null ? d.ndwi.toFixed(4) : 'N/A';
                 const sarStr = d.sar_vv !== null ? d.sar_vv.toFixed(2) + ' dB' : 'N/A';
+                const statusBadge = d.status ? `<span style="background: var(--card-bg); border: 1px solid var(--panel-border); padding: 2px 6px; border-radius: 4px; font-size: 8px; text-transform: uppercase; color: var(--text-muted);">${d.status.replace('_', ' ')}</span>` : '';
 
                 popup.setContent(`
           <div style="font-family:'Inter',sans-serif; padding:10px; min-width:220px;">
             <div style="text-align:center; margin-bottom:10px;">
               <span style="font-size:22px;">${icon}</span><br>
               <strong style="color:${accent}; font-size:13px; letter-spacing:0.5px; text-shadow:0 0 12px ${glow};">${label}</strong>
+              ${extraMsg}
+              <div style="margin-top: 5px;">${statusBadge}</div>
             </div>
-            <div style="background:rgba(255,255,255,0.04); border-radius:6px; padding:8px 10px; border-left:3px solid ${accent};">
-              <table style="width:100%; font-size:11px; color:#ccc; border-collapse:collapse;">
+            <div style="background:var(--card-bg); border-radius:6px; padding:8px 10px; border-left:3px solid ${accent}; border: 1px solid var(--panel-border); border-left-width: 3px;">
+              <table style="width:100%; font-size:11px; color:var(--text-main); border-collapse:collapse;">
                 <tr>
-                  <td style="padding:3px 0; color:#888;">Coordinates</td>
+                  <td style="padding:3px 0; color:var(--text-muted);">Coordinates</td>
                   <td style="text-align:right; font-family:monospace; font-size:10px;">${d.lat.toFixed(5)}, ${d.lon.toFixed(5)}</td>
                 </tr>
                 <tr>
-                  <td style="padding:3px 0; color:#888;">NDWI</td>
-                  <td style="text-align:right; font-family:monospace; color:${d.ndwi !== null && d.ndwi > 0.3 ? '#00b0ff' : '#aaa'};">${ndwiStr}</td>
+                  <td style="padding:3px 0; color:var(--text-muted);">NDWI</td>
+                  <td style="text-align:right; font-family:monospace; color:${d.ndwi !== null && d.ndwi > 0.3 ? 'var(--info-blue)' : 'var(--text-muted)'};">${ndwiStr}</td>
                 </tr>
                 <tr>
-                  <td style="padding:3px 0; color:#888;">SAR VV</td>
-                  <td style="text-align:right; font-family:monospace; color:${d.sar_vv !== null && d.sar_vv < -15 ? '#ff6e40' : '#aaa'};">${sarStr}</td>
+                  <td style="padding:3px 0; color:var(--text-muted);">SAR VV</td>
+                  <td style="text-align:right; font-family:monospace; color:${d.sar_vv !== null && d.sar_vv < -15 ? '#ff6e40' : 'var(--text-muted)'};">${sarStr}</td>
                 </tr>
                 <tr>
-                  <td style="padding:3px 0; color:#888;">Method</td>
-                  <td style="text-align:right; font-size:9px; color:#666;">${d.method.split(' ')[0]}</td>
+                  <td style="padding:3px 0; color:var(--text-muted);">Method</td>
+                  <td style="text-align:right; font-size:9px; color:var(--text-muted);">${d.method.split(' ')[0]}</td>
                 </tr>
               </table>
             </div>
-            <div style="text-align:center; margin-top:8px; font-size:9px; color:#555; font-family:monospace;">
+            <div style="text-align:center; margin-top:8px; font-size:9px; color:var(--text-muted); font-family:monospace;">
               CRS: ${d.crs} | ${new Date(d.timestamp).toLocaleTimeString('en-GB')} UTC
             </div>
           </div>
         `);
+        
+                // Fix MathJax rendering issues on dynamic DOM updates
+                if (window.MathJax) {
+                    MathJax.typesetPromise().catch(err => console.error("MathJax error:", err));
+                }
 
             } catch (err) {
                 if (err.name === 'AbortError') {
@@ -732,7 +835,7 @@
             }
         });
     
-        // --- Dark/Light Mode Theme Toggle ---
+        // --- Theme and Sidebar Toggles ---
         function toggleTheme() {
             const htmlEl = document.documentElement;
             const currentTheme = htmlEl.getAttribute('data-theme') || 'dark';
@@ -742,6 +845,22 @@
             
             const btn = document.getElementById('theme-btn');
             if(btn) btn.textContent = newTheme === 'dark' ? '🌞' : '🌙';
+            
+            if (window.MathJax) {
+                MathJax.typesetPromise().catch(err => console.error(err));
+            }
+        }
+
+        function toggleSidePanel(side) {
+            const wrapper = document.getElementById(`${side}-wrapper`);
+            const toggle = wrapper.querySelector('.panel-toggle');
+            wrapper.classList.toggle('collapsed');
+            
+            if (wrapper.classList.contains('collapsed')) {
+                toggle.innerHTML = side === 'left' ? '›' : '‹';
+            } else {
+                toggle.innerHTML = side === 'left' ? '‹' : '›';
+            }
         }
 
         // Initialize theme on load
