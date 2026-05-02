@@ -306,7 +306,7 @@ def predict_at(
                     if dem_val <= 0 and flood_val == 1:
                         flood_val = 0
                         status_label = "permanent_water"
-                except Exception as e:
+                except Exception:
                     # Ignore out-of-bounds DEM queries gracefully
                     pass
 

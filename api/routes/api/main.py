@@ -1,5 +1,6 @@
 from fastapi import FastAPI, HTTPException
-import rasterio, os, numpy as np
+import rasterio
+import os
 
 app = FastAPI()
 MAP_PATH = "outputs/maps/flood_map.tif"
@@ -21,7 +22,7 @@ def predict_at(lat: float, lon: float):
         try:
             val = src.read(1, window=((row, row + 1), (col, col + 1)))[0, 0]
             return {"lat": lat, "lon": lon, "flood": bool(val == 1)}
-        except:
+        except:  # noqa: E722
             return {"error": "Outside bounds"}
 
 

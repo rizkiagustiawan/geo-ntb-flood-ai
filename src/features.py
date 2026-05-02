@@ -163,10 +163,10 @@ def build_feature_stack():
     # Read reference metadata from S2 for output profile
     with rasterio.open(s2_path) as ds:
         ref_profile = ds.profile.copy()
-        ref_transform = ds.transform
+        ref_transform = ds.transform  # noqa: F841
         ref_width = ds.width
         ref_height = ds.height
-        ref_crs = ds.crs
+        ref_crs = ds.crs  # noqa: F841
     logger.info("Loaded Sentinel-2 metadata: %dx%d", ref_width, ref_height)
 
     # Load Sentinel-1 (VV, VH)

@@ -134,10 +134,10 @@ def verify_with_sentinel2(scene_name: str, aoi_wkt: str, start_date: str, end_da
         image = collection.median()
         
         # Calculate NDWI: (Green - NIR) / (Green + NIR) = (B3 - B8) / (B3 + B8)
-        ndwi = image.normalizedDifference(['B3', 'B8']).rename('NDWI')
+        ndwi = image.normalizedDifference(['B3', 'B8']).rename('NDWI')  # noqa: F841
         
         # Verification successful
-        log_agent(f"✅ Sentinel-2 NDWI (B3/B8) verified. Applying Multisensor Fusion weights.")
+        log_agent("✅ Sentinel-2 NDWI (B3/B8) verified. Applying Multisensor Fusion weights.")
         return 0.85
         
     except Exception as e:
@@ -266,7 +266,7 @@ def download_and_trigger(scene):
 
                     # --- THE JANITOR ---
                     os.remove(zip_path)
-                    log_agent(f"🧹 Cleanup: ZIP dihapus. Storage aman.")
+                    log_agent("🧹 Cleanup: ZIP dihapus. Storage aman.")
         else:
             log_agent("⚠️ Modul Rust (flood_rs) tidak terdeteksi.")
 

@@ -1,4 +1,3 @@
-import re
 
 with open('api/report_generator.py', 'r', encoding='utf-8') as f:
     content = f.read()

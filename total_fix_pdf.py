@@ -1,4 +1,3 @@
-import re
 
 file_path = 'api/report_generator.py'
 with open(file_path, 'r') as f:

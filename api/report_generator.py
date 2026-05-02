@@ -29,7 +29,7 @@ import rasterio.features
 from rasterio.warp import reproject, Resampling
 from fpdf import FPDF
 from pyproj import CRS, Geod, Transformer
-from shapely.geometry import mapping, shape, MultiPolygon
+from shapely.geometry import mapping, shape
 from shapely.ops import transform as shapely_transform, unary_union
 
 import os
