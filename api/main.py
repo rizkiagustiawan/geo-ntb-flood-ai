@@ -37,7 +37,7 @@ except ImportError:
 
 import sys
 sys.path.append(str(Path(__file__).parent))
-from report_generator import generate_esg_pdf
+from report_generator import compute_aoi_flood_stats, generate_esg_pdf
 
 # --- Logging ---
 logging.basicConfig(
@@ -117,6 +117,20 @@ class AreaReport(BaseModel):
     method: str = Field(..., description="Compute method")
     crs: str = Field("EPSG:4326")
     geometry_type: str = Field(..., description="Input geometry type")
+    timestamp: str = Field(..., description="ISO-8601 UTC")
+
+
+class AOIStatsResponse(BaseModel):
+    """JSON response for AOI-clipped flood statistics."""
+
+    total_area_ha: float = Field(..., description="Total AOI area (ha)")
+    flooded_area_ha: float = Field(..., description="Flooded area within AOI (ha)")
+    flood_percentage: float = Field(..., description="% of AOI flooded")
+    total_pixels: int = Field(..., description="Total valid pixels in AOI")
+    flooded_pixels: int = Field(..., description="Flood-classified pixels")
+    pixel_resolution_m: float = Field(..., description="Pixel edge length (m)")
+    raster_crs: str = Field(..., description="CRS of the source raster")
+    geometry_type: str = Field(..., description="Input GeoJSON geometry type")
     timestamp: str = Field(..., description="ISO-8601 UTC")
 
 
@@ -389,14 +403,59 @@ def predict_area(feature: GeoJSONFeature):
 
 
 # ---------------------------------------------------------------------------
-# /predict/report — Generate ESG PDF Report
+# /predict/aoi-stats — AOI-Clipped Flood Statistics (JSON)
+# ---------------------------------------------------------------------------
+@app.post("/predict/aoi-stats", response_model=AOIStatsResponse)
+def predict_aoi_stats(feature: GeoJSONFeature):
+    """Compute flood statistics clipped to the AOI boundary.
+
+    Clips the final_flood_map.tif to the provided GeoJSON polygon,
+    dynamically validates CRS alignment, and returns pixel-accurate
+    flood statistics as structured JSON.
+    """
+    geom = feature.geometry
+    geom_type = geom.get("type", "")
+    if geom_type not in ("Polygon", "MultiPolygon"):
+        raise HTTPException(
+            422, f"Geometry must be Polygon or MultiPolygon, got '{geom_type}'"
+        )
+
+    try:
+        stats = compute_aoi_flood_stats(feature.model_dump())
+    except FileNotFoundError as exc:
+        raise HTTPException(404, str(exc))
+    except ValueError as exc:
+        raise HTTPException(422, str(exc))
+
+    return AOIStatsResponse(**stats)
+
+
+# ---------------------------------------------------------------------------
+# /predict/report — Generate ESG PDF Report (AOI-Clipped)
 # ---------------------------------------------------------------------------
 @app.post("/predict/report")
 def predict_report(feature: GeoJSONFeature):
-    report = predict_area(feature)
-    report_dict = report.dict() if hasattr(report, "dict") else report.model_dump()
-    pdf_path = generate_esg_pdf(report_dict)
-    return FileResponse(pdf_path, media_type="application/pdf", filename="esg_report.pdf")
+    """Generate a downloadable PDF report with AOI-clipped flood stats."""
+    geom = feature.geometry
+    geom_type = geom.get("type", "")
+    if geom_type not in ("Polygon", "MultiPolygon"):
+        raise HTTPException(
+            422, f"Geometry must be Polygon or MultiPolygon, got '{geom_type}'"
+        )
+
+    try:
+        stats = compute_aoi_flood_stats(feature.model_dump())
+    except FileNotFoundError as exc:
+        raise HTTPException(404, str(exc))
+    except ValueError as exc:
+        raise HTTPException(422, str(exc))
+
+    pdf_path = generate_esg_pdf(stats)
+    return FileResponse(
+        pdf_path,
+        media_type="application/pdf",
+        filename="GeoESG_AOI_Audit_Report.pdf",
+    )
 
 
 def _geom_centroid_lat(geom: dict) -> float:

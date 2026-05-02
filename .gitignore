@@ -1,12 +1,49 @@
+# =========================
+# DATA & OUTPUTS
+# =========================
 data/
 outputs/
-venv/
-__pycache__/
 *.tif
-.env
+*.pdf
+*.geojson
+*.gpkg
 
-# Rust build artifacts
+# =========================
+# ENVIRONMENT & CREDENTIALS
+# =========================
+.env
+venv/
+env/
+.venv/
+
+# =========================
+# PYTHON CACHE & BUILD
+# =========================
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+*.egg
+
+# =========================
+# RUST & NATIVE EXTENSIONS
+# =========================
 rust_engine/target/
 *.so
 *.pyd
-*.egg-info/
+*.dylib
+*.dll
+
+# =========================
+# LOGS & SYSTEM
+# =========================
+*.log
+.DS_Store
+Thumbs.db
+
+# =========================
+# IDE & WORKSPACE (Cursor/VSCode)
+# =========================
+.vscode/
+.cursor/
+# (Catatan: file .cursorrules sengaja tidak di-ignore agar aturan AI lu ikut tersimpan di GitHub)

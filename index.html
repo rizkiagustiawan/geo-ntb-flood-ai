@@ -430,23 +430,16 @@
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script>
         async function downloadPDF() {
-            // Kita tembak pakai kordinat Batu Hijau sebagai default
-            const payload = {
-                "type": "Feature",
-                "geometry": {
-                    "type": "Polygon",
-                    "coordinates": [[[116.7, -9.0], [116.9, -9.0], [116.9, -8.8], [116.7, -8.8], [116.7, -9.0]]]
-                },
-                "properties": { "name": "Sumbawa AOI" }
-            };
+            // Uses the shared AOI_PAYLOAD constant (defined in section 3)
+            // to ensure frontend metric and PDF report use the same AOI.
 
-            alert("Membangun Laporan PDF... Mohon tunggu sebentar.");
+            alert("Membangun Laporan PDF dari AOI... Mohon tunggu sebentar.");
 
             try {
                 const response = await fetch('/predict/report', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(payload)
+                    body: JSON.stringify(AOI_PAYLOAD)
                 });
 
                 if (response.ok) {
@@ -454,15 +447,17 @@
                     const url = window.URL.createObjectURL(blob);
                     const a = document.createElement('a');
                     a.href = url;
-                    a.download = "GeoESG_Audit_Report.pdf";
+                    a.download = "GeoESG_AOI_Audit_Report.pdf";
                     document.body.appendChild(a);
                     a.click();
                     a.remove();
+                    window.URL.revokeObjectURL(url);
                 } else {
-                    alert("Gagal generate PDF dari server!");
+                    const errBody = await response.json().catch(() => ({}));
+                    alert("Gagal generate PDF: " + (errBody.detail || response.status));
                 }
             } catch (err) {
-                console.error("Error:", err);
+                console.error("PDF Error:", err);
                 alert("API Offline atau ada masalah koneksi.");
             }
         }
@@ -539,37 +534,91 @@
             className: 'pulse-layer'
         }).addTo(map);
 
-        async function fetchSystemStats() {
+        // Canonical AOI payload — single source of truth for
+        // both the impact metric and the PDF report download.
+        const AOI_PAYLOAD = {
+            "type": "Feature",
+            "geometry": {
+                "type": "Polygon",
+                "coordinates": [[[116.7, -9.0], [116.9, -9.0], [116.9, -8.8], [116.7, -8.8], [116.7, -9.0]]]
+            },
+            "properties": { "name": "Sumbawa AOI" }
+        };
+
+        /**
+         * Fetch AOI-clipped flood statistics from /predict/aoi-stats
+         * and update the dashboard metric card with live data.
+         */
+        async function fetchAOIStats() {
+            const impactEl = document.getElementById('impact-value');
+            const noteEl = document.getElementById('methodology-note');
+
+            // Loading state
+            impactEl.innerHTML = '<div class="spinner"></div> <span style="font-size: 14px; font-weight: normal;">Calculating AOI...</span>';
+            noteEl.textContent = 'Clipping flood map to AOI boundary...';
+
+            try {
+                const response = await fetch('/predict/aoi-stats', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(AOI_PAYLOAD)
+                });
+
+                if (!response.ok) {
+                    const errBody = await response.json().catch(() => ({}));
+                    throw new Error(errBody.detail || 'HTTP ' + response.status);
+                }
+
+                const stats = await response.json();
+
+                // Format with Indonesian locale for thousands separator
+                const floodedHa = stats.flooded_area_ha.toLocaleString('id-ID', {
+                    minimumFractionDigits: 2, maximumFractionDigits: 2
+                });
+                const totalHa = stats.total_area_ha.toLocaleString('id-ID', {
+                    minimumFractionDigits: 2, maximumFractionDigits: 2
+                });
+
+                impactEl.innerHTML = floodedHa + ' <span style="font-size:16px; margin-left:5px;">Ha</span>';
+                noteEl.innerHTML =
+                    '<span style="color:var(--primary-neon)">AOI-Clipped:</span> ' +
+                    totalHa + ' Ha total | ' + stats.flood_percentage + '% flooded' +
+                    '<br><span style="color:#555">CRS: EPSG:' + stats.raster_crs + ' | Pixel: ' + stats.pixel_resolution_m + 'm</span>';
+
+            } catch (error) {
+                console.error('AOI Stats Error:', error);
+                impactEl.innerHTML = '<span style="color:#ff3b3b; font-size:18px;">AOI ERROR</span>';
+                noteEl.innerHTML = '<span style="color:#ff3b3b">' + error.message + '</span>';
+            }
+        }
+
+        /**
+         * Fetch raster bounds from /stats for map auto-zoom.
+         * This is separate from the AOI stats to keep concerns isolated.
+         */
+        async function fetchMapBounds() {
             try {
                 await new Promise(resolve => setTimeout(resolve, 1500));
 
                 const response = await fetch('/stats');
-                if (!response.ok) throw new Error('API Offline');
+                if (!response.ok) throw new Error('Stats API Offline');
 
                 const data = await response.json();
 
-                // Hitung Hektar
-                const pixelToHa = 0.01;
-                const ha_area = (data.flood_pixels * pixelToHa).toLocaleString('id-ID', { minimumFractionDigits: 2 });
-
-                // PAKE BACKTICK (`) DI SINI BIAR AMAN DARI ENTER NYASAR!
-                document.getElementById('impact-value').innerHTML = `${ha_area} <span style="font-size:16px; margin-left:5px;">Ha</span>`;
-
-                document.getElementById('methodology-note').innerHTML = `<span style="color:var(--primary-neon)">Connected:</span> ${data.map}`;
-
-                // Auto Zoom ke Bima/Area Banjir
+                // Auto Zoom ke area raster
                 map.flyToBounds([
                     [data.bounds.south, data.bounds.west],
                     [data.bounds.north, data.bounds.east]
                 ], { padding: [50, 50], animate: true, duration: 2 });
 
             } catch (error) {
-                console.error(error);
-                document.getElementById('impact-value').innerHTML = `<span style="color:#ff3b3b; font-size:18px;">API OFFLINE</span>`;
+                console.error('Map bounds fetch error:', error);
             }
         }
 
-        fetchSystemStats();
+        // Fire both in parallel on page load
+        fetchAOIStats();
+        fetchMapBounds();
 
         // ---------------------------------------------------------
         // 4. RTK POINT VALIDATION — Click-to-Predict

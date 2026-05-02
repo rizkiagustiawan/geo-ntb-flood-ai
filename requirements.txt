@@ -3,6 +3,7 @@ numpy
 rasterio
 geopandas
 shapely
+pyproj
 earthengine-api
 numexpr
 rio-tiler==7.0.0
