@@ -19,8 +19,8 @@ requests
 httpx
 pydantic
 python-multipart
-celery[redis]
-redis
+celery[redis]==5.3.6
+redis==5.0.1
 
 # --- Automation & Development ---
 maturin
@@ -30,3 +30,4 @@ python-dotenv
 # --- Visualization ---
 matplotlib
 fpdf2
+contextily

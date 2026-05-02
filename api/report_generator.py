@@ -32,6 +32,11 @@ from pyproj import CRS, Geod, Transformer
 from shapely.geometry import mapping, shape, MultiPolygon
 from shapely.ops import transform as shapely_transform, unary_union
 
+import os
+import matplotlib.pyplot as plt
+import geopandas as gpd
+import contextily as ctx
+
 logger = logging.getLogger("aeco-report")
 
 # ---------------------------------------------------------------------------
@@ -56,11 +61,7 @@ def _reproject_geojson_geometry(
     src_crs: CRS,
     dst_crs: CRS,
 ) -> dict[str, Any]:
-    """Reproject a GeoJSON geometry dict from src_crs to dst_crs in-memory.
-
-    Uses pyproj.Transformer for thread-safe, PROJ-pipeline-based
-    coordinate transformation. Returns a new GeoJSON geometry dict.
-    """
+    """Reproject a GeoJSON geometry dict from src_crs to dst_crs in-memory."""
     transformer = Transformer.from_crs(src_crs, dst_crs, always_xy=True)
     geom_shapely = shape(geom_dict)
     reprojected = shapely_transform(transformer.transform, geom_shapely)
@@ -68,11 +69,7 @@ def _reproject_geojson_geometry(
 
 
 def _resolve_geojson_crs(feature: dict[str, Any]) -> CRS:
-    """Detect CRS from a GeoJSON Feature.
-
-    Per RFC-7946, GeoJSON coordinates are WGS-84 (EPSG:4326) unless
-    the Feature explicitly carries a 'crs' property (legacy spec).
-    """
+    """Detect CRS from a GeoJSON Feature."""
     crs_prop = (feature.get("properties") or {}).get("crs")
     if crs_prop:
         try:
@@ -91,23 +88,9 @@ def _vectorize_flood_area(
     transform,
     raster_crs: CRS,
 ) -> dict[str, Any]:
-    """Vectorize flood pixels into polygons and compute geodesic area.
-
-    Pipeline:
-        1. Mask the flood band to keep only valid flood pixels (value==1).
-        2. rasterio.features.shapes → extract polygon geometries.
-        3. Merge all flood polygons via unary_union.
-        4. Douglas-Peucker simplification to smooth jagged pixel edges.
-        5. Reproject to WGS-84 if needed, then compute geodesic area
-           via pyproj.Geod (WGS-84 ellipsoid) for legal-grade accuracy.
-
-    Returns:
-        Dict with flooded_area_ha, flood_polygon_geojson, num_polygons.
-    """
-    # Build a binary mask: 1 where flood AND valid, 0 elsewhere
+    """Vectorize flood pixels into polygons and compute geodesic area."""
     binary = np.where((flood_band == 1) & valid_mask, 1, 0).astype(np.uint8)
 
-    # Extract polygon geometries from the binary raster
     flood_shapes = list(rasterio.features.shapes(
         binary, mask=(binary == 1), transform=transform
     ))
@@ -119,15 +102,12 @@ def _vectorize_flood_area(
             "num_polygons": 0,
         }
 
-    # Convert to Shapely geometries and merge into a single MultiPolygon
     polygons = [shape(geom) for geom, val in flood_shapes if val == 1]
     merged = unary_union(polygons)
 
-    # Douglas-Peucker simplification
     tolerance = DP_TOLERANCE_DEG if raster_crs.is_geographic else DP_TOLERANCE_M
     simplified = merged.simplify(tolerance, preserve_topology=True)
 
-    # Reproject to WGS-84 for geodesic area calculation if not already
     wgs84 = CRS.from_epsg(4326)
     if raster_crs.is_geographic and raster_crs.to_epsg() == 4326:
         geom_wgs84 = simplified
@@ -135,7 +115,6 @@ def _vectorize_flood_area(
         transformer = Transformer.from_crs(raster_crs, wgs84, always_xy=True)
         geom_wgs84 = shapely_transform(transformer.transform, simplified)
 
-    # Geodesic area via pyproj (WGS-84 ellipsoid) — returns m²
     geod = Geod(ellps="WGS84")
     if geom_wgs84.geom_type == "Polygon":
         area_m2 = abs(geod.geometry_area_perimeter(geom_wgs84)[0])
@@ -148,7 +127,6 @@ def _vectorize_flood_area(
 
     area_ha = round(area_m2 / 10000.0, 4)
 
-    # Count polygons for metadata
     if simplified.geom_type == "MultiPolygon":
         n_polys = len(list(simplified.geoms))
     else:
@@ -165,24 +143,6 @@ def _vectorize_flood_area(
 # AOI Clipping + Statistics
 # ---------------------------------------------------------------------------
 def compute_aoi_flood_stats(feature: dict[str, Any]) -> dict[str, Any]:
-    """Clip final_flood_map.tif to AOI and compute flood statistics.
-
-    v2.0: Uses vectorized polygon extraction + geodesic area instead of
-    raw pixel counting for the primary flooded_area_ha metric.
-    Pixel counts are retained as secondary QA metadata.
-
-    Args:
-        feature: A GeoJSON Feature dict with Polygon/MultiPolygon geometry.
-
-    Returns:
-        Dict with keys: total_area_ha, flooded_area_ha, flood_percentage,
-        total_pixels, flooded_pixels, pixel_resolution_m, raster_crs,
-        geometry_type, timestamp, num_flood_polygons, method.
-
-    Raises:
-        FileNotFoundError: If final_flood_map.tif does not exist.
-        ValueError: If polygon does not overlap raster bounds.
-    """
     if not FINAL_MAP.exists():
         raise FileNotFoundError(f"Flood map not found: {FINAL_MAP}")
 
@@ -192,32 +152,18 @@ def compute_aoi_flood_stats(feature: dict[str, Any]) -> dict[str, Any]:
     with rasterio.open(FINAL_MAP) as src:
         raster_crs = CRS.from_user_input(src.crs)
 
-        # --- Dynamic CRS alignment ---
         if not geojson_crs.equals(raster_crs):
-            logger.info(
-                "CRS mismatch detected: GeoJSON=%s, Raster=%s. "
-                "Reprojecting GeoJSON to raster CRS.",
-                geojson_crs.to_epsg() or geojson_crs.to_wkt(),
-                raster_crs.to_epsg() or raster_crs.to_wkt(),
-            )
+            logger.info("CRS mismatch. Reprojecting GeoJSON to raster CRS.")
             geom = _reproject_geojson_geometry(geom, geojson_crs, raster_crs)
 
-        # --- Spatial clipping via rasterio.mask ---
         clipped, clipped_transform = rasterio.mask.mask(
-            src,
-            [geom],
-            crop=True,
-            filled=True,
-            nodata=255,
+            src, [geom], crop=True, filled=True, nodata=255,
         )
-
         nodata_val = src.nodata if src.nodata is not None else 255
 
-    # --- Pixel-level flood statistics (QA metadata) ---
     band = clipped[0]
     valid_mask = band != nodata_val
 
-    # --- DEM Elevation Masking ---
     dem_mask = None
     if DEM_PATH.exists():
         try:
@@ -235,38 +181,30 @@ def compute_aoi_flood_stats(feature: dict[str, Any]) -> dict[str, Any]:
                     nodata=dem_src.nodata or -9999,
                 )
 
-                # Resample/reproject DEM to match flood map grid if needed
                 if (dem_clipped.shape[1:] != band.shape
                         or not dem_crs.equals(raster_crs)):
                     resampled_dem = np.zeros(
                         (1, band.shape[0], band.shape[1]), dtype=np.float32
                     )
                     reproject(
-                        source=dem_clipped,
-                        destination=resampled_dem,
-                        src_transform=dem_transform,
-                        src_crs=dem_crs,
-                        dst_transform=clipped_transform,
-                        dst_crs=raster_crs,
+                        source=dem_clipped, destination=resampled_dem,
+                        src_transform=dem_transform, src_crs=dem_crs,
+                        dst_transform=clipped_transform, dst_crs=raster_crs,
                         resampling=Resampling.bilinear,
                     )
                     dem_mask = resampled_dem[0] > 0
                 else:
                     dem_mask = dem_clipped[0] > 0
-
         except Exception as e:
             logger.warning(f"Failed to apply DEM mask: {e}")
             dem_mask = None
 
     if dem_mask is not None:
         valid_mask = valid_mask & dem_mask
-        logger.info("DEM mask applied successfully for AOI clipping.")
 
-    # --- Pixel counts (retained as QA) ---
     total_valid = int(np.sum(valid_mask))
     flooded_pixels = int(np.sum((band == 1) & valid_mask))
 
-    # --- Pixel area for total_area_ha (AOI extent) ---
     dx = abs(clipped_transform[0])
     dy = abs(clipped_transform[4])
 
@@ -283,10 +221,7 @@ def compute_aoi_flood_stats(feature: dict[str, Any]) -> dict[str, Any]:
     pixel_res_m = round((dx_m + dy_m) / 2.0, 2)
     total_area_ha = round(total_valid * pixel_area_ha, 4)
 
-    # --- v2.0: Vectorized flood area (primary metric) ---
-    vector_result = _vectorize_flood_area(
-        band, valid_mask, clipped_transform, raster_crs
-    )
+    vector_result = _vectorize_flood_area(band, valid_mask, clipped_transform, raster_crs)
     flooded_area_ha = vector_result["flooded_area_ha"]
 
     pct = round(100.0 * flooded_area_ha / max(total_area_ha, 0.0001), 2)
@@ -303,80 +238,75 @@ def compute_aoi_flood_stats(feature: dict[str, Any]) -> dict[str, Any]:
         "num_flood_polygons": vector_result["num_polygons"],
         "method": "vectorized_douglas_peucker_geodesic",
         "timestamp": datetime.now(timezone.utc).isoformat(),
+        # INI YANG TADI KETINGGALAN
+        "aoi_geometry": feature["geometry"],
+        "flood_polygon_geojson": vector_result["flood_polygon_geojson"]
     }
 
 
 def _geom_centroid_lat(geom: dict) -> float:
-    """Extract approximate centroid latitude from GeoJSON geometry."""
     coords = geom.get("coordinates", [])
     if geom["type"] == "MultiPolygon":
         coords = coords[0][0] if coords else []
     elif geom["type"] == "Polygon":
         coords = coords[0] if coords else []
     if not coords:
-        return -8.5  # Sumbawa fallback
+        return -8.5
     lats = [c[1] for c in coords]
     return sum(lats) / len(lats)
 
 
 # ---------------------------------------------------------------------------
-# PDF Generation (LAYOUT UNTOUCHED — per strict guardrail)
+# INI FUNGSI PETA YANG TADI KETINGGALAN
+# ---------------------------------------------------------------------------
+def _generate_map_plot(aoi_geom: dict, flood_geom: dict, out_path: str):
+    fig, ax = plt.subplots(figsize=(8, 6))
+
+    aoi_shape = shape(aoi_geom)
+    gdf_aoi = gpd.GeoDataFrame({'geometry': [aoi_shape]}, crs="EPSG:4326")
+    gdf_aoi_wm = gdf_aoi.to_crs(epsg=3857)
+    gdf_aoi_wm.plot(ax=ax, facecolor="none", edgecolor="#00FF00", linewidth=3, label="Area of Interest (AOI)")
+
+    if flood_geom and flood_geom.get('coordinates'):
+        flood_shape = shape(flood_geom)
+        gdf_flood = gpd.GeoDataFrame({'geometry': [flood_shape]}, crs="EPSG:4326")
+        gdf_flood_wm = gdf_flood.to_crs(epsg=3857)
+        gdf_flood_wm.plot(ax=ax, facecolor="#FF0000", alpha=0.6, edgecolor="none", label="Flooded Area")
+
+    try:
+        ctx.add_basemap(ax, source=ctx.providers.Esri.WorldImagery)
+    except Exception as e:
+        logger.warning(f"Basemap gagal dimuat: {e}")
+
+    ax.set_axis_off()
+    plt.tight_layout()
+    plt.savefig(out_path, dpi=200, bbox_inches='tight')
+    plt.close(fig)
+
+
+# ---------------------------------------------------------------------------
+# PDF Generation
 # ---------------------------------------------------------------------------
 def generate_esg_pdf(report_data: dict[str, Any]) -> str:
-    """Generate an audit-ready ESG PDF from AOI-clipped flood statistics.
-
-    Args:
-        report_data: Dict from compute_aoi_flood_stats() or compatible.
-
-    Returns:
-        Absolute path string to the generated PDF file.
-    """
     pdf = FPDF()
     pdf.add_page()
 
-    # --- Header ---
     pdf.set_font("helvetica", "B", 18)
-    pdf.cell(
-        0, 12, "GeoESG A.E.C.O Audit Report",
-        new_x="LMARGIN", new_y="NEXT", align="C",
-    )
+    pdf.cell(0, 12, "GeoESG A.E.C.O Audit Report", new_x="LMARGIN", new_y="NEXT", align="C")
     pdf.set_font("helvetica", "", 10)
-    pdf.cell(
-        0, 8,
-        f"Generated: {report_data.get('timestamp', datetime.now(timezone.utc).isoformat())}",
-        new_x="LMARGIN", new_y="NEXT", align="C",
-    )
+    pdf.cell(0, 8, f"Generated: {report_data.get('timestamp', datetime.now(timezone.utc).isoformat())}", new_x="LMARGIN", new_y="NEXT", align="C")
     pdf.ln(5)
 
-    # --- AOI Metadata ---
     pdf.set_font("helvetica", "B", 14)
     pdf.cell(0, 10, "Area of Interest (AOI)", new_x="LMARGIN", new_y="NEXT")
-
     pdf.set_font("helvetica", "", 11)
-    pdf.cell(
-        0, 8,
-        f"Geometry Type: {report_data.get('geometry_type', 'N/A')}",
-        new_x="LMARGIN", new_y="NEXT",
-    )
-    pdf.cell(
-        0, 8,
-        f"Raster CRS: EPSG:{report_data.get('raster_crs', 'N/A')}",
-        new_x="LMARGIN", new_y="NEXT",
-    )
-    pdf.cell(
-        0, 8,
-        f"Pixel Resolution: {report_data.get('pixel_resolution_m', 'N/A')} m",
-        new_x="LMARGIN", new_y="NEXT",
-    )
+    pdf.cell(0, 8, f"Geometry Type: {report_data.get('geometry_type', 'N/A')}", new_x="LMARGIN", new_y="NEXT")
+    pdf.cell(0, 8, f"Raster CRS: EPSG:{report_data.get('raster_crs', 'N/A')}", new_x="LMARGIN", new_y="NEXT")
+    pdf.cell(0, 8, f"Pixel Resolution: {report_data.get('pixel_resolution_m', 'N/A')} m", new_x="LMARGIN", new_y="NEXT")
     pdf.ln(5)
 
-    # --- Flood Statistics (AOI-Clipped) ---
     pdf.set_font("helvetica", "B", 14)
-    pdf.cell(
-        0, 10, "Flood Statistics (AOI-Clipped)",
-        new_x="LMARGIN", new_y="NEXT",
-    )
-
+    pdf.cell(0, 10, "Flood Statistics (AOI-Clipped)", new_x="LMARGIN", new_y="NEXT")
     pdf.set_font("helvetica", "", 12)
     stats_rows = [
         ("Total AOI Area", f"{report_data.get('total_area_ha', 0)} Ha"),
@@ -388,13 +318,33 @@ def generate_esg_pdf(report_data: dict[str, Any]) -> str:
     ]
     for label, value in stats_rows:
         pdf.cell(0, 9, f"{label}: {value}", new_x="LMARGIN", new_y="NEXT")
-
     pdf.ln(8)
 
-    # --- Methodology Note (UPDATED for v2.0) ---
+    # ---------------------------------------------------------------------------
+    # INI INJEKSI PDF YANG TADI KETINGGALAN
+    # ---------------------------------------------------------------------------
+    aoi_geom = report_data.get("aoi_geometry")
+    flood_geom = report_data.get("flood_polygon_geojson")
+
+    if aoi_geom:
+        pdf.set_font("helvetica", "B", 14)
+        pdf.cell(0, 10, "Spatial Overlay (AOI vs Flood Map)", new_x="LMARGIN", new_y="NEXT")
+        
+        map_path = f"/tmp/reports/map_temp_{uuid.uuid4().hex[:8]}.png"
+        try:
+            _generate_map_plot(aoi_geom, flood_geom, map_path)
+            pdf.image(map_path, x=20, w=170)
+            pdf.ln(5)
+            if os.path.exists(map_path):
+                os.remove(map_path)
+        except Exception as e:
+            logger.error(f"Gagal render peta di PDF: {e}")
+            pdf.set_font("helvetica", "I", 10)
+            pdf.cell(0, 10, "Map rendering unavailable.", new_x="LMARGIN", new_y="NEXT")
+            pdf.ln(5)
+
     pdf.set_font("helvetica", "B", 14)
     pdf.cell(0, 10, "Methodology", new_x="LMARGIN", new_y="NEXT")
-
     pdf.set_font("helvetica", "", 10)
     methodology_text = (
         "Flood detection via multisensor fusion: Sentinel-1 SAR backscatter "
@@ -409,7 +359,6 @@ def generate_esg_pdf(report_data: dict[str, Any]) -> str:
         "via pyproj."
     )
     pdf.multi_cell(0, 6, methodology_text)
-
     pdf.ln(5)
     pdf.set_font("helvetica", "I", 8)
     pdf.multi_cell(
@@ -419,7 +368,6 @@ def generate_esg_pdf(report_data: dict[str, Any]) -> str:
         "differ from raw pixel-count or vector-based area calculations."
     )
 
-    # --- Write PDF ---
     out_dir = Path("/tmp/reports")
     out_dir.mkdir(parents=True, exist_ok=True)
     out_path = out_dir / f"esg_report_{uuid.uuid4().hex[:8]}.pdf"
