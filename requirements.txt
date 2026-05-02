@@ -31,4 +31,3 @@ python-dotenv
 matplotlib
 fpdf2
 contextily
-contextily
