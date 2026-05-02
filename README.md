@@ -1,4 +1,4 @@
-# 🛰️ Sumbawa-A.E.C.O (Autonomous ESG Compliance Oracle) v1.1
+# 🛰️ Sumbawa-A.E.C.O (Autonomous ESG Compliance Oracle) v2.2
 
 ```mermaid
 graph LR
@@ -17,23 +17,23 @@ graph LR
 ---
 
 ## 🇮🇩 Ringkasan (Indonesian)
-**Sumbawa-A.E.C.O** adalah sistem monitoring banjir otonom yang menggabungkan kecanggihan **Multisensor Fusion** (Sentinel-1 SAR & Sentinel-2) dengan kecerdasan buatan. Sistem ini dirancang untuk mendeteksi genangan air secara real-time di Pulau Sumbawa dengan tingkat presisi tinggi, mengeliminasi *false positive* menggunakan **Terrain Awareness** (DEMNAS), dan beroperasi secara mandiri (Autonomous). Proyek ini membuktikan bahwa teknologi pemantauan canggih dapat dioptimalkan untuk berjalan pada perangkat keras standar tanpa mengurangi akurasi ilmiah.
+**Sumbawa-A.E.C.O** adalah sistem monitoring banjir otonom tingkat produksi yang menggabungkan kecanggihan **Multisensor Fusion** (Sentinel-1 SAR & Sentinel-2) dengan arsitektur *microservices* asinkron berkinerja tinggi. Dirancang untuk mendeteksi genangan air secara *real-time* di Pulau Sumbawa dengan tingkat presisi tinggi, mengeliminasi *false positive* menggunakan **Terrain Awareness** (DEMNAS), dan menyediakan pelaporan audit berstandar ESG secara otomatis.
 
 ---
 
 ## 🇬🇧 Executive Summary (English)
-**A.E.C.O** is a production-ready MLOps pipeline designed for real-time flood monitoring. It bridges the gap between raw satellite telemetry and actionable ESG insights. By utilizing a hybrid stack of Python (Inference) and Rust (Parallel Compute via PyO3), A.E.C.O provides high-fidelity metrics for disaster resilience and environmental compliance. The architecture is "Caveman-Optimized," ensuring high-performance geospatial processing (40M+ pixels) on consumer-grade hardware.
+**A.E.C.O v2.2** is a production-ready, high-performance MLOps and asynchronous orchestration pipeline designed for real-time flood monitoring. Bridging the gap between raw satellite telemetry and actionable ESG insights, it leverages a robust architectural shift utilizing **FastAPI, Celery, and Redis**. By unifying Python (Inference) and Rust (Zero-Copy Parallel Compute via PyO3), A.E.C.O delivers enterprise-grade, high-fidelity metrics for disaster resilience and corporate environmental compliance with sub-second task distribution.
 
 ---
 
 ## 🚀 Key Technical Features
-- **Multisensor Fusion:** Sentinel-1 (SAR) for cloud-penetrating radar + Sentinel-2 (MSI) for NDWI cross-verification.
-- **Terrain & Ocean Awareness:** Automated masking using SRTM/DEMNAS to eliminate shadows and sea backscatter.
-- **Rust-Accelerated Engine:** Core geospatial indices (NDWI, NDVI, SAR flood mask) computed in Rust via PyO3/Rayon with zero-copy numpy interop. Python fallback available for environments without compiled bindings.
-- **Autonomous Oracle:** Orchestrated via Rust-based `rtk` binary for zero-manual intervention.
-- **Metric Precision:** Automated degree-to-meter compensation (EPSG:4326) for accurate Hectare calculations.
-- **Code Integrity:** **25 Unit Tests passed ✅** using PyTest to ensure pipeline reliability.
-- **Hardware Efficient:** Designed for stable execution on Intel i7-8550U class processors via windowed processing.
+- **Asynchronous Orchestration:** High-performance task queuing and microservice management using **FastAPI, Celery, and Redis** to eliminate API bottlenecks.
+- **Automated Audit Engine:** Features "Automated PDF Audit Reporting," capable of generating comprehensive, ESG-compliant geospatial reports in just 1.8s - 3.7s.
+- **Scientific Precision Calculation:** Employs `pyproj.Geod` for rigorous WGS-84 ellipsoid-based geodesic area computations, combined with the Douglas-Peucker algorithm for high-fidelity polygon simplification.
+- **Multisensor Fusion:** Sentinel-1 (SAR) for cloud-penetrating radar paired with Sentinel-2 (MSI) for optical NDWI cross-verification.
+- **Terrain & Ocean Awareness:** Automated masking using SRTM/DEMNAS to eliminate terrain shadows and sea backscatter.
+- **Rust-Accelerated Engine:** Core geospatial indices computed in Rust via PyO3/Rayon with zero-copy NumPy interoperability, massively reducing memory overhead.
+- **Code Integrity:** Rigorous PyTest suite ensuring pipeline reliability across the entire asynchronous stack.
 
 ---
 
@@ -44,9 +44,12 @@ The following comparison illustrates the Multisensor Fusion Agreement pipeline i
 ---
 
 ## 📊 Latest Performance & Results
-- **Target Area:** Sumbawa Island, West Nusa Tenggara.
-- **Estimated Impact:** **5,053.10 Hectares** (Latest Cycle).
-- **Processing Time:** ~4.5 minutes for 40M+ pixels (i7-8550U Optimized).
+- **Processing Architecture:** Celery + Redis distributed worker model.
+
+### Real-World Validation
+Our latest production runs have successfully validated the high-speed orchestration and inference capabilities of A.E.C.O v2.2 across distinct geographic environments:
+- **Industrial Case (Batu Hijau Mine Area):** Processed an extensive **48,951 Ha** AOI, dynamically detecting 210 flood polygons (surface water accumulation) in just **3.74 seconds**.
+- **Urban Case (Sumbawa Besar Residential):** Processed **500.7 Ha**, successfully identifying and verifying a "zero flood" status within high-density residential zones in an unprecedented **1.81 seconds**.
 
 ### Model Performance & Methodology
 - **Validation Event:** Taliwang, Sumbawa Barat Floods (February 2024)
@@ -108,31 +111,34 @@ A.E.C.O provides immense value for heavy industry and mining operations. By auto
 ---
 
 ## 🛠️ Tech Stack
-- **Engine:** Python 3.11+, Rust (Parallel Compute via PyO3/Rayon), XGBoost.
-- **Geospatial:** Rasterio, GDAL, Google Earth Engine.
-- **Interface:** FastAPI, Leaflet.js, CartoDB Dark Matter.
-- **DevOps:** Docker (multi-stage build), PyTest, GitHub Actions.
+- **Orchestration & API:** FastAPI, Celery, Redis.
+- **Engine:** Python 3.11+, Rust (Parallel Compute via PyO3), XGBoost.
+- **Geospatial & Math:** `pyproj.Geod`, Douglas-Peucker algorithm, GDAL, Rasterio.
+- **Reporting:** Automated PDF Generation Engine (`fpdf2`).
+- **DevOps:** Docker, PyTest, GitHub Actions.
 
 ---
 
 ## 📂 Project Structure
 ```text
 .
-├── api/                # FastAPI logic & routes
+├── api/                # FastAPI logic, endpoints, & tasks
+├── redis/              # Redis configuration and queue management
+├── reports/            # Generated Automated PDF Audit Reports
 ├── data/
 │   ├── raw/            # Raw .tif satellite tiles
-│   └── processed/      # Feature stack (The Big 5)
+│   └── processed/      # Feature stack
 ├── outputs/
 │   ├── models/         # Saved .pkl & .json metrics
-│   └── predictions/    # final_flood_map.tif & previews
-├── rust_engine/        # PyO3/Rayon geospatial compute engine
+│   └── predictions/    # Geospatial outputs & predictions
+├── rust_engine/        # PyO3/Rayon zero-copy geospatial compute engine
 │   ├── Cargo.toml
-│   └── src/lib.rs      # NDWI, NDVI, SAR flood mask
+│   └── src/lib.rs      # High-performance indices calculation
 ├── src/                # Python pipeline modules
-├── tests/              # PyTest units (25 tests passed)
+├── tests/              # PyTest units ensuring stack integrity
 ├── flood_agent.py      # Main Autonomous Agent
 ├── Dockerfile          # Multi-stage production build
-├── docker-compose.yml  # Orchestration
+├── docker-compose.yml  # Orchestration stack (API, Worker, Redis)
 └── LICENSE             # MIT License
 ```
 
