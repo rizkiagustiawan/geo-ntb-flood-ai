@@ -68,37 +68,56 @@
             overflow-y: auto;
         }
 
-        .log-entry { margin-bottom: 4px; }
+        .log-entry {
+            margin-bottom: 4px;
+        }
 
         /* Toggle Switch */
         .switch {
-          position: relative;
-          display: inline-block;
-          width: 34px;
-          height: 20px;
+            position: relative;
+            display: inline-block;
+            width: 34px;
+            height: 20px;
         }
-        .switch input { opacity: 0; width: 0; height: 0; }
+
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
         .slider {
-          position: absolute;
-          cursor: pointer;
-          top: 0; left: 0; right: 0; bottom: 0;
-          background-color: #333;
-          transition: .4s;
-          border-radius: 20px;
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #333;
+            transition: .4s;
+            border-radius: 20px;
         }
+
         .slider:before {
-          position: absolute;
-          content: "";
-          height: 14px;
-          width: 14px;
-          left: 3px;
-          bottom: 3px;
-          background-color: white;
-          transition: .4s;
-          border-radius: 50%;
+            position: absolute;
+            content: "";
+            height: 14px;
+            width: 14px;
+            left: 3px;
+            bottom: 3px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
         }
-        input:checked + .slider { background-color: var(--primary-neon); }
-        input:checked + .slider:before { transform: translateX(14px); background-color: #000;}
+
+        input:checked+.slider {
+            background-color: var(--primary-neon);
+        }
+
+        input:checked+.slider:before {
+            transform: translateX(14px);
+            background-color: #000;
+        }
 
         /* Scanline Radar Effect */
         .scanlines {
@@ -331,6 +350,10 @@
 
         <div class="metric-card" style="border-left-color: #00d2ff;">
             <span class="metric-label" style="color: #00d2ff;">System Performance</span>
+            <button onclick="downloadPDF()"
+                style="margin-top: 15px; width: 100%; padding: 12px; background-color: #d4e040; color: #1a1a1a; border: none; font-weight: bold; border-radius: 4px; cursor: pointer;">
+                📥 DOWNLOAD ESG AUDIT REPORT (PDF)
+            </button>
             <div style="font-size: 12px; margin-top: 5px; line-height: 1.5;">
                 <strong>F1-Score:</strong> 93.54% <br>
                 <strong>Precision:</strong> 94.81% <br>
@@ -357,12 +380,14 @@
     </div>
 
     <div class="legend">
-        <div class="section-title" style="font-size: 11px; margin-bottom: 5px; color: white;">Multisensor Fusion Logic</div>
+        <div class="section-title" style="font-size: 11px; margin-bottom: 5px; color: white;">Multisensor Fusion Logic
+        </div>
         <div class="legend-item">
             <div class="legend-dot" style="background:var(--danger-red); box-shadow: 0 0 10px var(--danger-red);"></div>
             <span>Critical Flood Zone</span>
         </div>
-        <div class="legend-item" style="font-size: 10px; color: #aaa; display: block; line-height: 1.6; margin-top: 10px;">
+        <div class="legend-item"
+            style="font-size: 10px; color: #aaa; display: block; line-height: 1.6; margin-top: 10px;">
             • Sentinel-1: Radar detection (All-weather)<br>
             • Sentinel-2: NDWI verification (Optical)<br>
             • DEM: Terrain-aware noise reduction
@@ -374,12 +399,13 @@
         <div style="font-size: 11px; color: #ccc; margin-bottom: 15px;">
             <strong>AOI Coordinates:</strong> [116.7, -9.0, 116.9, -8.8]
         </div>
-        
-        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; background: rgba(255,255,255,0.05); padding: 10px; border-radius: 6px;">
+
+        <div
+            style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; background: rgba(255,255,255,0.05); padding: 10px; border-radius: 6px;">
             <span style="font-size: 12px; font-weight: bold;">Tailing Dam Integrity</span>
             <label class="switch">
-              <input type="checkbox" id="tsf-toggle" onchange="toggleTSF(this)">
-              <span class="slider"></span>
+                <input type="checkbox" id="tsf-toggle" onchange="toggleTSF(this)">
+                <span class="slider"></span>
             </label>
         </div>
         <div id="tsf-status" style="font-size: 10px; color: #deff9a; margin-bottom: 20px; display: none;">
@@ -387,11 +413,13 @@
         </div>
 
         <div class="section-title">Recent Analysis</div>
-        <img src="assets/visual_proof/comparison_plot.png" alt="Comparison Plot" style="width: 100%; border-radius: 6px; margin-bottom: 20px; border: 1px solid rgba(255,255,255,0.1);">
+        <img src="assets/visual_proof/comparison_plot.png" alt="Comparison Plot"
+            style="width: 100%; border-radius: 6px; margin-bottom: 20px; border: 1px solid rgba(255,255,255,0.1);">
 
         <div class="section-title">Telegram Alert Log</div>
         <div class="log-window">
-            <div class="log-entry">[12:45:00] Alert: Standing water detected near TSF Perimeter - Verification Pending</div>
+            <div class="log-entry">[12:45:00] Alert: Standing water detected near TSF Perimeter - Verification Pending
+            </div>
             <div class="log-entry">[12:42:15] Notice: Sentinel-2 NDWI Cross-Verification Initialized</div>
             <div class="log-entry">[12:40:02] System: Cycle #482 Completed successfully</div>
         </div>
@@ -401,6 +429,43 @@
 
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script>
+        async function downloadPDF() {
+            // Kita tembak pakai kordinat Batu Hijau sebagai default
+            const payload = {
+                "type": "Feature",
+                "geometry": {
+                    "type": "Polygon",
+                    "coordinates": [[[116.7, -9.0], [116.9, -9.0], [116.9, -8.8], [116.7, -8.8], [116.7, -9.0]]]
+                },
+                "properties": { "name": "Sumbawa AOI" }
+            };
+
+            alert("Membangun Laporan PDF... Mohon tunggu sebentar.");
+
+            try {
+                const response = await fetch('/predict/report', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                if (response.ok) {
+                    const blob = await response.blob();
+                    const url = window.URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = "GeoESG_Audit_Report.pdf";
+                    document.body.appendChild(a);
+                    a.click();
+                    a.remove();
+                } else {
+                    alert("Gagal generate PDF dari server!");
+                }
+            } catch (err) {
+                console.error("Error:", err);
+                alert("API Offline atau ada masalah koneksi.");
+            }
+        }
         // Toggle TSF Integrity
         function toggleTSF(checkbox) {
             const status = document.getElementById('tsf-status');
@@ -465,76 +530,76 @@
             })
             .catch(err => console.error("Gagal load base map GADM:", err));
 
-       // ---------------------------------------------------------
-    // 3. AWS RASTER TILE & STATS INTEGRATION
-    // ---------------------------------------------------------
+        // ---------------------------------------------------------
+        // 3. AWS RASTER TILE & STATS INTEGRATION
+        // ---------------------------------------------------------
 
-    const floodTiles = L.tileLayer('/tiles/{z}/{x}/{y}.png', {
-      maxZoom: 19,
-      className: 'pulse-layer'
-    }).addTo(map);
+        const floodTiles = L.tileLayer('/tiles/{z}/{x}/{y}.png', {
+            maxZoom: 19,
+            className: 'pulse-layer'
+        }).addTo(map);
 
-    async function fetchSystemStats() {
-      try {
-        await new Promise(resolve => setTimeout(resolve, 1500));
+        async function fetchSystemStats() {
+            try {
+                await new Promise(resolve => setTimeout(resolve, 1500));
 
-        const response = await fetch('/stats');
-        if (!response.ok) throw new Error('API Offline');
+                const response = await fetch('/stats');
+                if (!response.ok) throw new Error('API Offline');
 
-        const data = await response.json();
-        
-        // Hitung Hektar
-        const pixelToHa = 0.01;
-        const ha_area = (data.flood_pixels * pixelToHa).toLocaleString('id-ID', { minimumFractionDigits: 2 });
+                const data = await response.json();
 
-        // PAKE BACKTICK (`) DI SINI BIAR AMAN DARI ENTER NYASAR!
-        document.getElementById('impact-value').innerHTML = `${ha_area} <span style="font-size:16px; margin-left:5px;">Ha</span>`;
-        
-        document.getElementById('methodology-note').innerHTML = `<span style="color:var(--primary-neon)">Connected:</span> ${data.map}`;
+                // Hitung Hektar
+                const pixelToHa = 0.01;
+                const ha_area = (data.flood_pixels * pixelToHa).toLocaleString('id-ID', { minimumFractionDigits: 2 });
 
-        // Auto Zoom ke Bima/Area Banjir
-        map.flyToBounds([
-          [data.bounds.south, data.bounds.west],
-          [data.bounds.north, data.bounds.east]
-        ], { padding: [50, 50], animate: true, duration: 2 });
+                // PAKE BACKTICK (`) DI SINI BIAR AMAN DARI ENTER NYASAR!
+                document.getElementById('impact-value').innerHTML = `${ha_area} <span style="font-size:16px; margin-left:5px;">Ha</span>`;
 
-      } catch (error) {
-        console.error(error);
-        document.getElementById('impact-value').innerHTML = `<span style="color:#ff3b3b; font-size:18px;">API OFFLINE</span>`;
-      }
-    }
+                document.getElementById('methodology-note').innerHTML = `<span style="color:var(--primary-neon)">Connected:</span> ${data.map}`;
 
-    fetchSystemStats();
+                // Auto Zoom ke Bima/Area Banjir
+                map.flyToBounds([
+                    [data.bounds.south, data.bounds.west],
+                    [data.bounds.north, data.bounds.east]
+                ], { padding: [50, 50], animate: true, duration: 2 });
 
-    // ---------------------------------------------------------
-    // 4. RTK POINT VALIDATION — Click-to-Predict
-    // ---------------------------------------------------------
-    let currentFetchCtrl = null;
+            } catch (error) {
+                console.error(error);
+                document.getElementById('impact-value').innerHTML = `<span style="color:#ff3b3b; font-size:18px;">API OFFLINE</span>`;
+            }
+        }
 
-    map.on('click', async function (e) {
-      if (currentFetchCtrl) {
-        currentFetchCtrl.abort();
-      }
-      currentFetchCtrl = new AbortController();
-      const signal = currentFetchCtrl.signal;
+        fetchSystemStats();
 
-      const { lat, lng } = e.latlng;
-      const popup = L.popup({ maxWidth: 280, className: 'rtk-popup' })
-        .setLatLng(e.latlng)
-        .setContent(`
+        // ---------------------------------------------------------
+        // 4. RTK POINT VALIDATION — Click-to-Predict
+        // ---------------------------------------------------------
+        let currentFetchCtrl = null;
+
+        map.on('click', async function (e) {
+            if (currentFetchCtrl) {
+                currentFetchCtrl.abort();
+            }
+            currentFetchCtrl = new AbortController();
+            const signal = currentFetchCtrl.signal;
+
+            const { lat, lng } = e.latlng;
+            const popup = L.popup({ maxWidth: 280, className: 'rtk-popup' })
+                .setLatLng(e.latlng)
+                .setContent(`
           <div style="font-family:'Inter',sans-serif; text-align:center; padding:8px;">
             <div class="spinner" style="margin:0 auto 8px auto;"></div>
             <span style="color:#aaa; font-size:11px;">Querying Rust Engine...</span><br>
             <span style="color:#555; font-size:10px; font-family:monospace;">${lat.toFixed(5)}, ${lng.toFixed(5)}</span>
           </div>
         `)
-        .openOn(map);
+                .openOn(map);
 
-      try {
-        const res = await fetch(`/predict/at?lat=${lat}&lon=${lng}`, { signal });
+            try {
+                const res = await fetch(`/predict/at?lat=${lat}&lon=${lng}`, { signal });
 
-        if (res.status === 422) {
-          popup.setContent(`
+                if (res.status === 422) {
+                    popup.setContent(`
             <div style="font-family:'Inter',sans-serif; text-align:center; padding:8px;">
               <div style="font-size:18px; margin-bottom:6px;">🚫</div>
               <strong style="color:#ff9900; font-size:13px;">OUT OF BOUNDS</strong><br>
@@ -542,30 +607,30 @@
               <span style="color:#666; font-size:10px;">Point outside raster coverage</span>
             </div>
           `);
-          return;
-        }
+                    return;
+                }
 
-        if (!res.ok) {
-          const errData = await res.json().catch(() => ({}));
-          popup.setContent(`
+                if (!res.ok) {
+                    const errData = await res.json().catch(() => ({}));
+                    popup.setContent(`
             <div style="font-family:'Inter',sans-serif; text-align:center; padding:8px;">
               <strong style="color:var(--danger-red); font-size:13px;">ERROR ${res.status}</strong><br>
               <span style="color:#888; font-size:10px;">${errData.detail || 'Service unavailable'}</span>
             </div>
           `);
-          return;
-        }
+                    return;
+                }
 
-        const d = await res.json();
-        const isFlood = d.flood === 1;
-        const accent = isFlood ? '#ff3b3b' : '#00e676';
-        const glow = isFlood ? 'rgba(255,59,59,0.3)' : 'rgba(0,230,118,0.2)';
-        const icon = isFlood ? '🚨' : '✅';
-        const label = isFlood ? 'CRITICAL: FLOOD DETECTED' : 'SAFE: NO FLOOD';
-        const ndwiStr = d.ndwi !== null ? d.ndwi.toFixed(4) : 'N/A';
-        const sarStr = d.sar_vv !== null ? d.sar_vv.toFixed(2) + ' dB' : 'N/A';
+                const d = await res.json();
+                const isFlood = d.flood === 1;
+                const accent = isFlood ? '#ff3b3b' : '#00e676';
+                const glow = isFlood ? 'rgba(255,59,59,0.3)' : 'rgba(0,230,118,0.2)';
+                const icon = isFlood ? '🚨' : '✅';
+                const label = isFlood ? 'CRITICAL: FLOOD DETECTED' : 'SAFE: NO FLOOD';
+                const ndwiStr = d.ndwi !== null ? d.ndwi.toFixed(4) : 'N/A';
+                const sarStr = d.sar_vv !== null ? d.sar_vv.toFixed(2) + ' dB' : 'N/A';
 
-        popup.setContent(`
+                popup.setContent(`
           <div style="font-family:'Inter',sans-serif; padding:10px; min-width:220px;">
             <div style="text-align:center; margin-bottom:10px;">
               <span style="font-size:22px;">${icon}</span><br>
@@ -597,19 +662,19 @@
           </div>
         `);
 
-      } catch (err) {
-        if (err.name === 'AbortError') {
-          console.log('Fetch aborted for a new request.');
-          return;
-        }
-        popup.setContent(`
+            } catch (err) {
+                if (err.name === 'AbortError') {
+                    console.log('Fetch aborted for a new request.');
+                    return;
+                }
+                popup.setContent(`
           <div style="font-family:'Inter',sans-serif; text-align:center; padding:8px;">
             <strong style="color:var(--danger-red); font-size:13px;">CONNECTION FAILED</strong><br>
             <span style="color:#888; font-size:10px;">${err.message}</span>
           </div>
         `);
-      }
-    });
+            }
+        });
     </script>
 </body>
 
