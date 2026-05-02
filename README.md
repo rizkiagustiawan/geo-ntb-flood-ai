@@ -115,7 +115,7 @@ A.E.C.O provides immense value for heavy industry and mining operations. By auto
 - **Engine:** Python 3.11+, Rust (Parallel Compute via PyO3), XGBoost.
 - **Geospatial & Math:** `pyproj.Geod`, Douglas-Peucker algorithm, GDAL, Rasterio.
 - **Reporting:** Automated PDF Generation Engine (`fpdf2`).
-- **DevOps:** Docker, PyTest, GitHub Actions.
+- **DevOps:** Docker (multi-stage build), PyTest, GitHub Actions CI (lint → test → docker-build).
 
 ---
 
