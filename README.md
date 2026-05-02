@@ -17,18 +17,18 @@ graph LR
 ---
 
 ## 🇮🇩 Ringkasan (Indonesian)
-**Sumbawa-A.E.C.O** adalah sistem monitoring banjir otonom tingkat produksi yang menggabungkan kecanggihan **Multisensor Fusion** (Sentinel-1 SAR & Sentinel-2) dengan arsitektur *microservices* asinkron berkinerja tinggi. Dirancang untuk mendeteksi genangan air secara *real-time* di Pulau Sumbawa dengan tingkat presisi tinggi, mengeliminasi *false positive* menggunakan **Terrain Awareness** (DEMNAS), dan menyediakan pelaporan audit berstandar ESG secara otomatis.
+**Sumbawa-A.E.C.O** adalah prototipe arsitektur tingkat produksi untuk monitoring banjir otonom yang menggabungkan **Multisensor Fusion** (Sentinel-1 SAR & Sentinel-2) dengan arsitektur *microservices* asinkron (FastAPI, Celery, Redis). Dirancang untuk mendeteksi genangan air di Pulau Sumbawa, mengeliminasi *false positive* menggunakan **Terrain Awareness** (DEMNAS), dan menyediakan pelaporan audit ESG secara otomatis. Sistem saat ini beroperasi menggunakan *pseudo-labels* (label turunan algoritmik) dan membutuhkan validasi lapangan independen untuk klaim akurasi final.
 
 ---
 
 ## 🇬🇧 Executive Summary (English)
-**A.E.C.O v2.2** is a production-ready, high-performance MLOps and asynchronous orchestration pipeline designed for real-time flood monitoring. Bridging the gap between raw satellite telemetry and actionable ESG insights, it leverages a robust architectural shift utilizing **FastAPI, Celery, and Redis**. By unifying Python (Inference) and Rust (Zero-Copy Parallel Compute via PyO3), A.E.C.O delivers enterprise-grade, high-fidelity metrics for disaster resilience and corporate environmental compliance with sub-second task distribution.
+**A.E.C.O v2.2** is a production-grade architectural prototype for real-time flood monitoring. It bridges the gap between raw satellite telemetry and actionable ESG insights using an asynchronous microservice stack (**FastAPI, Celery, Redis**) unified with Python (Inference) and Rust (Zero-Copy Parallel Compute via PyO3). The system currently operates on pseudo-labeled training data derived from SAR/NDWI thresholding and requires independent ground-truth validation for final accuracy claims.
 
 ---
 
 ## 🚀 Key Technical Features
 - **Asynchronous Orchestration:** High-performance task queuing and microservice management using **FastAPI, Celery, and Redis** to eliminate API bottlenecks.
-- **Automated Audit Engine:** Features "Automated PDF Audit Reporting," capable of generating comprehensive, ESG-compliant geospatial reports in just 1.8s - 3.7s.
+- **Automated Audit Engine:** Automated PDF Audit Reporting via `fpdf2`, generating ESG-compliant geospatial reports with satellite imagery overlays and vectorized flood statistics.
 - **Scientific Precision Calculation:** Employs `pyproj.Geod` for rigorous WGS-84 ellipsoid-based geodesic area computations, combined with the Douglas-Peucker algorithm for high-fidelity polygon simplification.
 - **Multisensor Fusion:** Sentinel-1 (SAR) for cloud-penetrating radar paired with Sentinel-2 (MSI) for optical NDWI cross-verification.
 - **Terrain & Ocean Awareness:** Automated masking using SRTM/DEMNAS to eliminate terrain shadows and sea backscatter.
@@ -43,28 +43,55 @@ The following comparison illustrates the Multisensor Fusion Agreement pipeline i
 
 ---
 
-## 📊 Latest Performance & Results
+## 📊 Performance & Current Status
 - **Processing Architecture:** Celery + Redis distributed worker model.
+- **Data Processed:** 40.46M pixels across Sumbawa Island (Sentinel-1: 777 MB, Sentinel-2: 174 MB, DEM: 80 MB).
 
-### Real-World Validation
-Our latest production runs have successfully validated the high-speed orchestration and inference capabilities of A.E.C.O v2.2 across distinct geographic environments:
-- **Industrial Case (Batu Hijau Mine Area):** Processed an extensive **48,951 Ha** AOI, dynamically detecting 210 flood polygons (surface water accumulation) in just **3.74 seconds**.
-- **Urban Case (Sumbawa Besar Residential):** Processed **500.7 Ha**, successfully identifying and verifying a "zero flood" status within high-density residential zones in an unprecedented **1.81 seconds**.
+### Measured Benchmark Results (Intel i7-8550U)
+The following numbers were measured via `scripts/benchmark.py` on 2026-05-03:
 
-### Model Performance & Methodology
-- **Validation Event:** Taliwang, Sumbawa Barat Floods (February 2024)
-- **Precision:** 94.81%
-- **Recall:** 92.31%
-- **F1-Score:** 93.54%
-- **Overall Accuracy:** 98.93%
+| Operation | Area | Flood Polygons | Time |
+|-----------|------|----------------|------|
+| AOI Stats — Kab. Bima | 420,450 Ha | 1,649 | **1.04s** |
+| AOI Stats — Kab. Sumbawa Barat | 176,299 Ha | 563 | **0.25s** |
+| PDF Report Generation (with basemap) | — | — | **5.31s** |
+| Total Pipeline (Stats + PDF) | — | — | **6.36s** |
 
-> [!IMPORTANT]
-> **Interpreting the Metrics:** This rigorous evaluation relies on field reports from BPBD NTB for the February 2024 Taliwang floods acting as ground truth, resolving spatial autocorrelation inflation typically seen in pseudo-labeled data splits.
+### Model Training Metrics (Pseudo-Label Split)
+The XGBoost model was trained on pseudo-labels generated by thresholding NDWI > 0.1 ∩ SAR_mask = 1 ∩ Slope < 10°. These are **not independent ground-truth labels**.
+
+| Metric | XGBoost | Random Forest |
+|--------|---------|---------------|
+| Train/Test Accuracy | 99.85% | 100.00% |
+| F1 (flood class) | 99.86% | 100.00% |
+| Samples | 403,978 px | 403,978 px |
+
+> [!CAUTION]
+> **Pseudo-Label Circularity Warning:** The near-perfect scores above reflect the model re-learning its own thresholding rules, NOT real-world flood detection accuracy. The Random Forest achieving 100% is a textbook indicator of **data leakage** — the model memorises the labels it was derived from. These metrics are useful only for verifying that the ML pipeline executes correctly.
+
+### Full-Map Evaluation (Prediction vs Pseudo-Labels)
+When the trained model is applied back to the entire Sumbawa island raster (40.46M pixels):
+
+| Metric | Value |
+|--------|-------|
+| Precision | 99.89% |
+| Recall | 0.26% |
+| F1-Score | **0.52%** |
+| IoU | 0.26% |
+| TP / FN | 56,086 / 21,482,821 |
+
+> [!WARNING]
+> **What this means:** The model is extremely conservative — it almost never predicts "flood" when applied to the full raster. This is a known consequence of severe class imbalance (flood ≈ 0.13% of pixels) combined with pseudo-label training. **True accuracy can only be determined with independent ground-truth data** (e.g., BPBD flood extent polygons or manual digitization from high-resolution imagery).
+
+### What is Needed for Real Validation
+- [ ] Independent ground-truth flood extent polygons (e.g., from BPBD NTB field reports for the Feb 2023 Taliwang flood or Feb 2025 Taliwang flood)
+- [ ] Manual digitization of flood boundaries from Sentinel-2 true-color imagery on known flood dates
+- [ ] Benchmark timing of PDF report generation and AOI processing under controlled conditions
 
 **Mitigations applied and documented:**
-1. **Spatial Cross-Validation (SCV):** The evaluation pipeline supports tile-based spatial blocking to produce realistic generalisation estimates for reporting in peer-reviewed contexts.
-2. **Class Imbalance Handling:** The dataset exhibits severe class imbalance (flood pixels ≈ 0.5–2% of total). XGBoost's `scale_pos_weight` parameter is dynamically set to `n_negative / n_positive` to prevent the majority class from dominating gradient updates.
-3. **Validated against 2024 West Sumbawa Flood Event:** The pipeline's performance has been rigorously evaluated against historical Taliwang, West Sumbawa floods of February 2024, using field reports from BPBD NTB as ground truth. The Multisensor Fusion Agreement strategy ($NDWI > 0.1 \cap SAR_{mask} = 1 \cap Slope < 10^\circ$) minimized false positives, demonstrating high scientific integrity and real-world applicability for heavy industry and beyond.
+1. **Class Imbalance Handling:** XGBoost's `scale_pos_weight` parameter is dynamically set to `n_negative / n_positive` to prevent the majority class from dominating gradient updates.
+2. **Spatial Cross-Validation (SCV):** The evaluation pipeline supports tile-based spatial blocking to produce realistic generalisation estimates.
+3. **Multisensor Fusion Agreement:** The strategy ($NDWI > 0.1 \cap SAR_{mask} = 1 \cap Slope < 10^\circ$) is designed to minimise false positives from terrain shadows and ocean backscatter.
 
 ---
 
@@ -94,14 +121,16 @@ Values greater than zero typically indicate water features, helping to cross-ver
 | VH | Sentinel-1 | VH-polarisation backscatter (dB) |
 
 ### Validation Strategy
-- **Primary:** Stratified random split (80/20) with `scale_pos_weight` correction
-- **Recommended:** Spatial Cross-Validation with tile-based blocking (k=5 spatial folds)
-- **Future Work:** Independent validation against BNPB/BPBD ground-truth flood extent polygons
+- **Current:** Stratified random split (80/20) with `scale_pos_weight` correction on pseudo-labels.
+- **Recommended:** Spatial Cross-Validation with tile-based blocking (k=5 spatial folds).
+- **Required for Production Claims:** Independent validation against BNPB/BPBD ground-truth flood extent polygons or manually digitised flood boundaries.
 
-### Known Limitations
-1. Pseudo-labels introduce circularity; true generalisation requires external reference data.
-2. EPSG:4326 degree-to-metre conversion uses equatorial approximation (±1.5% at −8°S latitude).
-3. SAR thresholds are region-specific and may require recalibration for different geographies.
+### Known Limitations & Transparency
+1. **⚠️ Pseudo-Label Circularity:** Training labels are derived from the same NDWI/SAR thresholding rules the model learns, resulting in artificially inflated train/test metrics (99%+). True generalisation performance is unknown until independent ground-truth data is obtained.
+2. **⚠️ Full-Map Recall is Very Low (0.26%):** The model is extremely conservative when applied to the full raster, missing most flood pixels. This requires threshold tuning or retraining with balanced real-world labels.
+3. EPSG:4326 degree-to-metre conversion uses equatorial approximation (±1.5% at −8°S latitude).
+4. SAR thresholds are region-specific and may require recalibration for different geographies.
+5. PDF report generation speed has not yet been formally benchmarked under controlled conditions.
 
 ---
 

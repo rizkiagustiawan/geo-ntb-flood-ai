@@ -1,22 +1,34 @@
 {
-  "validation_id": "VAL-2024-02-13-TALIWANG",
+  "validation_id": "SIM-2024-TALIWANG-PSEUDO",
+  "status": "SIMULATED — NOT VALIDATED AGAINST REAL GROUND TRUTH",
   "aoi": "Taliwang, Sumbawa Barat",
   "timestamp_utc": "2024-02-13T08:00:00Z",
   "data_sources": {
     "prediction": "A.E.C.O (Sentinel-1 SAR & Sentinel-2 NDWI Fusion)",
-    "ground_truth": "BPBD NTB Field Report (Feb 2024)"
+    "ground_truth": "SIMULATED — Numbers were manually composed for demonstration purposes. No BPBD field report data was used."
   },
   "confusion_matrix": {
+    "_warning": "These values are FABRICATED for PoC demonstration. They do not reflect measured performance.",
     "true_positives": 3840,
     "false_positives": 210,
     "true_negatives": 45100,
     "false_negatives": 320
   },
   "metrics": {
+    "_warning": "Derived from fabricated confusion matrix above. NOT real.",
     "precision": 0.9481,
     "recall": 0.9231,
     "f1_score": 0.9354,
     "overall_accuracy": 0.9893
   },
-  "notes": "Validation against the major Taliwang flood event of February 2024. High precision maintained due to terrain-aware masking. False negatives observed in densely populated urban areas where radar backscatter from buildings occluded standing water."
+  "actual_measured_metrics": {
+    "_source": "outputs/models/evaluation_metrics.json — from real pipeline execution",
+    "precision": 0.998949,
+    "recall": 0.002604,
+    "f1_score": 0.005194,
+    "iou": 0.002604,
+    "total_pixels": 40463788,
+    "note": "Extremely low recall due to pseudo-label circularity and severe class imbalance. Model is over-conservative."
+  },
+  "notes": "TRANSPARENCY NOTE: This file originally claimed validation against 'BPBD NTB Field Report (Feb 2024)'. No major flood event occurred in Taliwang in February 2024 (historical floods: Feb 2023, Feb 2025). The confusion matrix values (round numbers like 45100) were manually composed, not measured. This file is retained for audit trail purposes with corrections applied. Real pipeline metrics are in outputs/models/evaluation_metrics.json and outputs/models/xgboost_metrics.json."
 }
