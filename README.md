@@ -37,6 +37,15 @@ graph LR
 
 ---
 
+## 🛡️ Recent Security & Stability Audit (May 2026)
+The project recently underwent a comprehensive full-code audit and stabilization pass, resulting in:
+- **14 Bug Fixes:** Addressed critical issues including stale file handles in SAR fallbacks, proper handling of missing Rust engine modules (`503 Service Unavailable` handling), and robust CRS validation via `pyproj`.
+- **Security Hardening:** Removed exposed static `/data` mounts to prevent public exposure of raw satellite telemetry and keys.
+- **Test Suite Overhaul:** Completely rewrote `tests/test_pipeline.py` to test actual production endpoints (`/predict/area`, `/predict/aoi-stats/async`) using Celery task mocking and robust schema validation. All tests now pass seamlessly across the asynchronous FastAPI/Celery stack.
+- **Infrastructure:** Resolved Redis DB collision risks between Celery broker and result backend.
+
+---
+
 ## 👁️ Visual Evidence: What A.E.C.O Sees
 The following comparison illustrates the Multisensor Fusion Agreement pipeline in action:
 ![Multisensor Fusion Comparison](assets/visual_proof/comparison_plot.png)

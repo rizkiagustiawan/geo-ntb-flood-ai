@@ -27,7 +27,6 @@ def send_flood_alert(area_ha: float, lat: float, lon: float, timestamp: str, pdf
     payload = {
         "chat_id": chat_id,
         "text": message,
-        "parse_mode": "HTML"
     }
 
     try:

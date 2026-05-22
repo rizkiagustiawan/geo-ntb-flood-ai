@@ -14,6 +14,7 @@ import rasterio
 from rasterio.enums import Resampling
 from rasterio.warp import calculate_default_transform, reproject
 from rasterio.windows import Window
+from pyproj import CRS
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(levelname)s] %(name)s: %(message)s")
 logger = logging.getLogger(__name__)
@@ -59,7 +60,9 @@ def check_crs(filepath):
 def reproject_raster(src_path, dst_path, target_crs=TARGET_CRS, target_res=None):
     """Reproject raster to target CRS and optionally resample resolution."""
     with rasterio.open(src_path) as src:
-        if str(src.crs) == target_crs and target_res is None:
+        src_crs_obj = CRS.from_user_input(src.crs) if src.crs else None
+        target_crs_obj = CRS.from_user_input(target_crs)
+        if src_crs_obj and src_crs_obj.equals(target_crs_obj) and target_res is None:
             logger.info("Already in %s, copying: %s", target_crs, src_path.name)
             import shutil
             dst_path.parent.mkdir(parents=True, exist_ok=True)

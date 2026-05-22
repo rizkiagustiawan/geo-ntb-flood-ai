@@ -210,7 +210,6 @@ def train_xgboost(X_train, X_test, y_train, y_test):
         colsample_bytree=0.8,
         random_state=RANDOM_STATE,
         eval_metric="logloss",
-        use_label_encoder=False,
     )
     model.fit(
         X_train, y_train,

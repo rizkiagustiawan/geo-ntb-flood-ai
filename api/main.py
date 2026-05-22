@@ -176,8 +176,7 @@ app.add_middleware(
 # Static mounts
 if ASSETS_DIR.exists():
     app.mount("/assets", StaticFiles(directory=str(ASSETS_DIR)), name="assets")
-if DATA_DIR.exists():
-    app.mount("/data", StaticFiles(directory=str(DATA_DIR)), name="data")
+# NOTE: /data mount removed — exposing raw satellite data is a security risk
 
 # Transparent 1x1 PNG for fallback
 TRANSPARENT_PNG = base64.b64decode(
@@ -328,10 +327,12 @@ def predict_at(
         mask = flood_rs.calculate_sar_flood_mask(
             vv_pixel, vh_pixel, -18.0, -24.0
         )
+        flood_val = int(mask[0, 0])
         return FloodPrediction(
             lat=lat,
             lon=lon,
-            flood=int(mask[0, 0]),
+            flood=flood_val,
+            status="flood_detected" if flood_val == 1 else "safe",
             ndwi=None,
             sar_vv=round(float(vv_pixel[0, 0]), 2),
             method="sar_only (calculate_sar_flood_mask)",

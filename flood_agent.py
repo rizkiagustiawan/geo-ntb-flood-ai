@@ -175,8 +175,13 @@ def extract_and_process(zip_path: Path, scene_name: str):
             vv_data = src_vv.read(1).astype(np.float32)
             vh_data = src_vh.read(1).astype(np.float32)
             profile = src_vv.profile
+            vv_crs = src_vv.crs
 
         # --- PRIMARY: Fused Multisensor (NDWI + SAR) via Rust ---
+        if not RUST_READY:
+            log_agent("⚠️ Modul Rust (flood_rs) tidak terdeteksi di extract_and_process.")
+            return None
+
         if S2_REPROJ.exists():
             log_agent("⚙️ Fused multisensor path: NDWI + SAR → compute_ndwi_and_mask")
             with rasterio.open(S2_REPROJ) as src_s2:
@@ -198,7 +203,7 @@ def extract_and_process(zip_path: Path, scene_name: str):
         flood_pixels = int(np.sum(mask > 0))
         dx = abs(profile["transform"][0])
         dy = abs(profile["transform"][4])
-        if src_vv.crs and src_vv.crs.is_geographic:
+        if vv_crs and vv_crs.is_geographic:
             dx *= 111320.0
             dy *= 111320.0
         area_ha = float(flood_pixels * dx * dy / 10000.0)

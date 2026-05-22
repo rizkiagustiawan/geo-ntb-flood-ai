@@ -67,11 +67,13 @@ def compute_ndwi_zero_copy(input_path: str, output_path: str):
     """
     try:
         import flood_rs
+        if not hasattr(flood_rs, 'compute_ndwi_io_rust'):
+            raise AttributeError("compute_ndwi_io_rust not available in flood_rs")
         logger.info("Zero-Copy Pipeline: delegating NDWI to Rust GDAL I/O")
         flood_rs.compute_ndwi_io_rust(input_path, output_path)
         logger.info("NDWI written via Rust zero-copy pipeline: %s", output_path)
-    except ImportError:
-        logger.warning("flood_rs not available — falling back to rasterio + NumPy for NDWI")
+    except (ImportError, AttributeError) as e:
+        logger.warning("flood_rs zero-copy not available (%s) — falling back to rasterio + NumPy for NDWI", e)
         with rasterio.open(input_path) as ds:
             green = ds.read(1, out_dtype=np.float32)
             nir = ds.read(2, out_dtype=np.float32)

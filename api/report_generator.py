@@ -169,9 +169,11 @@ def compute_aoi_flood_stats(feature: dict[str, Any]) -> dict[str, Any]:
         try:
             with rasterio.open(DEM_PATH) as dem_src:
                 dem_crs = CRS.from_user_input(dem_src.crs)
-                if not dem_crs.equals(geojson_crs):
+                # Reproject original GeoJSON geometry to DEM CRS
+                geojson_src_crs = _resolve_geojson_crs(feature)
+                if not dem_crs.equals(geojson_src_crs):
                     dem_geom = _reproject_geojson_geometry(
-                        feature["geometry"], geojson_crs, dem_crs
+                        feature["geometry"], geojson_src_crs, dem_crs
                     )
                 else:
                     dem_geom = feature["geometry"]
@@ -330,7 +332,9 @@ def generate_esg_pdf(report_data: dict[str, Any]) -> str:
         pdf.set_font("helvetica", "B", 14)
         pdf.cell(0, 10, "Spatial Overlay (AOI vs Flood Map)", new_x="LMARGIN", new_y="NEXT")
         
-        map_path = f"/tmp/reports/map_temp_{uuid.uuid4().hex[:8]}.png"
+        map_dir = Path("/tmp/reports")
+        map_dir.mkdir(parents=True, exist_ok=True)
+        map_path = str(map_dir / f"map_temp_{uuid.uuid4().hex[:8]}.png")
         try:
             _generate_map_plot(aoi_geom, flood_geom, map_path)
             pdf.image(map_path, x=20, w=170)
