@@ -427,6 +427,21 @@
                 </div>
             </div>
 
+            <div class="metric-card" style="border-left-color: var(--info-blue);">
+                <span class="metric-label" style="color: var(--info-blue);">🛰️ Satellite Data</span>
+                <div style="font-size: 11px; margin-top: 8px; line-height: 1.8; color: var(--text-main);">
+                    <div>Last Sync: <span id="last-sync" style="color: var(--info-blue); font-weight: bold;">--</span></div>
+                    <div>Sentinel-1: <span id="s1-status" style="font-weight: bold;">--</span></div>
+                    <div>Sentinel-2: <span id="s2-status" style="font-weight: bold;">--</span></div>
+                    <div>Next Check: <span id="next-check" style="color: var(--text-muted);">--</span></div>
+                    <div>Quota: <span id="quota-remaining" style="color: var(--primary-neon);">--</span> req/month</div>
+                </div>
+                <button onclick="manualSync()" class="btn-primary" style="font-size: 11px; padding: 8px; margin-top: 10px;">
+                    🔄 Sync Now
+                </button>
+                <div id="sync-status-msg" style="font-size: 10px; margin-top: 6px; color: var(--text-muted); display: none;"></div>
+            </div>
+
             <div style="font-size:11px; color:var(--text-muted); display: flex; justify-content: space-between;">
                 <span>System Clock (WITA):</span>
                 <span id="clock" style="color:var(--text-main); font-family: monospace; font-weight: bold;">--:--:--</span>
@@ -870,6 +885,57 @@
             const btn = document.getElementById('theme-btn');
             if(btn) btn.textContent = savedTheme === 'dark' ? '🌞' : '🌙';
         })();
+
+        async function fetchSatelliteStatus() {
+            try {
+                const res = await fetch('/satellite/status');
+                if (!res.ok) return;
+                const d = await res.json();
+
+                document.getElementById('last-sync').textContent = d.last_sync
+                    ? new Date(d.last_sync).toLocaleString('id-ID', { timeZone: 'Asia/Makassar' })
+                    : 'Never';
+
+                document.getElementById('s1-status').textContent = d.sentinel1
+                    ? d.sentinel1.date + ' (' + d.sentinel1.status + ')'
+                    : 'No data';
+
+                document.getElementById('s2-status').textContent = d.sentinel2
+                    ? d.sentinel2.date + ' (cloud: ' + d.sentinel2.cloud + '%)'
+                    : 'No data';
+
+                document.getElementById('next-check').textContent = d.next_check
+                    ? new Date(d.next_check).toLocaleString('id-ID', { timeZone: 'Asia/Makassar' })
+                    : '--';
+
+                document.getElementById('quota-remaining').textContent = d.quota_remaining;
+            } catch (e) {
+                console.error('Satellite status error:', e);
+            }
+        }
+
+        async function manualSync() {
+            const msgEl = document.getElementById('sync-status-msg');
+            msgEl.style.display = 'block';
+            msgEl.style.color = 'var(--info-blue)';
+            msgEl.textContent = 'Syncing...';
+
+            try {
+                const res = await fetch('/satellite/sync', { method: 'POST' });
+                const d = await res.json();
+                msgEl.textContent = 'Sync triggered! Task: ' + d.task_id;
+                msgEl.style.color = 'var(--primary-neon)';
+
+                setTimeout(() => { msgEl.style.display = 'none'; }, 5000);
+                setTimeout(fetchSatelliteStatus, 10000);
+            } catch (e) {
+                msgEl.textContent = 'Sync failed: ' + e.message;
+                msgEl.style.color = 'var(--danger-red)';
+            }
+        }
+
+        fetchSatelliteStatus();
+        setInterval(fetchSatelliteStatus, 60000);
     </script>
 </body>
 
