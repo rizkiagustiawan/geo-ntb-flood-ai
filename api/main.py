@@ -41,7 +41,7 @@ import sys
 sys.path.append(str(Path(__file__).parent))
 from report_generator import compute_aoi_flood_stats, generate_esg_pdf
 from notifier import send_flood_alert
-from tasks import celery_app, task_compute_aoi_stats, task_generate_report
+from tasks import celery_app, task_compute_aoi_stats, task_daily_satellite_sync, task_generate_report
 
 # --- Logging ---
 logging.basicConfig(
@@ -148,6 +148,16 @@ class TaskResponse(BaseModel):
     task_id: str = Field(..., description="Celery task ID for polling")
     status: str = Field("PENDING", description="Initial task state")
     poll_url: str = Field(..., description="URL to check task progress")
+
+
+class SatelliteStatusResponse(BaseModel):
+    """Status of satellite data sync."""
+
+    last_sync: str | None = Field(None, description="Last sync ISO timestamp")
+    sentinel1: dict | None = Field(None, description="S1 status + date")
+    sentinel2: dict | None = Field(None, description="S2 status + date + cloud")
+    next_check: str = Field(..., description="Next scheduled sync")
+    quota_remaining: int = Field(3000, description="Monthly API quota remaining")
 
 
 # --- App ---
@@ -614,6 +624,51 @@ def get_task_status(task_id: str):
         response["error"] = str(result.result)
 
     return response
+
+
+# ---------------------------------------------------------------------------
+# /satellite/status — Satellite Data Sync Status
+# ---------------------------------------------------------------------------
+@app.get("/satellite/status", response_model=SatelliteStatusResponse)
+def satellite_status():
+    """Get satellite data sync status."""
+    import json
+    from datetime import timedelta
+
+    status_file = DATA_DIR / "satellite_status.json"
+
+    if status_file.exists():
+        status = json.loads(status_file.read_text())
+    else:
+        status = {}
+
+    now = datetime.now(timezone.utc)
+    next_check = now.replace(hour=22, minute=0, second=0, microsecond=0)
+    if next_check <= now:
+        next_check += timedelta(days=1)
+
+    return SatelliteStatusResponse(
+        last_sync=status.get("last_sync"),
+        sentinel1=status.get("sentinel1"),
+        sentinel2=status.get("sentinel2"),
+        next_check=next_check.isoformat().replace("+00:00", "Z"),
+        quota_remaining=3000,
+    )
+
+
+# ---------------------------------------------------------------------------
+# /satellite/sync — Trigger Manual Satellite Sync
+# ---------------------------------------------------------------------------
+@app.post("/satellite/sync")
+def satellite_sync():
+    """Trigger manual satellite data sync."""
+    task = task_daily_satellite_sync.delay()
+    return {
+        "task_id": task.id,
+        "status": "PENDING",
+        "message": "Satellite sync triggered",
+        "poll_url": f"/predict/status/{task.id}",
+    }
 
 
 def _geom_centroid_lat(geom: dict) -> float:
