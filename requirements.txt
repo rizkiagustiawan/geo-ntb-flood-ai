@@ -31,3 +31,6 @@ python-dotenv
 matplotlib
 fpdf2
 contextily
+
+# --- Satellite API ---
+sentinelhub>=3.10.0
