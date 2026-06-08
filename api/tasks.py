@@ -14,6 +14,8 @@ import sys
 from pathlib import Path
 
 from celery import Celery
+from celery.schedules import crontab
+from datetime import datetime
 
 # Ensure api/ is importable for report_generator and notifier
 sys.path.append(str(Path(__file__).parent))
@@ -40,6 +42,12 @@ celery_app.conf.update(
     task_track_started=True,
     task_acks_late=True,
     worker_prefetch_multiplier=1,  # One task at a time (memory-heavy geo ops)
+    beat_schedule={
+        "daily-satellite-sync": {
+            "task": "aeco.daily_satellite_sync",
+            "schedule": crontab(hour=22, minute=0),  # 22:00 UTC = 06:00 WITA
+        },
+    },
 )
 
 
@@ -125,3 +133,43 @@ def task_generate_report(self, feature_dict: dict) -> dict:
         return {"error": str(exc)}
 
     return {**stats, "pdf_path": pdf_path}
+
+
+# ---------------------------------------------------------------------------
+# Task: Daily Satellite Data Sync (Sentinel Hub)
+# ---------------------------------------------------------------------------
+@celery_app.task(bind=True, name="aeco.daily_satellite_sync")
+def task_daily_satellite_sync(self) -> dict:
+    """Daily task: Fetch new satellite data and run flood pipeline.
+
+    Scheduled via Celery Beat at 06:00 WITA (22:00 UTC previous day).
+
+    Returns:
+        Dict with sync result metadata.
+    """
+    from satellite_fetcher import SentinelHubFetcher
+
+    self.update_state(state="PROCESSING", meta={"step": "fetching_satellite_data"})
+
+    try:
+        fetcher = SentinelHubFetcher()
+        new_data = fetcher.fetch_all()
+    except Exception as exc:
+        logger.error(f"Satellite fetch failed: {exc}")
+        return {"status": "error", "error": str(exc)}
+
+    if not new_data:
+        logger.info("No new satellite data available")
+        return {"status": "no_new_data"}
+
+    # Save rasters (overwrites existing)
+    self.update_state(state="PROCESSING", meta={"step": "saving_rasters"})
+    fetcher.save_rasters(new_data)
+
+    logger.info(f"Satellite data updated: {new_data['date']}")
+
+    return {
+        "status": "updated",
+        "date": new_data["date"],
+        "bbox": new_data["bbox"],
+    }
