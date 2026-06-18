@@ -45,7 +45,7 @@ def build_patches():
 
     with rasterio.open(feature_path) as src_feat, rasterio.open(label_path) as src_label:
         height, width = src_feat.shape
-        n_bands = src_feat.count
+
 
         if src_label.shape != (height, width):
             raise ValueError("Feature and label dimensions do not match!")

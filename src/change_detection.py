@@ -11,11 +11,10 @@ The change signal is more robust than absolute thresholding because:
 """
 
 import logging
-from datetime import datetime, timedelta, timezone
+from datetime import datetime, timedelta
 from pathlib import Path
 
 import numpy as np
-import rasterio
 
 logger = logging.getLogger(__name__)
 

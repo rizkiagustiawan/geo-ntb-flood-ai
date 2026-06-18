@@ -14,7 +14,6 @@ from pathlib import Path
 
 import numpy as np
 import rasterio
-from scipy.ndimage import uniform_filter
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(levelname)s] %(name)s: %(message)s")
 logger = logging.getLogger(__name__)

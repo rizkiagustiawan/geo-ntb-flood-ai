@@ -52,7 +52,6 @@ def load_feature_stack():
     return data, profile
 
 
-
 def predict_flood(models, features, chunk_rows=1000):
     """Run pixel-wise ensemble inference on feature stack in row-chunks.
     features: (n_bands, H, W) float32 array.
@@ -102,14 +101,9 @@ def predict_flood(models, features, chunk_rows=1000):
 
     return flood_map
 
+
 def predict_unet(features, onnx_model_path, patch_size=256, stride=128):
-    """Run overlapping sliding-window inference using ONNX U-Net in Rust.
-    
-    features: (n_bands, H, W) float32 array
-    patch_size: size of the U-Net input patch (256x256)
-    stride: how much to move the window (128 = 50% overlap for smooth edges)
-    Returns: (H, W) uint8 array — 0=non-flood, 1=flood.
-    """
+    """Run overlapping sliding-window inference using ONNX U-Net in Rust."""
     import flood_rs
 
     n_bands, height, width = features.shape
@@ -127,18 +121,14 @@ def predict_unet(features, onnx_model_path, patch_size=256, stride=128):
     y, x = np.ogrid[-patch_size/2:patch_size/2, -patch_size/2:patch_size/2]
     window_weight = np.exp(-(x*x + y*y) / (2.0 * (patch_size/4)**2)).astype(np.float32)
 
-    # Collect batches to pass to Rust for speed
     batch_size = 16
     batch_patches = []
     batch_coords = []
 
     def process_batch(patches, coords):
-        # Convert list to array (Batch, Channels, H, W)
         batch_array = np.stack(patches).astype(np.float32)
-        # Call Rust Engine (Zero-copy inference via ONNX)
         preds = flood_rs.predict_unet_chunk(batch_array, onnx_model_path)
         
-        # Accumulate predictions
         for i, (r, c, h, w) in enumerate(coords):
             pred_patch = preds[i, 0, :h, :w]
             weight_patch = window_weight[:h, :w]
@@ -154,7 +144,6 @@ def predict_unet(features, onnx_model_path, patch_size=256, stride=128):
 
             patch = features[:, row:r_end, col:c_end]
             
-            # Pad if at the edge
             if h < patch_size or w < patch_size:
                 padded = np.zeros((n_bands, patch_size, patch_size), dtype=np.float32)
                 padded[:, :h, :w] = patch
@@ -168,66 +157,16 @@ def predict_unet(features, onnx_model_path, patch_size=256, stride=128):
                 batch_patches = []
                 batch_coords = []
 
-    # Process remaining
     if batch_patches:
         process_batch(batch_patches, batch_coords)
 
-    # Average overlapping areas
     weight_map = np.maximum(weight_map, 1e-6)
     final_prob = prob_map / weight_map
     
-    # Threshold at 0.5
     flood_map = (final_prob > 0.5).astype(np.uint8)
     
     flood_pct = 100.0 * np.sum(flood_map) / flood_map.size
     logger.info("U-Net Prediction complete: %.2f%% flood pixels", flood_pct)
-
-    return flood_map
-    """Run pixel-wise ensemble inference on feature stack in row-chunks.
-    features: (n_bands, H, W) float32 array.
-    chunk_rows: number of rows to process at once (memory-bound).
-    Returns: (H, W) uint8 array — 0=non-flood, 1=flood."""
-    from model import predict_ensemble
-    n_bands, height, width = features.shape
-    n_pixels = height * width
-
-    logger.info("Predicting %d pixels (%dx%d) in chunks of %d rows using %d ensemble models", 
-                n_pixels, height, width, chunk_rows, len(models))
-
-    flood_map = np.zeros((height, width), dtype=np.uint8)
-    n_valid_total = 0
-    n_flood_total = 0
-
-    for row_start in range(0, height, chunk_rows):
-        row_end = min(row_start + chunk_rows, height)
-        chunk = features[:, row_start:row_end, :]  # (n_bands, chunk_h, W)
-        chunk_h = row_end - row_start
-        n_chunk = chunk_h * width
-
-        # Flatten chunk: (chunk_h * W, n_bands)
-        X_flat = chunk.reshape(n_bands, -1).T
-
-        # Identify valid pixels
-        valid_mask = ~(np.all(X_flat == 0, axis=1) | np.any(np.isnan(X_flat), axis=1))
-        n_valid = np.sum(valid_mask)
-        n_valid_total += n_valid
-
-        if n_valid == 0:
-            continue
-
-        X_valid = np.nan_to_num(X_flat[valid_mask], nan=0.0)
-        
-        # Ensemble prediction (majority vote)
-        y_pred = predict_ensemble(models, X_valid)
-
-        chunk_pred = np.zeros(n_chunk, dtype=np.uint8)
-        chunk_pred[valid_mask] = y_pred
-        flood_map[row_start:row_end, :] = chunk_pred.reshape(chunk_h, width)
-        n_flood_total += np.sum(y_pred == 1)
-
-    flood_pct = 100.0 * n_flood_total / n_pixels
-    logger.info("Prediction complete: %d valid, %d flood pixels (%.2f%%)",
-                n_valid_total, n_flood_total, flood_pct)
 
     return flood_map
 
