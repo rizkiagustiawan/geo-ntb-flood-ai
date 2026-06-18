@@ -5,6 +5,7 @@ saves cleaned map and auto-generates preview PNG.
 """
 
 import sys
+import math
 import logging
 from pathlib import Path
 
@@ -21,6 +22,7 @@ PROCESSED_DIR = PROJECT_ROOT / "data" / "processed"
 PREDICTIONS_DIR = PROJECT_ROOT / "outputs" / "predictions"
 
 OCEAN_ELEV_THRESHOLD = 2.0  # metres — mask pixels at or below this
+SLOPE_OCEAN_THRESHOLD = 1.0  # degrees — ocean is flat, coastal land has slope
 
 
 def run_postprocess(
@@ -29,9 +31,18 @@ def run_postprocess(
     output_path=None,
     elev_threshold=OCEAN_ELEV_THRESHOLD,
 ):
-    """Mask ocean from flood map using DEM elevation."""
+    """Mask ocean from flood map using multi-criteria approach.
+
+    Criteria (all must be met to mask as ocean):
+    1. DEM elevation <= threshold (default 2m, accounts for SRTM ±3m RMSE)
+    2. Slope < 1° (ocean is flat, coastal land has slope)
+
+    This reduces false positives from:
+    - Low-lying inland agricultural areas (elevation < 2m but slope > 1°)
+    - SRTM vertical errors in tropical regions (±3-5m RMSE)
+    """
     logger.info("=" * 60)
-    logger.info("STARTING POSTPROCESS — OCEAN MASKING")
+    logger.info("STARTING POSTPROCESS — OCEAN MASKING (MULTI-CRITERIA)")
     logger.info("=" * 60)
 
     flood_in = Path(flood_path) if flood_path else PREDICTIONS_DIR / "flood_map.tif"
@@ -55,6 +66,7 @@ def run_postprocess(
         elev = ds.read(1).astype(np.float32)
         dem_nodata = ds.nodata
         dem_shape = ds.shape
+        dem_transform = ds.transform
     logger.info("Loaded DEM: %s shape=%s nodata=%s", dem_in.name, dem_shape, dem_nodata)
 
     # Validate shapes match
@@ -64,17 +76,27 @@ def run_postprocess(
             "Ensure preprocess.py resampled DEM to match."
         )
 
-    # Build ocean mask: True where pixel should be zeroed out
-    ocean_mask = elev <= elev_threshold
-    if dem_nodata is not None:
-        ocean_mask |= elev == dem_nodata
-    ocean_mask |= np.isnan(elev)
+    # Compute slope from DEM
+    cos_lat = math.cos(math.radians(-8.5))
+    dx = abs(dem_transform[0]) * 111320.0 * cos_lat
+    dy = abs(dem_transform[4]) * 111320.0
+    grad_y, grad_x = np.gradient(elev, dy, dx)
+    slope_deg = np.degrees(np.arctan(np.sqrt(grad_x ** 2 + grad_y ** 2)))
+
+    # Multi-criteria ocean mask
+    low_elev = elev <= elev_threshold
+    flat_terrain = slope_deg < SLOPE_OCEAN_THRESHOLD
+    is_nodata = (elev == dem_nodata) if dem_nodata is not None else np.zeros_like(elev, dtype=bool)
+    is_nan = np.isnan(elev)
+
+    # Ocean = low elevation AND flat, OR nodata/nan
+    ocean_mask = (low_elev & flat_terrain) | is_nodata | is_nan
 
     n_masked = int(np.sum(ocean_mask))
     n_total = flood.size
     logger.info(
-        "Ocean mask: %d pixels (%.2f%%) at elevation <= %.1fm",
-        n_masked, 100.0 * n_masked / n_total, elev_threshold,
+        "Ocean mask: %d pixels (%.2f%%) [elev<%.1fm AND slope<%.1f°]",
+        n_masked, 100.0 * n_masked / n_total, elev_threshold, SLOPE_OCEAN_THRESHOLD,
     )
 
     # Count flood pixels before masking

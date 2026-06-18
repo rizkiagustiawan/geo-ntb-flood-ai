@@ -22,7 +22,7 @@ sys.path.insert(0, str(PROJECT_ROOT / "api"))
 def run_benchmark():
     from report_generator import compute_aoi_flood_stats, generate_esg_pdf
 
-    geojson_path = PROJECT_ROOT / "data" / "sumbawa_island.geojson"
+    geojson_path = PROJECT_ROOT / "assets" / "sumbawa_island.geojson"
     if not geojson_path.exists():
         print(f"ERROR: GeoJSON not found at {geojson_path}")
         sys.exit(1)

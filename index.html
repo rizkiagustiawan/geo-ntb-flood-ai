@@ -597,7 +597,7 @@
         // ---------------------------------------------------------
         // 1. LOAD GADM LEVEL 2 GEOJSON (BATAS PRESISI SUMBAWA)
         // ---------------------------------------------------------
-        fetch('./data/sumbawa_island.geojson')
+        fetch('./assets/sumbawa_island.geojson')
             .then(res => res.json())
             .then(data => {
                 L.geoJSON(data, {

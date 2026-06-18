@@ -12,6 +12,16 @@
 use numpy::{IntoPyArray, PyArray2, PyReadonlyArray2};
 use pyo3::prelude::*;
 use rayon::prelude::*;
+use numpy::{PyArray4, PyReadonlyArray4};
+use ort::session::Session;
+use ort::value::Tensor;
+use ort::session::builder::GraphOptimizationLevel;
+use std::sync::Mutex;
+use lazy_static::lazy_static;
+
+lazy_static! {
+    static ref ONNX_SESSION: Mutex<Option<Session>> = Mutex::new(None);
+}
 
 // ---------------------------------------------------------------------------
 // NDWI: (Green − NIR) / (Green + NIR)
@@ -174,6 +184,55 @@ fn compute_ndwi_and_mask<'py>(
     Ok(arr.into_pyarray(py))
 }
 
+
+// ---------------------------------------------------------------------------
+// ONNX U-NET INFERENCE (Phase 3)
+// ---------------------------------------------------------------------------
+#[pyfunction]
+fn predict_unet_chunk<'py>(
+    py: Python<'py>,
+    tensor_chunk: PyReadonlyArray4<'py, f32>,
+    model_path: String,
+) -> PyResult<Bound<'py, PyArray4<f32>>> {
+    let mut session_guard = ONNX_SESSION.lock().unwrap();
+
+    if session_guard.is_none() {
+        let _ = ort::init().with_name("AECO_UNet").commit();
+
+        let session = Session::builder()
+            .map_err(|e| pyo3::exceptions::PyRuntimeError::new_err(format!("ORT Builder Error: {}", e)))?
+            .with_optimization_level(GraphOptimizationLevel::Level3)
+            .map_err(|e| pyo3::exceptions::PyRuntimeError::new_err(format!("ORT Opt Error: {}", e)))?
+            .commit_from_file(&model_path)
+            .map_err(|e| pyo3::exceptions::PyRuntimeError::new_err(format!("Failed to load ONNX model at {}: {}", model_path, e)))?;
+        
+        *session_guard = Some(session);
+    }
+
+    let session = session_guard.as_mut().unwrap();
+
+    let input_array = tensor_chunk.as_array();
+    let batch_size = input_array.shape()[0];
+    let (h, w) = (input_array.shape()[2], input_array.shape()[3]);
+
+    let input_tensor = Tensor::from_array(input_array.to_owned())
+        .map_err(|e| pyo3::exceptions::PyRuntimeError::new_err(format!("Tensor Error: {}", e)))?;
+
+    let outputs = session
+        .run(ort::inputs!["input" => input_tensor])
+        .map_err(|e| pyo3::exceptions::PyRuntimeError::new_err(format!("Inference Error: {}", e)))?;
+
+    let output_tensor = outputs["output"]
+        .try_extract_tensor::<f32>()
+        .map_err(|e| pyo3::exceptions::PyRuntimeError::new_err(format!("Extract Error: {}", e)))?;
+        
+    let (_, data_slice) = output_tensor;
+    let result = numpy::ndarray::ArrayView4::from_shape((batch_size, 1, h, w), data_slice)
+        .map_err(|e| pyo3::exceptions::PyRuntimeError::new_err(format!("Shape Error: {}", e)))?
+        .to_owned();
+
+    Ok(result.into_pyarray(py))
+}
 // ---------------------------------------------------------------------------
 // Module registration
 // ---------------------------------------------------------------------------
@@ -183,6 +242,7 @@ fn flood_rs(m: &Bound<'_, PyModule>) -> PyResult<()> {
     m.add_function(wrap_pyfunction!(calculate_ndvi, m)?)?;
     m.add_function(wrap_pyfunction!(calculate_sar_flood_mask, m)?)?;
     m.add_function(wrap_pyfunction!(compute_ndwi_and_mask, m)?)?;
+    m.add_function(wrap_pyfunction!(predict_unet_chunk, m)?)?;
     Ok(())
 }
 

@@ -14,9 +14,63 @@ from pathlib import Path
 
 import numpy as np
 import rasterio
+from scipy.ndimage import uniform_filter
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(levelname)s] %(name)s: %(message)s")
 logger = logging.getLogger(__name__)
+
+
+def otsu_threshold(data: np.ndarray, n_bins: int = 256) -> float:
+    """Compute Otsu's optimal threshold for separating bimodal distribution.
+
+    Operates on valid (non-NaN, non-zero) values only.
+
+    Parameters
+    ----------
+    data : np.ndarray — 1D array of SAR backscatter values (dB)
+    n_bins : int — Number of histogram bins
+
+    Returns
+    -------
+    float — Optimal threshold value
+    """
+    valid = data[np.isfinite(data)]
+    if len(valid) < 10:
+        return float(np.nanmedian(valid)) if len(valid) > 0 else -15.0
+
+    hist, bin_edges = np.histogram(valid, bins=n_bins)
+    bin_centers = (bin_edges[:-1] + bin_edges[1:]) / 2.0
+
+    total = hist.sum()
+    if total == 0:
+        return float(np.nanmedian(valid))
+
+    sum_total = np.dot(bin_centers, hist)
+
+    sum_bg = 0.0
+    w_bg = 0
+    max_variance = 0.0
+    threshold = bin_centers[0]
+
+    for i in range(len(hist)):
+        w_bg += hist[i]
+        if w_bg == 0:
+            continue
+        w_fg = total - w_bg
+        if w_fg == 0:
+            break
+
+        sum_bg += bin_centers[i] * hist[i]
+        mean_bg = sum_bg / w_bg
+        mean_fg = (sum_total - sum_bg) / w_fg
+
+        variance = float(w_bg * w_fg * (mean_bg - mean_fg) ** 2)
+        if variance > max_variance:
+            max_variance = variance
+            threshold = bin_centers[i]
+
+    logger.info("Otsu threshold computed: %.2f dB (n=%d, bins=%d)", threshold, len(valid), n_bins)
+    return float(threshold)
 
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
 PROCESSED_DIR = PROJECT_ROOT / "data" / "processed"
@@ -90,15 +144,30 @@ def compute_ndwi_zero_copy(input_path: str, output_path: str):
         logger.info("NDWI written via rasterio fallback: %s", output_path)
 
 
-def compute_sar_threshold(vv_band, vh_band, vv_thresh=-15.0, vh_thresh=-20.0):
-    """Compute SAR flood mask using dB thresholds.
-    Pixels with VV < vv_thresh AND VH < vh_thresh are classified as water (1).
-    Returns uint8 array: 1=water, 0=non-water.
+def compute_sar_threshold(vv_band, vh_band, vv_thresh=-15.0, vh_thresh=-20.0, method='otsu'):
+    """Compute SAR flood mask using adaptive (Otsu) or fixed thresholds.
 
-    Heavy pixel-wise arithmetic is delegated to the Rust engine (flood_rs)
-    for parallel computation via Rayon. Falls back to NumPy if unavailable."""
+    Parameters
+    ----------
+    vv_band, vh_band : np.ndarray — VV/VH backscatter in dB
+    vv_thresh, vh_thresh : float — Fixed thresholds (used only when method='fixed')
+    method : str — 'otsu' for adaptive, 'fixed' for legacy hardcoded
+
+    Returns
+    -------
+    np.ndarray — uint8 mask: 1=water, 0=non-water
+    """
     vv = vv_band.astype(np.float32)
     vh = vh_band.astype(np.float32)
+
+    if method == 'otsu':
+        vv_t = otsu_threshold(vv)
+        vh_t = otsu_threshold(vh)
+        logger.info("Adaptive SAR thresholds: VV=%.2f dB, VH=%.2f dB", vv_t, vh_t)
+    else:
+        vv_t = vv_thresh
+        vh_t = vh_thresh
+        logger.info("Fixed SAR thresholds: VV=%.1f dB, VH=%.1f dB", vv_t, vh_t)
 
     try:
         import flood_rs
@@ -106,17 +175,15 @@ def compute_sar_threshold(vv_band, vh_band, vv_thresh=-15.0, vh_thresh=-20.0):
         if vv.ndim == 1:
             vv = vv.reshape(1, -1)
             vh = vh.reshape(1, -1)
-        mask = flood_rs.calculate_sar_flood_mask(vv, vh, vv_thresh, vh_thresh)
+        mask = flood_rs.calculate_sar_flood_mask(vv, vh, vv_t, vh_t)
         mask = mask.reshape(orig_shape)
-        water_pct = 100.0 * np.sum(mask) / mask.size
-        logger.info("SAR threshold mask via Rust: VV<%.1f & VH<%.1f -> %.2f%% water pixels",
-                    vv_thresh, vh_thresh, water_pct)
     except ImportError:
         logger.warning("flood_rs not available, falling back to NumPy for SAR mask")
-        mask = ((vv < vv_thresh) & (vh < vh_thresh)).astype(np.uint8)
-        water_pct = 100.0 * np.sum(mask) / mask.size
-        logger.info("SAR threshold mask (NumPy fallback): VV<%.1f & VH<%.1f -> %.2f%% water pixels",
-                    vv_thresh, vh_thresh, water_pct)
+        mask = ((vv < vv_t) & (vh < vh_t)).astype(np.uint8)
+
+    water_pct = 100.0 * np.sum(mask) / mask.size
+    logger.info("SAR mask (method=%s): VV<%.2f & VH<%.2f -> %.2f%% water",
+                method, vv_t, vh_t, water_pct)
     return mask
 
 
@@ -144,9 +211,9 @@ def build_feature_stack():
     Output bands: [NDWI, SAR_mask, Slope, VV, VH]
     Saved as feature_stack.tif in data/processed/.
 
-    NDWI is computed via the Zero-Copy Pipeline: Rust reads the S2 TIFF with
-    GDAL, computes NDWI in parallel, and writes a standalone NDWI TIFF.
-    Python then reads the result back for the final feature stack assembly.
+    Applies SAR preprocessing (Refined Lee speckle filter, noise removal)
+    before thresholding. Uses adaptive Otsu thresholding instead of fixed
+    thresholds per Cao et al. (2024).
 
     Memory-optimized: writes bands sequentially instead of np.stack()."""
     logger.info("=" * 60)
@@ -165,10 +232,8 @@ def build_feature_stack():
     # Read reference metadata from S2 for output profile
     with rasterio.open(s2_path) as ds:
         ref_profile = ds.profile.copy()
-        ref_transform = ds.transform  # noqa: F841
         ref_width = ds.width
         ref_height = ds.height
-        ref_crs = ds.crs  # noqa: F841
     logger.info("Loaded Sentinel-2 metadata: %dx%d", ref_width, ref_height)
 
     # Load Sentinel-1 (VV, VH)
@@ -217,15 +282,26 @@ def build_feature_stack():
         gc.collect()
         logger.info("Written band 1/5: NDWI (from Rust zero-copy pipeline)")
 
-        # Band 2: SAR flood mask (load S1, compute, free)
+        # Band 2: SAR flood mask (WITH PREPROCESSING)
         with rasterio.open(s1_path) as s1_ds:
-            vv = s1_ds.read(1, out_dtype=np.float32)
-            vh = s1_ds.read(2, out_dtype=np.float32)
-        sar_mask = compute_sar_threshold(vv, vh)
+            vv_raw = s1_ds.read(1, out_dtype=np.float32)
+            vh_raw = s1_ds.read(2, out_dtype=np.float32)
+
+        # SAR preprocessing: speckle filter + noise removal
+        from sar_preprocess import preprocess_sar
+        vv_proc, vh_proc = preprocess_sar(
+            vv_raw, vh_raw,
+            apply_lee=True, lee_window=7,
+            normalize_angle=False,  # no angle map available from GEE
+            remove_noise=True,
+        )
+
+        # Adaptive thresholding (Otsu)
+        sar_mask = compute_sar_threshold(vv_proc, vh_proc, method='otsu')
         dst.write(sar_mask.astype(np.float32), 2)
-        del sar_mask
+        del sar_mask, vv_raw, vh_raw
         gc.collect()
-        logger.info("Written band 2/5: SAR_flood_mask")
+        logger.info("Written band 2/5: SAR_flood_mask (adaptive Otsu + speckle filtered)")
 
         # Band 3: Slope (load DEM, compute, free)
         with rasterio.open(dem_path) as dem_ds:
@@ -238,18 +314,18 @@ def build_feature_stack():
         gc.collect()
         logger.info("Written band 3/5: Slope_deg (freed DEM)")
 
-        # Band 4 & 5: VV and VH (already loaded above)
-        vv = np.nan_to_num(vv, nan=0.0)
-        dst.write(vv, 4)
-        del vv
+        # Band 4 & 5: PREPROCESSED VV and VH
+        vv_proc = np.nan_to_num(vv_proc, nan=0.0)
+        dst.write(vv_proc, 4)
+        del vv_proc
         gc.collect()
-        logger.info("Written band 4/5: VV_dB")
+        logger.info("Written band 4/5: VV_dB (preprocessed)")
 
-        vh = np.nan_to_num(vh, nan=0.0)
-        dst.write(vh, 5)
-        del vh
+        vh_proc = np.nan_to_num(vh_proc, nan=0.0)
+        dst.write(vh_proc, 5)
+        del vh_proc
         gc.collect()
-        logger.info("Written band 5/5: VH_dB")
+        logger.info("Written band 5/5: VH_dB (preprocessed)")
 
         # Set band descriptions
         for i, name in enumerate(band_names, 1):

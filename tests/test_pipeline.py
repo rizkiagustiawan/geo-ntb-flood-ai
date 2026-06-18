@@ -246,10 +246,25 @@ class TestFeatures:
         from features import compute_sar_threshold
         vv = np.array([-20, -10, -16], dtype=np.float32)
         vh = np.array([-25, -15, -21], dtype=np.float32)
-        mask = compute_sar_threshold(vv, vh)
+        # Use fixed method for deterministic test
+        mask = compute_sar_threshold(vv, vh, method='fixed')
         assert mask[0] == 1  # both below thresh
         assert mask[1] == 0  # VV above
         assert mask[2] == 1  # both below
+
+    def test_sar_threshold_adaptive(self):
+        from features import compute_sar_threshold
+        np.random.seed(42)
+        # Create bimodal distribution
+        dark_vv = np.random.normal(-20, 2, 1000).astype(np.float32)
+        bright_vv = np.random.normal(-8, 2, 1000).astype(np.float32)
+        vv = np.concatenate([dark_vv, bright_vv])
+        dark_vh = np.random.normal(-25, 2, 1000).astype(np.float32)
+        bright_vh = np.random.normal(-15, 2, 1000).astype(np.float32)
+        vh = np.concatenate([dark_vh, bright_vh])
+        mask = compute_sar_threshold(vv, vh, method='otsu')
+        assert mask.dtype == np.uint8
+        assert set(np.unique(mask)).issubset({0, 1})
 
 
 # =========================================================================

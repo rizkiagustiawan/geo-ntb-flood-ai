@@ -29,7 +29,7 @@ DATA_DIR = PROJECT_ROOT / "data"
 # --- TUNING PARAMETERS ---
 VV_THRESH = -18.0
 VH_THRESH = -24.0
-NDWI_THRESH = 0.3
+NDWI_THRESH = 0.1  # Consistent with ML pipeline (features.py)
 SAR_VV_THRESH = -15.0
 
 # --- SENTINEL-2 CO-REGISTERED RASTER ---

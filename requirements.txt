@@ -1,5 +1,6 @@
 # --- Geospatial & Data Engine ---
 numpy
+scipy
 rasterio
 geopandas
 shapely
@@ -11,6 +12,8 @@ rio-tiler==7.0.0
 # --- Machine Learning ---
 scikit-learn
 xgboost
+lightgbm
+torch
 
 # --- Web & API Stack ---
 fastapi
