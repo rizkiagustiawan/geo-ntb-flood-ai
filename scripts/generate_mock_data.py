@@ -11,7 +11,7 @@ Usage:
 
 import argparse
 import logging
-import sys
+import sys  # noqa: F401
 from pathlib import Path
 
 import numpy as np

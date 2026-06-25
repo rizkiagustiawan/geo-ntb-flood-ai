@@ -7,7 +7,6 @@ Run periodically via cron or Celery beat.
 """
 
 import logging
-import shutil
 from datetime import datetime, timezone, timedelta
 from pathlib import Path
 

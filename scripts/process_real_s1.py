@@ -142,7 +142,7 @@ with rasterio.open(flood_path, 'w', **profile) as dst:
 
 print(f"Saved: {flood_path}")
 print("=" * 60)
-print(f"SUMMARY:")
+print("=" * 60)
 print(f"  VV threshold: {vv_thresh:.1f} dB (typical: -18 dB)")
 print(f"  VH threshold: {vh_thresh:.1f} dB (typical: -24 dB)")
 print(f"  Water detected: {flood_pct:.1f}% of scene")

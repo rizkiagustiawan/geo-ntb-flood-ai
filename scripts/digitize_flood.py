@@ -17,8 +17,6 @@ from pathlib import Path
 
 import numpy as np
 import rasterio
-from rasterio.transform import from_bounds
-from rasterio.warp import reproject, Resampling
 
 sys.path.insert(0, 'src')
 
@@ -183,7 +181,7 @@ def calibrate_s1(vv_path: str, vh_path: str, event: dict) -> tuple:
 
 def create_digitization_base(event_name: str, vv_db: np.ndarray, vh_db: np.ndarray):
     """Create base maps for manual digitization in QGIS."""
-    from features import otsu_threshold, compute_sar_threshold
+    from features import compute_sar_threshold
     from sar_preprocess import refined_lee_filter
 
     event_dir = DIGITIZE_DIR / event_name

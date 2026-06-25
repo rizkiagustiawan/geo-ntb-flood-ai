@@ -256,7 +256,6 @@ def compute_hand(elevation, transform, drainage_threshold_percentile=10):
     binary = (~drainage_mask & valid).astype(np.uint8)
 
     # Use scipy distance_transform_edt to get nearest drainage indices
-    from scipy.ndimage import distance_transform_edt
     _, indices = distance_transform_edt(binary, return_distances=True, return_indices=True)
 
     # HAND = elevation of current pixel - elevation of nearest drainage pixel

@@ -181,7 +181,7 @@ def auto_digitize_event(event_name: str, vv_path: Path, vh_path: Path) -> dict:
         max_area = 0
         mean_area = 0
     
-    logger.info(f"Step 4-5 - Morphological cleanup done")
+    logger.info("Step 4-5 - Morphological cleanup done")
     logger.info(f"Step 6 - Final: {n_water} px ({pct:.2f}%), {n_final} components")
     logger.info(f"  Max component: {max_area:.1f} ha")
     logger.info(f"  Mean component: {mean_area:.1f} ha")
@@ -256,8 +256,8 @@ def main():
             'Amitrano et al. (2024) - Flood detection with SAR review',
         ],
         'criteria': {
-            'VV_threshold': f'{VV_THRESH} dB',
-            'VH_threshold': f'{VH_THRESH} dB',
+            'VV_threshold': f'{VV_THRESH_LIT} dB',
+            'VH_threshold': f'{VH_THRESH_LIT} dB',
             'logic': 'AND',
             'min_area': f'{MIN_AREA_PIXELS} pixels (~9 ha)',
         },

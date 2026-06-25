@@ -106,7 +106,7 @@ def generate_literature_ground_truth():
     n_total = ground_truth.size
     pct = 100.0 * n_water / n_total
     
-    print(f"\nGround Truth:")
+    print("\nGround Truth:")
     print(f"  VV < {VV_THRESH_LIT} dB: {int(np.sum(water_vv))} px")
     print(f"  VH < {VH_THRESH_LIT} dB: {int(np.sum(water_vh))} px")
     print(f"  Both agree: {int(np.sum(water_both))} px")
@@ -120,7 +120,7 @@ def generate_literature_ground_truth():
     valid_pixels = int(np.sum(dem > 0))
     agreement_pct = 100.0 * agreement / max(valid_pixels, 1)
     
-    print(f"\nComparison with Otsu:")
+    print("\nComparison with Otsu:")
     print(f"  Otsu water: {otsu_water} px ({100*otsu_water/n_total:.2f}%)")
     print(f"  Literature water: {n_water} px ({pct:.2f}%)")
     print(f"  Agreement: {agreement_pct:.2f}%")
