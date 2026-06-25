@@ -29,6 +29,7 @@ redis==5.0.1
 maturin
 pytest
 python-dotenv
+shap
 
 # --- Visualization ---
 matplotlib

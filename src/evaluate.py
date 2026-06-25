@@ -1,7 +1,12 @@
 """
 evaluate.py - Metrics for NTB Flood Detection.
 Computes IoU, F1, Precision, Recall, Confusion Matrix.
-Outputs metrics JSON to outputs/models/.
+
+Supports TWO evaluation modes:
+1. Against pseudo-labels (default) — useful for training monitoring
+2. Against independent ground truth (GSW, manual) — for real validation
+
+Per Roberts et al. (2017): always report which labels were used.
 """
 
 import sys

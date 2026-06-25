@@ -1,13 +1,17 @@
 """Change Detection for flood monitoring.
 
 Implements pre-event vs during-event SAR change detection per
-Campo et al. (2026) and Liu et al. (2026). Computes delta backscatter
-(ΔVV, ΔVH) between a pre-event baseline and current observation.
+Schlaffer et al. (2015), Clement et al. (2018), and Liu et al. (2026).
+Computes delta backscatter (ΔVV, ΔVH) between a pre-event baseline
+and current observation.
 
 The change signal is more robust than absolute thresholding because:
 - It eliminates system bias (calibration, terrain)
 - It isolates flood-induced backscatter changes from persistent water
 - It works across different incidence angles and land cover types
+
+Multi-temporal statistics (mean, std, CV) from time-series stacks
+enable unsupervised flood detection without training data.
 """
 
 import logging
@@ -162,3 +166,116 @@ def build_change_features(
     features = np.stack([delta_vv, delta_vh])
     logger.info("Change features built: shape=%s", features.shape)
     return features
+
+
+def compute_temporal_statistics(
+    sar_stack: np.ndarray,
+) -> dict[str, np.ndarray]:
+    """Compute multi-temporal statistics from a SAR time-series stack.
+
+    Per Schlaffer et al. (2015): harmonic analysis and statistical
+    moments of backscatter time series characterize land cover:
+    - Permanent water: low mean, low variance
+    - Dry land: high mean, moderate variance
+    - Flooded: sudden drop → high CV, negative anomaly
+
+    Parameters
+    ----------
+    sar_stack : np.ndarray — (n_times, H, W) SAR backscatter stack (dB)
+
+    Returns
+    -------
+    dict with keys: 'mean', 'std', 'cv', 'min', 'max', 'range'
+    """
+    valid = np.isfinite(sar_stack)
+    sar_clean = np.where(valid, sar_stack, np.nan)
+
+    stats = {
+        "mean": np.nanmean(sar_clean, axis=0).astype(np.float32),
+        "std": np.nanstd(sar_clean, axis=0).astype(np.float32),
+        "min": np.nanmin(sar_clean, axis=0).astype(np.float32),
+        "max": np.nanmax(sar_clean, axis=0).astype(np.float32),
+    }
+    stats["range"] = (stats["max"] - stats["min"]).astype(np.float32)
+
+    # Coefficient of Variation (CV) — normalized dispersion
+    mean_abs = np.abs(stats["mean"])
+    mean_safe = np.where(mean_abs > 1e-6, mean_abs, 1e-6)
+    stats["cv"] = (stats["std"] / mean_safe).astype(np.float32)
+
+    for k, v in stats.items():
+        logger.info("Temporal %s: min=%.2f, max=%.2f, mean=%.2f",
+                    k, np.nanmin(v), np.nanmax(v), np.nanmean(v))
+
+    return stats
+
+
+def detect_anomaly_flood(
+    vv_current: np.ndarray,
+    vv_mean: np.ndarray,
+    vv_std: np.ndarray,
+    n_sigma: float = 2.0,
+) -> np.ndarray:
+    """Detect flood via statistical anomaly detection.
+
+    A pixel is flagged as flood if its current backscatter is more
+    than n_sigma standard deviations below the temporal mean.
+    This is an unsupervised approach that requires no training data.
+
+    Parameters
+    ----------
+    vv_current : np.ndarray — Current VV backscatter (dB)
+    vv_mean : np.ndarray — Temporal mean VV (dB)
+    vv_std : np.ndarray — Temporal std VV (dB)
+    n_sigma : float — Number of std deviations for anomaly threshold
+
+    Returns
+    -------
+    np.ndarray — uint8 mask: 1=flood (anomaly), 0=normal
+    """
+    threshold = vv_mean - n_sigma * np.maximum(vv_std, 1.0)
+    mask = (vv_current < threshold).astype(np.uint8)
+
+    flood_pct = 100.0 * np.sum(mask) / mask.size
+    logger.info("Anomaly detection: n_sigma=%.1f → %.2f%% flood pixels",
+                n_sigma, flood_pct)
+    return mask
+
+
+def detect_adaptive_change(
+    delta_vv: np.ndarray,
+    delta_vh: np.ndarray,
+    method: str = "otsu",
+) -> np.ndarray:
+    """Detect flood via adaptive thresholding on change signal.
+
+    Uses Otsu's method to automatically determine the optimal
+    threshold for separating flood-induced changes from noise.
+
+    Parameters
+    ----------
+    delta_vv, delta_vh : np.ndarray — Delta backscatter (dB)
+    method : str — 'otsu' for adaptive, 'fixed' for legacy -3 dB
+
+    Returns
+    -------
+    np.ndarray — uint8 mask: 1=flood, 0=non-flood
+    """
+    if method == "otsu":
+        from features import otsu_threshold
+        vv_thresh = otsu_threshold(delta_vv)
+        vh_thresh = otsu_threshold(delta_vh)
+        # Otsu on delta gives the separation point;
+        # flood = negative change (below threshold)
+        logger.info("Adaptive change thresholds: ΔVV=%.2f dB, ΔVH=%.2f dB",
+                    vv_thresh, vh_thresh)
+    else:
+        vv_thresh = -3.0
+        vh_thresh = -3.0
+        logger.info("Fixed change thresholds: ΔVV=%.1f dB, ΔVH=%.1f dB",
+                    vv_thresh, vh_thresh)
+
+    mask = ((delta_vv < vv_thresh) & (delta_vh < vh_thresh)).astype(np.uint8)
+    flood_pct = 100.0 * np.sum(mask) / mask.size
+    logger.info("Change detection (method=%s): %.2f%% flood", method, flood_pct)
+    return mask

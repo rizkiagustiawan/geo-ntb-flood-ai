@@ -1,0 +1,111 @@
+{
+  "dashboard": {
+    "id": null,
+    "title": "A.E.C.O Flood Detection Dashboard",
+    "tags": ["flood", "sar", "geospatial"],
+    "timezone": "browser",
+    "panels": [
+      {
+        "id": 1,
+        "title": "HTTP Requests/sec",
+        "type": "timeseries",
+        "targets": [
+          {
+            "expr": "rate(http_requests_total[5m])",
+            "legendFormat": "{{method}} {{path}} {{status}}"
+          }
+        ],
+        "gridPos": {"h": 8, "w": 12, "x": 0, "y": 0}
+      },
+      {
+        "id": 2,
+        "title": "Request Latency (p95)",
+        "type": "timeseries",
+        "targets": [
+          {
+            "expr": "histogram_quantile(0.95, rate(http_request_duration_seconds_bucket[5m]))",
+            "legendFormat": "p95 latency"
+          }
+        ],
+        "gridPos": {"h": 8, "w": 12, "x": 12, "y": 0}
+      },
+      {
+        "id": 3,
+        "title": "Flood Predictions",
+        "type": "stat",
+        "targets": [
+          {
+            "expr": "flood_predictions_total",
+            "legendFormat": "Total Predictions"
+          }
+        ],
+        "gridPos": {"h": 4, "w": 6, "x": 0, "y": 8}
+      },
+      {
+        "id": 4,
+        "title": "Flood Pixels Detected",
+        "type": "stat",
+        "targets": [
+          {
+            "expr": "flood_pixels_total",
+            "legendFormat": "Total Flood Pixels"
+          }
+        ],
+        "gridPos": {"h": 4, "w": 6, "x": 6, "y": 8}
+      },
+      {
+        "id": 5,
+        "title": "Model Inference Time",
+        "type": "timeseries",
+        "targets": [
+          {
+            "expr": "rate(model_inference_seconds_sum[5m]) / rate(model_inference_seconds_count[5m])",
+            "legendFormat": "Avg inference time"
+          }
+        ],
+        "gridPos": {"h": 4, "w": 6, "x": 12, "y": 8}
+      },
+      {
+        "id": 6,
+        "title": "Satellite Syncs",
+        "type": "stat",
+        "targets": [
+          {
+            "expr": "satellite_sync_total",
+            "legendFormat": "Total Syncs"
+          }
+        ],
+        "gridPos": {"h": 4, "w": 6, "x": 18, "y": 8}
+      },
+      {
+        "id": 7,
+        "title": "Celery Tasks",
+        "type": "piechart",
+        "targets": [
+          {
+            "expr": "celery_tasks_total",
+            "legendFormat": "{{status}}"
+          }
+        ],
+        "gridPos": {"h": 8, "w": 12, "x": 0, "y": 12}
+      },
+      {
+        "id": 8,
+        "title": "Error Rate",
+        "type": "timeseries",
+        "targets": [
+          {
+            "expr": "rate(http_requests_total{status=~\"5..\"}[5m])",
+            "legendFormat": "5xx errors"
+          }
+        ],
+        "gridPos": {"h": 8, "w": 12, "x": 12, "y": 12}
+      }
+    ],
+    "time": {
+      "from": "now-1h",
+      "to": "now"
+    },
+    "refresh": "10s"
+  }
+}

@@ -10,7 +10,7 @@ Usage:
 
 import logging
 import os
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
 import numpy as np
@@ -60,9 +60,10 @@ class SentinelHubFetcher:
 
         catalog = SentinelHubCatalog(config=self.config)
         bbox_obj = BBox(bbox, crs=CRS.WGS84)
+        now = datetime.now(timezone.utc)
         time_interval = (
-            (datetime.utcnow() - timedelta(days=days_back)).strftime("%Y-%m-%dT00:00:00"),
-            datetime.utcnow().strftime("%Y-%m-%dT23:59:59"),
+            (now - timedelta(days=days_back)).strftime("%Y-%m-%dT00:00:00"),
+            now.strftime("%Y-%m-%dT23:59:59"),
         )
 
         search_iterator = catalog.search(
@@ -240,7 +241,7 @@ class SentinelHubFetcher:
         import json
 
         status = {
-            "last_sync": datetime.utcnow().isoformat() + "Z",
+            "last_sync": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
             "sentinel1": {
                 "date": rasters["date"],
                 "status": "ok",

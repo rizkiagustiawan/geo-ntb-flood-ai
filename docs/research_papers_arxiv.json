@@ -1,0 +1,802 @@
+[
+  {
+    "title": "Robust blue-green urban flood risk management optimised with a genetic algorithm for multiple rainstorm return periods",
+    "year": 2025,
+    "authors": "Asid Ur Rehman, Vassilis Glenis, Elizabeth Lewis",
+    "abstract": "Flood risk managers seek to optimise Blue-Green Infrastructure (BGI) designs to maximise return on investment. Current systems often use optimisation algorithms and detailed flood models to maximise b",
+    "source": "arXiv",
+    "query": "SAR flood mapping Sentinel-1"
+  },
+  {
+    "title": "Explainable Flood Segmentation on Sentinel-1 SAR Imagery: A Comparative Study of CNN and Transformer Architectures",
+    "year": 2026,
+    "authors": "Arundhuti Banerjee, David Daou",
+    "abstract": "Rapid and accurate flood prediction is essential for disaster response and mitigation planning. Synthetic Aperture Radar (SAR) sensors in satellites are well-suited for this purpose because they opera",
+    "source": "arXiv",
+    "query": "SAR flood mapping Sentinel-1"
+  },
+  {
+    "title": "ALTIS: Automated Loss Triage and Impact Scoring from Sentinel-1 SAR for Property-Level Flood Damage Assessment",
+    "year": 2026,
+    "authors": "Amogh Vinaykumar, Prem Kamasani",
+    "abstract": "Floods are among the costliest natural catastrophes globally, yet the property and casualty insurance industry's post-event response remains heavily reliant on manual field inspection: slow, expensive",
+    "source": "arXiv",
+    "query": "SAR flood mapping Sentinel-1"
+  },
+  {
+    "title": "Flood Segmentation on Sentinel-1 SAR Imagery with Semi-Supervised Learning",
+    "year": 2021,
+    "authors": "Sayak Paul, Siddha Ganju",
+    "abstract": "Floods wreak havoc throughout the world, causing billions of dollars in damages, and uprooting communities, ecosystems and economies. The NASA Impact Flood Detection competition tasked participants wi",
+    "source": "arXiv",
+    "query": "SAR flood mapping Sentinel-1"
+  },
+  {
+    "title": "Standardized Analysis Ready (STAR) data cube for high-resolution Flood mapping using Sentinel-1 data",
+    "year": 2023,
+    "authors": "Surajit Ghosh, Arpan Dawn, Sneha Kour",
+    "abstract": "Floods are one of the most common disasters globally. Flood affects humans in many ways. Therefore, rapid assessment is needed to assess the effect of floods and to take early action to support the vu",
+    "source": "arXiv",
+    "query": "SAR flood mapping Sentinel-1"
+  },
+  {
+    "title": "Flood Risk Follows Valleys, Not Grids: Graph Neural Networks for Flash Flood Susceptibility Mapping in Himachal Pradesh with Conformal Uncertainty Quantification",
+    "year": 2026,
+    "authors": "Paras Sharma, Swastika Sharma",
+    "abstract": "Flash floods are the most destructive natural hazard in Himachal Pradesh (HP), India, causing over 400 fatalities and $1.2 billion in losses in the 2023 monsoon season alone. Existing risk maps treat ",
+    "source": "arXiv",
+    "query": "SAR flood mapping Sentinel-1"
+  },
+  {
+    "title": "UrbanSARFloods: Sentinel-1 SLC-Based Benchmark Dataset for Urban and Open-Area Flood Mapping",
+    "year": 2024,
+    "authors": "Jie Zhao, Zhitong Xiong, Xiao Xiang Zhu",
+    "abstract": "Due to its cloud-penetrating capability and independence from solar illumination, satellite Synthetic Aperture Radar (SAR) is the preferred data source for large-scale flood mapping, providing global ",
+    "source": "arXiv",
+    "query": "SAR flood mapping Sentinel-1"
+  },
+  {
+    "title": "Portraying the Need for Temporal Data in Flood Detection via Sentinel-1",
+    "year": 2024,
+    "authors": "Xavier Bou, Thibaud Ehret, Rafael Grompone von Gioi",
+    "abstract": "Identifying flood affected areas in remote sensing data is a critical problem in earth observation to analyze flood impact and drive responses. While a number of methods have been proposed in the lite",
+    "source": "arXiv",
+    "query": "SAR flood mapping Sentinel-1"
+  },
+  {
+    "title": "Cross-Polarization Fusion of VV AND VH SAR Observations for Improved Flood Mapping",
+    "year": 2026,
+    "authors": "Jagrati Talreja, Tewodros Syum Gebre, Leila Hashemi Beni",
+    "abstract": "Synthetic Aperture Radar (SAR) imagery is widely used for flood monitoring due to its all-weather and day-night imaging capability. However, flood mapping using single-polarization SAR data remains ch",
+    "source": "arXiv",
+    "query": "SAR flood mapping Sentinel-1"
+  },
+  {
+    "title": "Estimating ensemble likelihoods for the Sentinel-1 based Global Flood Monitoring product of the Copernicus Emergency Management Service",
+    "year": 2023,
+    "authors": "Christian Krullikowski, Candace Chow, Marc Wieland",
+    "abstract": "The Global Flood Monitoring (GFM) system of the Copernicus Emergency Management Service (CEMS) addresses the challenges and impacts that are caused by flooding. The GFM system provides global, near-re",
+    "source": "arXiv",
+    "query": "SAR flood mapping Sentinel-1"
+  },
+  {
+    "title": "Cancer-Net PCa-Seg: Benchmarking Deep Learning Models for Prostate Cancer Segmentation Using Synthetic Correlated Diffusion Imaging",
+    "year": 2025,
+    "authors": "Jarett Dewbury, Chi-en Amy Tai, Alexander Wong",
+    "abstract": "Prostate cancer (PCa) is the most prevalent cancer among men in the United States, accounting for nearly 300,000 cases, 29\\% of all diagnoses and 35,000 total deaths in 2024. Traditional screening met",
+    "source": "arXiv",
+    "query": "deep learning flood segmentation U-Net"
+  },
+  {
+    "title": "Learn to Accumulate Evidence from All Training Samples: Theory and Practice",
+    "year": 2023,
+    "authors": "Deep Pandey, Qi Yu",
+    "abstract": "Evidential deep learning, built upon belief theory and subjective logic, offers a principled and computationally efficient way to turn a deterministic neural network uncertainty-aware. The resultant e",
+    "source": "arXiv",
+    "query": "deep learning flood segmentation U-Net"
+  },
+  {
+    "title": "The Modern Mathematics of Deep Learning",
+    "year": 2021,
+    "authors": "Julius Berner, Philipp Grohs, Gitta Kutyniok",
+    "abstract": "We describe the new field of mathematical analysis of deep learning. This field emerged around a list of research questions that were not answered within the classical framework of learning theory. Th",
+    "source": "arXiv",
+    "query": "deep learning flood segmentation U-Net"
+  },
+  {
+    "title": "AAU-net: An Adaptive Attention U-net for Breast Lesions Segmentation in Ultrasound Images",
+    "year": 2022,
+    "authors": "Gongping Chen, Yu Dai, Jianxun Zhang",
+    "abstract": "Various deep learning methods have been proposed to segment breast lesion from ultrasound images. However, similar intensity distributions, variable tumor morphology and blurred boundaries present cha",
+    "source": "arXiv",
+    "query": "deep learning flood segmentation U-Net"
+  },
+  {
+    "title": "Robust blue-green urban flood risk management optimised with a genetic algorithm for multiple rainstorm return periods",
+    "year": 2025,
+    "authors": "Asid Ur Rehman, Vassilis Glenis, Elizabeth Lewis",
+    "abstract": "Flood risk managers seek to optimise Blue-Green Infrastructure (BGI) designs to maximise return on investment. Current systems often use optimisation algorithms and detailed flood models to maximise b",
+    "source": "arXiv",
+    "query": "deep learning flood segmentation U-Net"
+  },
+  {
+    "title": "Deep Learning and Computational Physics (Lecture Notes)",
+    "year": 2023,
+    "authors": "Deep Ray, Orazio Pinti, Assad A. Oberai",
+    "abstract": "These notes were compiled as lecture notes for a course developed and taught at the University of the Southern California. They should be accessible to a typical engineering graduate student with a st",
+    "source": "arXiv",
+    "query": "deep learning flood segmentation U-Net"
+  },
+  {
+    "title": "A multitask deep learning model for real-time deployment in embedded systems",
+    "year": 2017,
+    "authors": "Miquel Mart\u00ed, Atsuto Maki",
+    "abstract": "We propose an approach to Multitask Learning (MTL) to make deep learning models faster and lighter for applications in which multiple tasks need to be solved simultaneously, which is particularly usef",
+    "source": "arXiv",
+    "query": "deep learning flood segmentation U-Net"
+  },
+  {
+    "title": "Monodense Deep Neural Model for Determining Item Price Elasticity",
+    "year": 2026,
+    "authors": "Lakshya Garg, Sai Yaswanth, Deep Narayan Mishra",
+    "abstract": "Item Price Elasticity is used to quantify the responsiveness of consumer demand to changes in item prices, enabling businesses to create pricing strategies and optimize revenue management. Sectors suc",
+    "source": "arXiv",
+    "query": "deep learning flood segmentation U-Net"
+  },
+  {
+    "title": "Deep learning observables in computational fluid dynamics",
+    "year": 2019,
+    "authors": "Kjetil O. Lye, Siddhartha Mishra, Deep Ray",
+    "abstract": "Many large scale problems in computational fluid dynamics such as uncertainty quantification, Bayesian inversion, data assimilation and PDE constrained optimization are considered very challenging com",
+    "source": "arXiv",
+    "query": "deep learning flood segmentation U-Net"
+  },
+  {
+    "title": "DILIE: Deep Internal Learning for Image Enhancement",
+    "year": 2020,
+    "authors": "Indra Deep Mastan, Shanmuganathan Raman",
+    "abstract": "We consider the generic deep image enhancement problem where an input image is transformed into a perceptually better-looking image. Recent methods for image enhancement consider the problem by perfor",
+    "source": "arXiv",
+    "query": "deep learning flood segmentation U-Net"
+  },
+  {
+    "title": "Robust blue-green urban flood risk management optimised with a genetic algorithm for multiple rainstorm return periods",
+    "year": 2025,
+    "authors": "Asid Ur Rehman, Vassilis Glenis, Elizabeth Lewis",
+    "abstract": "Flood risk managers seek to optimise Blue-Green Infrastructure (BGI) designs to maximise return on investment. Current systems often use optimisation algorithms and detailed flood models to maximise b",
+    "source": "arXiv",
+    "query": "multisensor fusion flood detection"
+  },
+  {
+    "title": "SemanticVoxels: Sequential Fusion for 3D Pedestrian Detection using LiDAR Point Cloud and Semantic Segmentation",
+    "year": 2020,
+    "authors": "Juncong Fei, Wenbo Chen, Philipp Heidenreich",
+    "abstract": "3D pedestrian detection is a challenging task in automated driving because pedestrians are relatively small, frequently occluded and easily confused with narrow vertical objects. LiDAR and camera are ",
+    "source": "arXiv",
+    "query": "multisensor fusion flood detection"
+  },
+  {
+    "title": "A Question of Time: Revisiting the Use of Recursive Filtering for Temporal Calibration of Multisensor Systems",
+    "year": 2021,
+    "authors": "Jonathan Kelly, Christopher Grebe, Matthew Giamou",
+    "abstract": "We examine the problem of time delay estimation, or temporal calibration, in the context of multisensor data fusion. Differences in processing intervals and other factors typically lead to a relative ",
+    "source": "arXiv",
+    "query": "multisensor fusion flood detection"
+  },
+  {
+    "title": "Information Fusion for Anomaly Detection with the Dendritic Cell Algorithm",
+    "year": 2010,
+    "authors": "Julie Greensmith, Uwe Aickelin, Gianni Tedesco",
+    "abstract": "Dendritic cells are antigen presenting cells that provide a vital link between the innate and adaptive immune system, providing the initial detection of pathogenic invaders. Research into this family ",
+    "source": "arXiv",
+    "query": "multisensor fusion flood detection"
+  },
+  {
+    "title": "SGDFuse: SAM-Guided Diffusion Model for High-Fidelity Infrared and Visible Image Fusion",
+    "year": 2025,
+    "authors": "Xiaoyang Zhang, jinjiang Li, Guodong Fan",
+    "abstract": "Infrared and visible image fusion (IVIF) is essential for integrating thermal saliency with textural details to support downstream perception. However, most existing approaches suffer from \"semantic b",
+    "source": "arXiv",
+    "query": "multisensor fusion flood detection"
+  },
+  {
+    "title": "Challenges and opportunities for AI to help deliver fusion energy",
+    "year": 2026,
+    "authors": "Adriano Agnello, Helen Brooks, Cyd Cowley",
+    "abstract": "There is great potential for the application of AI tools in fusion research, and substantial worldwide benefit if fusion power is realised. However, using AI comes with its own challenges, many of whi",
+    "source": "arXiv",
+    "query": "multisensor fusion flood detection"
+  },
+  {
+    "title": "Information Fusion in the Immune System",
+    "year": 2010,
+    "authors": "Jamie Twycross, Uwe Aickelin",
+    "abstract": "Biologically-inspired methods such as evolutionary algorithms and neural networks are proving useful in the field of information fusion. Artificial Immune Systems (AISs) are a biologically-inspired ap",
+    "source": "arXiv",
+    "query": "multisensor fusion flood detection"
+  },
+  {
+    "title": "Multi$^{\\mathbf{3}}$Net: Segmenting Flooded Buildings via Fusion of Multiresolution, Multisensor, and Multitemporal Satellite Imagery",
+    "year": 2018,
+    "authors": "Tim G. J. Rudner, Marc Ru\u00dfwurm, Jakub Fil",
+    "abstract": "We propose a novel approach for rapid segmentation of flooded buildings by fusing multiresolution, multisensor, and multitemporal satellite imagery in a convolutional neural network. Our model signifi",
+    "source": "arXiv",
+    "query": "multisensor fusion flood detection"
+  },
+  {
+    "title": "InMyFace: Inertial and Mechanomyography-Based Sensor Fusion for Wearable Facial Activity Recognition",
+    "year": 2023,
+    "authors": "Hymalai Bello, Luis Alfredo Sanchez Marin, Sungho Suh",
+    "abstract": "Recognizing facial activity is a well-understood (but non-trivial) computer vision problem. However, reliable solutions require a camera with a good view of the face, which is often unavailable in wea",
+    "source": "arXiv",
+    "query": "multisensor fusion flood detection"
+  },
+  {
+    "title": "Retrospective of the ARPA-E ALPHA fusion program",
+    "year": 2019,
+    "authors": "C. L. Nehl, R. J. Umstattd, W. R. Regan",
+    "abstract": "This paper provides a retrospective of the ALPHA (Accelerating Low-cost Plasma Heating and Assembly) fusion program of the Advanced Research Projects Agency-Energy (ARPA-E) of the U.S. Department of E",
+    "source": "arXiv",
+    "query": "multisensor fusion flood detection"
+  },
+  {
+    "title": "Aggregated Deep Local Features for Remote Sensing Image Retrieval",
+    "year": 2019,
+    "authors": "Raffaele Imbriaco, Clint Sebastian, Egor Bondarev",
+    "abstract": "Remote Sensing Image Retrieval remains a challenging topic due to the special nature of Remote Sensing Imagery. Such images contain various different semantic objects, which clearly complicates the re",
+    "source": "arXiv",
+    "query": "NDWI water index remote sensing"
+  },
+  {
+    "title": "Change-Agent: Towards Interactive Comprehensive Remote Sensing Change Interpretation and Analysis",
+    "year": 2024,
+    "authors": "Chenyang Liu, Keyan Chen, Haotian Zhang",
+    "abstract": "Monitoring changes in the Earth's surface is crucial for understanding natural processes and human impacts, necessitating precise and comprehensive interpretation methodologies. Remote sensing satelli",
+    "source": "arXiv",
+    "query": "NDWI water index remote sensing"
+  },
+  {
+    "title": "Vision-Language Modeling Meets Remote Sensing: Models, Datasets and Perspectives",
+    "year": 2025,
+    "authors": "Xingxing Weng, Chao Pang, Gui-Song Xia",
+    "abstract": "Vision-language modeling (VLM) aims to bridge the information gap between images and natural language. Under the new paradigm of first pre-training on massive image-text pairs and then fine-tuning on ",
+    "source": "arXiv",
+    "query": "NDWI water index remote sensing"
+  },
+  {
+    "title": "TimeSenCLIP: A Time Series Vision-Language Model for Remote Sensing",
+    "year": 2025,
+    "authors": "Pallavi Jain, Diego Marcos, Dino Ienco",
+    "abstract": "Vision-language models (VLMs) have shown significant promise in remote sensing applications, particularly for land-use and land-cover (LULC) mapping via zero-shot classification and retrieval. However",
+    "source": "arXiv",
+    "query": "NDWI water index remote sensing"
+  },
+  {
+    "title": "Remote Sensing SpatioTemporal Vision-Language Models: A Comprehensive Survey",
+    "year": 2024,
+    "authors": "Chenyang Liu, Jiafan Zhang, Keyan Chen",
+    "abstract": "The interpretation of multi-temporal remote sensing imagery is critical for monitoring Earth's dynamic processes-yet previous change detection methods, which produce binary or semantic masks, fall sho",
+    "source": "arXiv",
+    "query": "NDWI water index remote sensing"
+  },
+  {
+    "title": "A Progressive Image Restoration Network for High-order Degradation Imaging in Remote Sensing",
+    "year": 2024,
+    "authors": "Yujie Feng, Yin Yang, Xiaohong Fan",
+    "abstract": "Recently, deep learning methods have gained remarkable achievements in the field of image restoration for remote sensing (RS). However, most existing RS image restoration methods focus mainly on conve",
+    "source": "arXiv",
+    "query": "NDWI water index remote sensing"
+  },
+  {
+    "title": "A Multi-scale Generalized Shrinkage Threshold Network for Image Blind Deblurring in Remote Sensing",
+    "year": 2023,
+    "authors": "Yujie Feng, Yin Yang, Xiaohong Fan",
+    "abstract": "Remote sensing images are essential for many applications of the earth's sciences, but their quality can usually be degraded due to limitations in sensor technology and complex imaging environments. T",
+    "source": "arXiv",
+    "query": "NDWI water index remote sensing"
+  },
+  {
+    "title": "An Attention-Fused Network for Semantic Segmentation of Very-High-Resolution Remote Sensing Imagery",
+    "year": 2021,
+    "authors": "Xuan Yang, Shanshan Li, Zhengchao Chen",
+    "abstract": "Semantic segmentation is an essential part of deep learning. In recent years, with the development of remote sensing big data, semantic segmentation has been increasingly used in remote sensing. Deep ",
+    "source": "arXiv",
+    "query": "NDWI water index remote sensing"
+  },
+  {
+    "title": "Building-road Collaborative Extraction from Remotely Sensed Images via Cross-Interaction",
+    "year": 2023,
+    "authors": "Haonan Guo, Xin Su, Chen Wu",
+    "abstract": "Buildings are the basic carrier of social production and human life; roads are the links that interconnect social networks. Building and road information has important application value in the frontie",
+    "source": "arXiv",
+    "query": "NDWI water index remote sensing"
+  },
+  {
+    "title": "A Survey on Object Detection in Optical Remote Sensing Images",
+    "year": 2016,
+    "authors": "Gong Cheng, Junwei Han",
+    "abstract": "Object detection in optical remote sensing images, being a fundamental but challenging problem in the field of aerial and satellite image analysis, plays an important role for a wide range of applicat",
+    "source": "arXiv",
+    "query": "NDWI water index remote sensing"
+  },
+  {
+    "title": "Changing Data Sources in the Age of Machine Learning for Official Statistics",
+    "year": 2023,
+    "authors": "Cedric De Boom, Michael Reusens",
+    "abstract": "Data science has become increasingly essential for the production of official statistics, as it enables the automated collection, processing, and analysis of large amounts of data. With such data scie",
+    "source": "arXiv",
+    "query": "XGBoost flood prediction machine learning"
+  },
+  {
+    "title": "DOME: Recommendations for supervised machine learning validation in biology",
+    "year": 2020,
+    "authors": "Ian Walsh, Dmytro Fishman, Dario Garcia-Gasulla",
+    "abstract": "Modern biology frequently relies on machine learning to provide predictions and improve decision processes. There have been recent calls for more scrutiny on machine learning performance and possible ",
+    "source": "arXiv",
+    "query": "XGBoost flood prediction machine learning"
+  },
+  {
+    "title": "Learning Curves for Decision Making in Supervised Machine Learning: A Survey",
+    "year": 2022,
+    "authors": "Felix Mohr, Jan N. van Rijn",
+    "abstract": "Learning curves are a concept from social sciences that has been adopted in the context of machine learning to assess the performance of a learning algorithm with respect to a certain resource, e.g., ",
+    "source": "arXiv",
+    "query": "XGBoost flood prediction machine learning"
+  },
+  {
+    "title": "Active learning for data streams: a survey",
+    "year": 2023,
+    "authors": "Davide Cacciarelli, Murat Kulahci",
+    "abstract": "Online active learning is a paradigm in machine learning that aims to select the most informative data points to label from a data stream. The problem of minimizing the cost associated with collecting",
+    "source": "arXiv",
+    "query": "XGBoost flood prediction machine learning"
+  },
+  {
+    "title": "Physics-Inspired Interpretability Of Machine Learning Models",
+    "year": 2023,
+    "authors": "Maximilian P Niroomand, David J Wales",
+    "abstract": "The ability to explain decisions made by machine learning models remains one of the most significant hurdles towards widespread adoption of AI in highly sensitive areas such as medicine, cybersecurity",
+    "source": "arXiv",
+    "query": "XGBoost flood prediction machine learning"
+  },
+  {
+    "title": "Privacy-preserving machine learning for healthcare: open challenges and future perspectives",
+    "year": 2023,
+    "authors": "Alejandro Guerra-Manzanares, L. Julian Lechuga Lopez, Michail Maniatakos",
+    "abstract": "Machine Learning (ML) has recently shown tremendous success in modeling various healthcare prediction tasks, ranging from disease diagnosis and prognosis to patient treatment. Due to the sensitive nat",
+    "source": "arXiv",
+    "query": "XGBoost flood prediction machine learning"
+  },
+  {
+    "title": "A Benchmark Study of Machine Learning Models for Online Fake News Detection",
+    "year": 2019,
+    "authors": "Junaed Younus Khan, Md. Tawkat Islam Khondaker, Sadia Afroz",
+    "abstract": "The proliferation of fake news and its propagation on social media has become a major concern due to its ability to create devastating impacts. Different machine learning approaches have been suggeste",
+    "source": "arXiv",
+    "query": "XGBoost flood prediction machine learning"
+  },
+  {
+    "title": "MerLin: A Discovery Engine for Photonic and Hybrid Quantum Machine Learning",
+    "year": 2026,
+    "authors": "Cassandre Notton, Benjamin Stott, Philippe Schoeb",
+    "abstract": "Identifying where quantum models may offer practical benefits in near term quantum machine learning (QML) requires moving beyond isolated algorithmic proposals toward systematic and empirical explorat",
+    "source": "arXiv",
+    "query": "XGBoost flood prediction machine learning"
+  },
+  {
+    "title": "Emotion in Reinforcement Learning Agents and Robots: A Survey",
+    "year": 2017,
+    "authors": "Thomas M. Moerland, Joost Broekens, Catholijn M. Jonker",
+    "abstract": "This article provides the first survey of computational models of emotion in reinforcement learning (RL) agents. The survey focuses on agent/robot emotions, and mostly ignores human user emotions. Emo",
+    "source": "arXiv",
+    "query": "XGBoost flood prediction machine learning"
+  },
+  {
+    "title": "Fourier Learning Machines: Nonharmonic Fourier-Based Neural Networks for Scientific Machine Learning",
+    "year": 2025,
+    "authors": "Mominul Rubel, Adam Meyers, Gabriel Nicolosi",
+    "abstract": "We introduce the Fourier Learning Machine (FLM), a neural network (NN) architecture designed to represent a multidimensional nonharmonic Fourier series. The FLM uses a simple feedforward structure wit",
+    "source": "arXiv",
+    "query": "XGBoost flood prediction machine learning"
+  },
+  {
+    "title": "Robust blue-green urban flood risk management optimised with a genetic algorithm for multiple rainstorm return periods",
+    "year": 2025,
+    "authors": "Asid Ur Rehman, Vassilis Glenis, Elizabeth Lewis",
+    "abstract": "Flood risk managers seek to optimise Blue-Green Infrastructure (BGI) designs to maximise return on investment. Current systems often use optimisation algorithms and detailed flood models to maximise b",
+    "source": "arXiv",
+    "query": "SAR speckle filter flood"
+  },
+  {
+    "title": "QSpeckleFilter: a Quantum Machine Learning approach for SAR speckle filtering",
+    "year": 2024,
+    "authors": "Francesco Mauro, Alessandro Sebastianelli, Maria Pia Del Rosso",
+    "abstract": "The use of Synthetic Aperture Radar (SAR) has greatly advanced our capacity for comprehensive Earth monitoring, providing detailed insights into terrestrial surface use and cover regardless of weather",
+    "source": "arXiv",
+    "query": "SAR speckle filter flood"
+  },
+  {
+    "title": "SAR Image Despeckling by Deep Neural Networks: from a pre-trained model to an end-to-end training strategy",
+    "year": 2020,
+    "authors": "Emanuele Dalsasso, Xiangli Yang, Lo\u00efc Denis",
+    "abstract": "Speckle reduction is a longstanding topic in synthetic aperture radar (SAR) images. Many different schemes have been proposed for the restoration of intensity SAR images. Among the different possible ",
+    "source": "arXiv",
+    "query": "SAR speckle filter flood"
+  },
+  {
+    "title": "On the Performance of Filters for Reduction of Speckle Noise in SAR Images off the Coast of the Gulf of Guinea",
+    "year": 2013,
+    "authors": "Griffith S. Klogo, Akpeko Gasonoo, Isaac K. E. Ampomah",
+    "abstract": "Synthetic Aperture Radar (SAR) imagery to monitor oil spills are some methods that have been proposed for the West African sub-region. With the increase in the number of oil exploration companies in G",
+    "source": "arXiv",
+    "query": "SAR speckle filter flood"
+  },
+  {
+    "title": "Deep Learning Based Speckle Filtering for Polarimetric SAR Images. Application to Sentinel-1",
+    "year": 2024,
+    "authors": "Alejandro Mestre-Quereda, Juan M. Lopez-Sanchez",
+    "abstract": "Speckle suppression in synthetic aperture radar (SAR) images is a key processing step which continues to be a research topic. A wide variety of methods, using either spatially-based approaches or tran",
+    "source": "arXiv",
+    "query": "SAR speckle filter flood"
+  },
+  {
+    "title": "Purely Speckled Intensity Images Need for SAR Despeckling with SDS-SAR",
+    "year": 2023,
+    "authors": "Liang Chen, Yifei Yin, Hao Shi",
+    "abstract": "Speckle noise is generated along with the SAR imaging mechanism and degrades the quality of SAR images, leading to difficult interpretation. Hence, despeckling is an indispensable step in SAR pre-proc",
+    "source": "arXiv",
+    "query": "SAR speckle filter flood"
+  },
+  {
+    "title": "A Practical Solution for SAR Despeckling With Adversarial Learning Generated Speckled-to-Speckled Images",
+    "year": 2019,
+    "authors": "Ye Yuan, Jian Guan, Pengming Feng",
+    "abstract": "In this letter, we aim to address a synthetic aperture radar (SAR) despeckling problem with the necessity of neither clean (speckle-free) SAR images nor independent speckled image pairs from the same ",
+    "source": "arXiv",
+    "query": "SAR speckle filter flood"
+  },
+  {
+    "title": "Speckle Noise Analysis for Synthetic Aperture Radar (SAR) Space Data",
+    "year": 2024,
+    "authors": "Sanjjushri Varshini R, Rohith Mahadevan, Bagiya Lakshmi S",
+    "abstract": "This research tackles the challenge of speckle noise in Synthetic Aperture Radar (SAR) space data, a prevalent issue that hampers the clarity and utility of SAR images. The study presents a comparativ",
+    "source": "arXiv",
+    "query": "SAR speckle filter flood"
+  },
+  {
+    "title": "Flood Risk Follows Valleys, Not Grids: Graph Neural Networks for Flash Flood Susceptibility Mapping in Himachal Pradesh with Conformal Uncertainty Quantification",
+    "year": 2026,
+    "authors": "Paras Sharma, Swastika Sharma",
+    "abstract": "Flash floods are the most destructive natural hazard in Himachal Pradesh (HP), India, causing over 400 fatalities and $1.2 billion in losses in the 2023 monsoon season alone. Existing risk maps treat ",
+    "source": "arXiv",
+    "query": "SAR speckle filter flood"
+  },
+  {
+    "title": "Improved Flood Insights: Diffusion-Based SAR to EO Image Translation",
+    "year": 2023,
+    "authors": "Minseok Seo, Youngtack Oh, Doyi Kim",
+    "abstract": "Driven by rapid climate change, the frequency and intensity of flood events are increasing. Electro-Optical (EO) satellite imagery is commonly utilized for rapid response. However, its utilities in fl",
+    "source": "arXiv",
+    "query": "SAR speckle filter flood"
+  },
+  {
+    "title": "Robust blue-green urban flood risk management optimised with a genetic algorithm for multiple rainstorm return periods",
+    "year": 2025,
+    "authors": "Asid Ur Rehman, Vassilis Glenis, Elizabeth Lewis",
+    "abstract": "Flood risk managers seek to optimise Blue-Green Infrastructure (BGI) designs to maximise return on investment. Current systems often use optimisation algorithms and detailed flood models to maximise b",
+    "source": "arXiv",
+    "query": "change detection flood SAR"
+  },
+  {
+    "title": "Unsupervised Flood Detection on SAR Time Series",
+    "year": 2022,
+    "authors": "Ritu Yadav, Andrea Nascetti, Hossein Azizpour",
+    "abstract": "Human civilization has an increasingly powerful influence on the earth system. Affected by climate change and land-use change, natural disasters such as flooding have been increasing in recent years. ",
+    "source": "arXiv",
+    "query": "change detection flood SAR"
+  },
+  {
+    "title": "Improved Flood Insights: Diffusion-Based SAR to EO Image Translation",
+    "year": 2023,
+    "authors": "Minseok Seo, Youngtack Oh, Doyi Kim",
+    "abstract": "Driven by rapid climate change, the frequency and intensity of flood events are increasing. Electro-Optical (EO) satellite imagery is commonly utilized for rapid response. However, its utilities in fl",
+    "source": "arXiv",
+    "query": "change detection flood SAR"
+  },
+  {
+    "title": "Quickest Change Point Detection and Identification Across a Generic Sensor Array",
+    "year": 2013,
+    "authors": "Di Li, Lifeng Lai, Shuguang Cui",
+    "abstract": "In this paper, we consider the problem of quickest change point detection and identification over a linear array of $N$ sensors, where the change pattern could first reach any of these sensors, and th",
+    "source": "arXiv",
+    "query": "change detection flood SAR"
+  },
+  {
+    "title": "DAM-Net: Global Flood Detection from SAR Imagery Using Differential Attention Metric-Based Vision Transformers",
+    "year": 2023,
+    "authors": "Tamer Saleh, Xingxing Weng, Shimaa Holail",
+    "abstract": "The detection of flooded areas using high-resolution synthetic aperture radar (SAR) imagery is a critical task with applications in crisis and disaster management, as well as environmental resource pl",
+    "source": "arXiv",
+    "query": "change detection flood SAR"
+  },
+  {
+    "title": "Flood Risk Follows Valleys, Not Grids: Graph Neural Networks for Flash Flood Susceptibility Mapping in Himachal Pradesh with Conformal Uncertainty Quantification",
+    "year": 2026,
+    "authors": "Paras Sharma, Swastika Sharma",
+    "abstract": "Flash floods are the most destructive natural hazard in Himachal Pradesh (HP), India, causing over 400 fatalities and $1.2 billion in losses in the 2023 monsoon season alone. Existing risk maps treat ",
+    "source": "arXiv",
+    "query": "change detection flood SAR"
+  },
+  {
+    "title": "Cross-Polarization Fusion of VV AND VH SAR Observations for Improved Flood Mapping",
+    "year": 2026,
+    "authors": "Jagrati Talreja, Tewodros Syum Gebre, Leila Hashemi Beni",
+    "abstract": "Synthetic Aperture Radar (SAR) imagery is widely used for flood monitoring due to its all-weather and day-night imaging capability. However, flood mapping using single-polarization SAR data remains ch",
+    "source": "arXiv",
+    "query": "change detection flood SAR"
+  },
+  {
+    "title": "Predictive Modeling of Flood-Prone Areas Using SAR and Environmental Variables",
+    "year": 2025,
+    "authors": "Edwin Oluoch Awino, Denis Machanda",
+    "abstract": "Flooding is one of the most destructive natural hazards worldwide, posing serious risks to ecosystems, infrastructure, and human livelihoods. This study combines Synthetic Aperture Radar (SAR) imagery",
+    "source": "arXiv",
+    "query": "change detection flood SAR"
+  },
+  {
+    "title": "Automated flood detection from Sentinel-1 GRD time series using Bayesian analysis for change point problems",
+    "year": 2025,
+    "authors": "Narumasa Tsutsumida, Tomohiro Tanaka, Nifat Sultana",
+    "abstract": "Current Synthetic Aperture Radar (SAR)-based flood detection methods face critical limitations that hinder operational deployment. Supervised learning approaches require extensive labeled training dat",
+    "source": "arXiv",
+    "query": "change detection flood SAR"
+  },
+  {
+    "title": "ALTIS: Automated Loss Triage and Impact Scoring from Sentinel-1 SAR for Property-Level Flood Damage Assessment",
+    "year": 2026,
+    "authors": "Amogh Vinaykumar, Prem Kamasani",
+    "abstract": "Floods are among the costliest natural catastrophes globally, yet the property and casualty insurance industry's post-event response remains heavily reliant on manual field inspection: slow, expensive",
+    "source": "arXiv",
+    "query": "change detection flood SAR"
+  },
+  {
+    "title": "Moving dunes on the Google Earth",
+    "year": 2013,
+    "authors": "Amelia Carolina Sparavigna",
+    "abstract": "Several methods exist for surveying the dunes and estimate their migration rate. Among methods suitable for the macroscopic scale, the use of the satellite images available on Google Earth is a conven",
+    "source": "arXiv",
+    "query": "Google Earth Engine flood"
+  },
+  {
+    "title": "Robust blue-green urban flood risk management optimised with a genetic algorithm for multiple rainstorm return periods",
+    "year": 2025,
+    "authors": "Asid Ur Rehman, Vassilis Glenis, Elizabeth Lewis",
+    "abstract": "Flood risk managers seek to optimise Blue-Green Infrastructure (BGI) designs to maximise return on investment. Current systems often use optimisation algorithms and detailed flood models to maximise b",
+    "source": "arXiv",
+    "query": "Google Earth Engine flood"
+  },
+  {
+    "title": "Lunar-like silicate material forms the Earth quasisatellite (469219) 2016 HO3 Kamo`oalewa",
+    "year": 2021,
+    "authors": "Benjamin N. L. Sharkey, Vishnu Reddy, Renu Malhotra",
+    "abstract": "Little is known about Earth quasi-satellites, a class of near-Earth small solar system bodies that orbit the sun but remain close to the Earth, because they are faint and difficult to observe. Here we",
+    "source": "arXiv",
+    "query": "Google Earth Engine flood"
+  },
+  {
+    "title": "An Urban Water Extraction Method Combining Deep Learning and Google Earth Engine",
+    "year": 2019,
+    "authors": "Yudie Wang, Zhiwei Li, Chao Zeng",
+    "abstract": "Urban water is important for the urban ecosystem. Accurate and efficient detection of urban water with remote sensing data is of great significance for urban management and planning. In this paper, we",
+    "source": "arXiv",
+    "query": "Google Earth Engine flood"
+  },
+  {
+    "title": "Atmospheric dynamics of Earth-like tidally locked aquaplanets",
+    "year": 2010,
+    "authors": "Timothy M. Merlis, Tapio Schneider",
+    "abstract": "We present simulations of atmospheres of Earth-like aquaplanets that are tidally locked to their star, that is, planets whose orbital period is equal to the rotation period about their spin axis, so t",
+    "source": "arXiv",
+    "query": "Google Earth Engine flood"
+  },
+  {
+    "title": "Earth and Terrestrial Planet Formation",
+    "year": 2015,
+    "authors": "Seth A. Jacobson, Kevin J. Walsh",
+    "abstract": "The growth and composition of Earth is a direct consequence of planet formation throughout the Solar System. We discuss the known history of the Solar System, the proposed stages of growth and how the",
+    "source": "arXiv",
+    "query": "Google Earth Engine flood"
+  },
+  {
+    "title": "The Formation and Dynamics of Super-Earth Planets",
+    "year": 2013,
+    "authors": "Nader Haghighipour",
+    "abstract": "Super-Earths, objects slightly larger than Earth and slightly smaller than Uranus, have found a special place in exoplanetary science. As a new class of planetary bodies, these objects have challenged",
+    "source": "arXiv",
+    "query": "Google Earth Engine flood"
+  },
+  {
+    "title": "An experimental and theoretical investigation of HCN production in the Hadean Earth atmosphere",
+    "year": 2022,
+    "authors": "Ben K. D. Pearce, Chao He, Sarah M. H\u00f6rst",
+    "abstract": "A critical early stage for the origin of life on Earth may have involved the production of hydrogen cyanide (HCN) in a reducing, predominantly H$_2$ atmosphere. HCN is crucial for the origin of life a",
+    "source": "arXiv",
+    "query": "Google Earth Engine flood"
+  },
+  {
+    "title": "The Search for Extrasolar Earth-like planets",
+    "year": 2003,
+    "authors": "S. Seager",
+    "abstract": "The search for extrasolar Earth-like planets is underway. Over 100 extrasolar giant planets are known to orbit nearby sun-like stars, including several in multiple-planet systems. These planetary syst",
+    "source": "arXiv",
+    "query": "Google Earth Engine flood"
+  },
+  {
+    "title": "Geo-neutrinos: a new probe of Earth's interior",
+    "year": 2005,
+    "authors": "Gianni Fiorentini, Marcello Lissia, Fabio Mantovani",
+    "abstract": "In preparation to the experimental results which will be available in the future, we study geo-neutrino production for different models of mantle convection and composition. By using global mass balan",
+    "source": "arXiv",
+    "query": "Google Earth Engine flood"
+  },
+  {
+    "title": "Robust blue-green urban flood risk management optimised with a genetic algorithm for multiple rainstorm return periods",
+    "year": 2025,
+    "authors": "Asid Ur Rehman, Vassilis Glenis, Elizabeth Lewis",
+    "abstract": "Flood risk managers seek to optimise Blue-Green Infrastructure (BGI) designs to maximise return on investment. Current systems often use optimisation algorithms and detailed flood models to maximise b",
+    "source": "arXiv",
+    "query": "ensemble learning flood susceptibility"
+  },
+  {
+    "title": "Flood Risk Follows Valleys, Not Grids: Graph Neural Networks for Flash Flood Susceptibility Mapping in Himachal Pradesh with Conformal Uncertainty Quantification",
+    "year": 2026,
+    "authors": "Paras Sharma, Swastika Sharma",
+    "abstract": "Flash floods are the most destructive natural hazard in Himachal Pradesh (HP), India, causing over 400 fatalities and $1.2 billion in losses in the 2023 monsoon season alone. Existing risk maps treat ",
+    "source": "arXiv",
+    "query": "ensemble learning flood susceptibility"
+  },
+  {
+    "title": "Machine Learning for Generalizable Prediction of Flood Susceptibility",
+    "year": 2019,
+    "authors": "Chelsea Sidrane, Dylan J Fitzpatrick, Andrew Annex",
+    "abstract": "Flooding is a destructive and dangerous hazard and climate change appears to be increasing the frequency of catastrophic flooding events around the world. Physics-based flood models are costly to cali",
+    "source": "arXiv",
+    "query": "ensemble learning flood susceptibility"
+  },
+  {
+    "title": "Dissimilarity-based Ensembles for Multiple Instance Learning",
+    "year": 2014,
+    "authors": "Veronika Cheplygina, David M. J. Tax, Marco Loog",
+    "abstract": "In multiple instance learning, objects are sets (bags) of feature vectors (instances) rather than individual feature vectors. In this paper we address the problem of how these bags can best be represe",
+    "source": "arXiv",
+    "query": "ensemble learning flood susceptibility"
+  },
+  {
+    "title": "Ensemble quantile-based deep learning framework for streamflow and flood prediction in Australian catchments",
+    "year": 2024,
+    "authors": "Rohitash Chandra, Arpit Kapoor, Siddharth Khedkar",
+    "abstract": "In recent years, climate extremes such as floods have created significant environmental and economic hazards for Australia. Deep learning methods have been promising for predicting extreme climate eve",
+    "source": "arXiv",
+    "query": "ensemble learning flood susceptibility"
+  },
+  {
+    "title": "Climate Adaptation with Reinforcement Learning: Experiments with Flooding and Transportation in Copenhagen",
+    "year": 2024,
+    "authors": "Miguel Costa, Morten W. Petersen, Arthur Vandervoort",
+    "abstract": "Due to climate change the frequency and intensity of extreme rainfall events, which contribute to urban flooding, are expected to increase in many places. These floods can damage transport infrastruct",
+    "source": "arXiv",
+    "query": "ensemble learning flood susceptibility"
+  },
+  {
+    "title": "Calibration of the underlying surface parameters for urban flood using latent variables and adjoint equation",
+    "year": 2026,
+    "authors": "Yongfu Tian, Shan Ding, Guofeng Su",
+    "abstract": "Calibrating the urban underlying surface parameters is crucial for urban flood simulation. We formulate the parameter calibration problem into an optimization problem within the Bayesian framework usi",
+    "source": "arXiv",
+    "query": "ensemble learning flood susceptibility"
+  },
+  {
+    "title": "Value Bonuses using Ensemble Errors for Exploration in Reinforcement Learning",
+    "year": 2026,
+    "authors": "Abdul Wahab, Raksha Kumaraswamy, Martha White",
+    "abstract": "Optimistic value estimates provide one mechanism for directed exploration in reinforcement learning (RL). The agent acts greedily with respect to an estimate of the value plus what can be seen as a va",
+    "source": "arXiv",
+    "query": "ensemble learning flood susceptibility"
+  },
+  {
+    "title": "FL-MHSM: Spatially-adaptive Fusion and Ensemble Learning for Flood-Landslide Multi-Hazard Susceptibility Mapping at Regional Scale",
+    "year": 2026,
+    "authors": "Aswathi Mundayatt, Jaya Sreevalsan-Nair",
+    "abstract": "Existing multi-hazard susceptibility mapping (MHSM) studies often rely on spatially uniform models, treat hazards independently, and provide limited representation of cross-hazard dependence and uncer",
+    "source": "arXiv",
+    "query": "ensemble learning flood susceptibility"
+  },
+  {
+    "title": "Active learning for data streams: a survey",
+    "year": 2023,
+    "authors": "Davide Cacciarelli, Murat Kulahci",
+    "abstract": "Online active learning is a paradigm in machine learning that aims to select the most informative data points to label from a data stream. The problem of minimizing the cost associated with collecting",
+    "source": "arXiv",
+    "query": "ensemble learning flood susceptibility"
+  },
+  {
+    "title": "Edge-state enhanced transport in a 2-dimensional quantum walk",
+    "year": 2014,
+    "authors": "Janos K. Asboth, Jonathan M. Edge",
+    "abstract": "Quantum walks on translation invariant regular graphs spread quadratically faster than their classical counterparts. The same coherence that gives them this quantum speedup inhibits, or even stops the",
+    "source": "arXiv",
+    "query": "edge deployment geospatial inference"
+  },
+  {
+    "title": "Dynamic Pricing for On-Demand DNN Inference in the Edge-AI Market",
+    "year": 2025,
+    "authors": "Songyuan Li, Jia Hu, Geyong Min",
+    "abstract": "The convergence of edge computing and Artificial Intelligence (AI) gives rise to Edge-AI, which enables the deployment of real-time AI applications at the network edge. A key research challenge in Edg",
+    "source": "arXiv",
+    "query": "edge deployment geospatial inference"
+  },
+  {
+    "title": "Geospatial Semantics",
+    "year": 2017,
+    "authors": "Yingjie Hu",
+    "abstract": "Geospatial semantics is a broad field that involves a variety of research areas. The term semantics refers to the meaning of things, and is in contrast with the term syntactics. Accordingly, studies o",
+    "source": "arXiv",
+    "query": "edge deployment geospatial inference"
+  },
+  {
+    "title": "Geospatial Reasoning with Shapefiles for Supporting Policy Decisions",
+    "year": 2021,
+    "authors": "Henrique Santos, James P. McCusker, Deborah L. McGuinness",
+    "abstract": "Policies are authoritative assets that are present in multiple domains to support decision-making. They describe what actions are allowed or recommended when domain entities and their attributes satis",
+    "source": "arXiv",
+    "query": "edge deployment geospatial inference"
+  },
+  {
+    "title": "High Performance Computing for Geospatial Applications: A Retrospective View",
+    "year": 2019,
+    "authors": "Marc P. Armstrong",
+    "abstract": "Many types of geospatial analyses are computationally complex, involving, for example, solution processes that require numerous iterations or combinatorial comparisons. This complexity has motivated t",
+    "source": "arXiv",
+    "query": "edge deployment geospatial inference"
+  },
+  {
+    "title": "eDisco: Discovering Edge Nodes Along the Path",
+    "year": 2018,
+    "authors": "Aleksandr Zavodovski, Nitinder Mohan, Jussi Kangasharju",
+    "abstract": "Edge computing is seen as an enabler for upcoming applications requiring low latency offloading, such as augmented reality, and as a key building block for Internet of Things. Edge computing extends t",
+    "source": "arXiv",
+    "query": "edge deployment geospatial inference"
+  },
+  {
+    "title": "GeoResponder: Towards Building Geospatial LLMs for Time-Critical Disaster Response",
+    "year": 2025,
+    "authors": "Ahmed El Fekih Zguir, Ferda Ofli, Muhammad Imran",
+    "abstract": "LLMs excel at linguistic tasks but lack the inner geospatial capabilities needed for time-critical disaster response, where reasoning about road networks, coordinates, and access to essential infrastr",
+    "source": "arXiv",
+    "query": "edge deployment geospatial inference"
+  },
+  {
+    "title": "Deep Learning Techniques for Geospatial Data Analysis",
+    "year": 2020,
+    "authors": "Arvind W. Kiwelekar, Geetanjali S. Mahamunkar, Laxman D. Netak",
+    "abstract": "Consumer electronic devices such as mobile handsets, goods tagged with RFID labels, location and position sensors are continuously generating a vast amount of location enriched data called geospatial ",
+    "source": "arXiv",
+    "query": "edge deployment geospatial inference"
+  },
+  {
+    "title": "Identification of Anomalous Geospatial Trajectories via Persistent Homology",
+    "year": 2024,
+    "authors": "Kyle Evans-Lee, Kevin Lamb",
+    "abstract": "We present a novel method for analyzing geospatial trajectory data using topological data analysis (TDA) to identify a specific class of anomalies, commonly referred to as crop circles, in AIS data. T",
+    "source": "arXiv",
+    "query": "edge deployment geospatial inference"
+  },
+  {
+    "title": "Big Data and Geospatial Analysis",
+    "year": 2019,
+    "authors": "Guy Lansley, Michael de Smith, Michael Goodchild",
+    "abstract": "Perhaps one of the mostly hotly debated topics in recent years has been the question of \"GIS and Big Data\". Much of the discussion has been about the data: huge volumes of 2D and 3D spatial data and s",
+    "source": "arXiv",
+    "query": "edge deployment geospatial inference"
+  }
+]

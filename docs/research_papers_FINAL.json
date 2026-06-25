@@ -1,0 +1,3549 @@
+{
+  "total_papers": 394,
+  "sources": [
+    "Semantic Scholar",
+    "arXiv",
+    "OpenAlex"
+  ],
+  "date_collected": "2026-06-26",
+  "categories": {
+    "SAR Flood Mapping & Processing Chain": 73,
+    "Deep Learning (U-Net/CNN/Transformer)": 61,
+    "Multisensor Fusion (SAR + Optical)": 10,
+    "Water Indices (NDWI/MNDWI/AWEI)": 16,
+    "Ensemble ML (XGBoost/RF/LightGBM/CatBoost)": 61,
+    "SAR Preprocessing (Speckle/Calibration)": 24,
+    "Adaptive Thresholding (Otsu/Entropy)": 6,
+    "Change Detection & Time Series": 18,
+    "Cloud Computing (GEE/Sentinel Hub/Copernicus)": 14,
+    "Validation & Accuracy Assessment": 11,
+    "DEM Terrain & HAND Model": 8,
+    "Production & Edge Deployment": 24,
+    "Flood Early Warning Systems": 4,
+    "Object-Based & Texture Analysis": 2,
+    "Transfer Learning & Semi-Supervised": 3,
+    "Graph Neural Networks & Attention": 0,
+    "Loss Functions & Class Imbalance": 0,
+    "Morphological & Post-Processing": 10,
+    "Flood Depth & Duration Estimation": 0,
+    "Other Remote Sensing": 49
+  },
+  "papers": [
+    {
+      "title": "DeepEye: A Steerable Self-driving Data Agent System",
+      "year": 2026,
+      "citations": 1,
+      "authors": "Boyan Li, Yiran Peng, Yupeng Xie",
+      "doi": "https://doi.org/10.1145/3788853.3801612",
+      "query": "FastAPI Celery microservices",
+      "source_db": "openalex"
+    },
+    {
+      "title": "Uncertainty‐Aware Machine Learning Models for Flash Flood Prediction",
+      "year": 2026,
+      "citations": 0,
+      "authors": "Jaqueline A. J. P. Soares, Allan K. S. Soares, Luiz F. Satolo",
+      "query": "XGBoost LightGBM flood prediction machine learning",
+      "source_db": "semantic"
+    },
+    {
+      "title": "Explainable Flood Segmentation on Sentinel-1 SAR Imagery: A Comparative Study of CNN and Transformer Architectures",
+      "year": 2026,
+      "authors": "Arundhuti Banerjee, David Daou",
+      "abstract": "Rapid and accurate flood prediction is essential for disaster response and mitigation planning. Synthetic Aperture Radar (SAR) sensors in satellites are well-suited for this purpose because they opera",
+      "source": "arXiv",
+      "query": "SAR flood mapping Sentinel-1",
+      "source_db": "arxiv"
+    },
+    {
+      "title": "ALTIS: Automated Loss Triage and Impact Scoring from Sentinel-1 SAR for Property-Level Flood Damage Assessment",
+      "year": 2026,
+      "authors": "Amogh Vinaykumar, Prem Kamasani",
+      "abstract": "Floods are among the costliest natural catastrophes globally, yet the property and casualty insurance industry's post-event response remains heavily reliant on manual field inspection: slow, expensive",
+      "source": "arXiv",
+      "query": "SAR flood mapping Sentinel-1",
+      "source_db": "arxiv"
+    },
+    {
+      "title": "Flood Risk Follows Valleys, Not Grids: Graph Neural Networks for Flash Flood Susceptibility Mapping in Himachal Pradesh with Conformal Uncertainty Quantification",
+      "year": 2026,
+      "authors": "Paras Sharma, Swastika Sharma",
+      "abstract": "Flash floods are the most destructive natural hazard in Himachal Pradesh (HP), India, causing over 400 fatalities and $1.2 billion in losses in the 2023 monsoon season alone. Existing risk maps treat ",
+      "source": "arXiv",
+      "query": "SAR flood mapping Sentinel-1",
+      "source_db": "arxiv"
+    },
+    {
+      "title": "Cross-Polarization Fusion of VV AND VH SAR Observations for Improved Flood Mapping",
+      "year": 2026,
+      "authors": "Jagrati Talreja, Tewodros Syum Gebre, Leila Hashemi Beni",
+      "abstract": "Synthetic Aperture Radar (SAR) imagery is widely used for flood monitoring due to its all-weather and day-night imaging capability. However, flood mapping using single-polarization SAR data remains ch",
+      "source": "arXiv",
+      "query": "SAR flood mapping Sentinel-1",
+      "source_db": "arxiv"
+    },
+    {
+      "title": "Monodense Deep Neural Model for Determining Item Price Elasticity",
+      "year": 2026,
+      "authors": "Lakshya Garg, Sai Yaswanth, Deep Narayan Mishra",
+      "abstract": "Item Price Elasticity is used to quantify the responsiveness of consumer demand to changes in item prices, enabling businesses to create pricing strategies and optimize revenue management. Sectors suc",
+      "source": "arXiv",
+      "query": "deep learning flood segmentation U-Net",
+      "source_db": "arxiv"
+    },
+    {
+      "title": "Challenges and opportunities for AI to help deliver fusion energy",
+      "year": 2026,
+      "authors": "Adriano Agnello, Helen Brooks, Cyd Cowley",
+      "abstract": "There is great potential for the application of AI tools in fusion research, and substantial worldwide benefit if fusion power is realised. However, using AI comes with its own challenges, many of whi",
+      "source": "arXiv",
+      "query": "multisensor fusion flood detection",
+      "source_db": "arxiv"
+    },
+    {
+      "title": "MerLin: A Discovery Engine for Photonic and Hybrid Quantum Machine Learning",
+      "year": 2026,
+      "authors": "Cassandre Notton, Benjamin Stott, Philippe Schoeb",
+      "abstract": "Identifying where quantum models may offer practical benefits in near term quantum machine learning (QML) requires moving beyond isolated algorithmic proposals toward systematic and empirical explorat",
+      "source": "arXiv",
+      "query": "XGBoost flood prediction machine learning",
+      "source_db": "arxiv"
+    },
+    {
+      "title": "Calibration of the underlying surface parameters for urban flood using latent variables and adjoint equation",
+      "year": 2026,
+      "authors": "Yongfu Tian, Shan Ding, Guofeng Su",
+      "abstract": "Calibrating the urban underlying surface parameters is crucial for urban flood simulation. We formulate the parameter calibration problem into an optimization problem within the Bayesian framework usi",
+      "source": "arXiv",
+      "query": "ensemble learning flood susceptibility",
+      "source_db": "arxiv"
+    },
+    {
+      "title": "Value Bonuses using Ensemble Errors for Exploration in Reinforcement Learning",
+      "year": 2026,
+      "authors": "Abdul Wahab, Raksha Kumaraswamy, Martha White",
+      "abstract": "Optimistic value estimates provide one mechanism for directed exploration in reinforcement learning (RL). The agent acts greedily with respect to an estimate of the value plus what can be seen as a va",
+      "source": "arXiv",
+      "query": "ensemble learning flood susceptibility",
+      "source_db": "arxiv"
+    },
+    {
+      "title": "FL-MHSM: Spatially-adaptive Fusion and Ensemble Learning for Flood-Landslide Multi-Hazard Susceptibility Mapping at Regional Scale",
+      "year": 2026,
+      "authors": "Aswathi Mundayatt, Jaya Sreevalsan-Nair",
+      "abstract": "Existing multi-hazard susceptibility mapping (MHSM) studies often rely on spatially uniform models, treat hazards independently, and provide limited representation of cross-hazard dependence and uncer",
+      "source": "arXiv",
+      "query": "ensemble learning flood susceptibility",
+      "source_db": "arxiv"
+    },
+    {
+      "title": "CrossTraffic: An Open-Source Framework for Reproducible and Executable Transportation Analysis and Knowledge Management",
+      "year": 2026,
+      "citations": 0,
+      "authors": "Rei Tamaru, Bin Ran",
+      "doi": null,
+      "query": "PyO3 Rust geospatial",
+      "source_db": "openalex"
+    },
+    {
+      "title": "Spatio: An Edge-Oriented Real-Time Spatial Data Engine for Mobility Systems",
+      "year": 2026,
+      "citations": 0,
+      "authors": "Petro Kvartsianyi",
+      "doi": null,
+      "query": "PyO3 Rust geospatial",
+      "source_db": "openalex"
+    },
+    {
+      "title": "Improving flood hazard susceptibility assessment by integrating hydrodynamic modeling with remote sensing and ensemble machine learning",
+      "year": 2025,
+      "citations": 48,
+      "authors": "Izhar Ahmad, Rashid Farooq, Muhammad Ashraf",
+      "query": "ensemble machine learning flood susceptibility",
+      "source_db": "semantic"
+    },
+    {
+      "title": "The Surface Water and Ocean Topography Mission (SWOT) Prior Lake Database (PLD): Lake Mask and Operational Auxiliaries",
+      "year": 2025,
+      "citations": 34,
+      "authors": "Jida Wang, Claire Pottier, Cécile Cazals",
+      "doi": "https://doi.org/10.1029/2023wr036896",
+      "query": "geodesic area WGS84 flood",
+      "source_db": "openalex"
+    },
+    {
+      "title": "Evolution of ensemble machine learning approaches in water resources management: a review",
+      "year": 2025,
+      "citations": 23,
+      "authors": "M. Tosan, Vahid Nourani, Ozgur Kisi",
+      "query": "XGBoost LightGBM flood prediction machine learning",
+      "source_db": "semantic"
+    },
+    {
+      "title": "Flood detection and mapping through multi-resolution sensor fusion: integrating UAV optical imagery and satellite SAR data",
+      "year": 2025,
+      "citations": 20,
+      "authors": "Mulham Fawakherji, L. Hashemi-Beni",
+      "query": "multisensor fusion flood detection SAR optical NDWI",
+      "source_db": "semantic"
+    },
+    {
+      "title": "Analyzing the enhancement of CNN-YOLO and transformer based architectures for real-time animal detection in complex ecological environments",
+      "year": 2025,
+      "citations": 16,
+      "authors": "Ali Raza, Fareeha Hanif, Heba Abdelgader Mohammed",
+      "doi": "https://doi.org/10.1038/s41598-025-26645-2",
+      "journal": "Scientific Reports",
+      "query": "ONNX Runtime edge inference geospatial"
+    },
+    {
+      "title": "Modeling Flood Susceptibility Utilizing Advanced Ensemble Machine Learning Techniques in the Marand Plain",
+      "year": 2025,
+      "citations": 8,
+      "authors": "Ali Asghar Rostami, M. Taghi Sattari, Halit Apaydin",
+      "query": "ensemble machine learning flood susceptibility",
+      "source_db": "semantic"
+    },
+    {
+      "title": "ASKCOS: an open source software suite for synthesis planning",
+      "year": 2025,
+      "citations": 8,
+      "authors": "Zhengkai Tu, Sourabh J. Choure, Mun Hong Fong",
+      "doi": "https://doi.org/10.48550/arxiv.2501.01835",
+      "query": "FastAPI Celery microservices",
+      "source_db": "openalex"
+    },
+    {
+      "title": "Advancing Infiltration Rate Prediction in Algeria’s Mitidja Plain: A Machine Learning and Empirical Model Comparison",
+      "year": 2025,
+      "citations": 7,
+      "authors": "Amina Mazighi, Mohamed Meddi, Hind Meddi",
+      "query": "XGBoost LightGBM flood prediction machine learning",
+      "source_db": "semantic"
+    },
+    {
+      "title": "Enhancing Predictive Maintenance in Mining Mobile Machinery Through a Hierarchical Inference Network",
+      "year": 2025,
+      "citations": 7,
+      "authors": "Raúl de la Fuente, Luciano Radrigán, Aníbal S. Morales",
+      "doi": "https://doi.org/10.1109/access.2025.3557405",
+      "query": "FastAPI Celery microservices",
+      "source_db": "openalex"
+    },
+    {
+      "title": "Unsupervised Rural Flood Mapping from Bi-Temporal Sentinel-1 Images Using an Improved Wavelet-Fusion Flood-Change Index (IWFCI) and an Uncertainty-Sensitive Markov Random Field (USMRF) Model",
+      "year": 2025,
+      "citations": 6,
+      "authors": "Amin Mohsenifar, Ali Mohammadzadeh, S. Jamali",
+      "query": "multisensor fusion flood detection SAR optical NDWI",
+      "source_db": "semantic"
+    },
+    {
+      "title": "Ensemble intelligence for urban resilience: flood susceptibility modeling in Mumbai using advanced machine learning",
+      "year": 2025,
+      "citations": 6,
+      "authors": "Harekrishna Manna, Mridul Das, Malay Pramanik",
+      "query": "ensemble machine learning flood susceptibility",
+      "source_db": "semantic"
+    },
+    {
+      "title": "A SAR-based flood mapping approach: application of SAR-SIFT registration and modified DeepLabV3 segmentation in flood hazard assessment",
+      "year": 2025,
+      "citations": 4,
+      "authors": "Zhuoyu Zhang, Jiaqi Xiong, X. Li",
+      "query": "multisensor fusion flood detection SAR optical NDWI",
+      "source_db": "semantic"
+    },
+    {
+      "title": "Employing Machine Learning for Flood Prediction: A Comparative Study of Tree-Based Techniques",
+      "year": 2025,
+      "citations": 4,
+      "authors": "Pakpoom Chaimook, Nirattaya Khamsemanan, C. Nattee",
+      "query": "XGBoost LightGBM flood prediction machine learning",
+      "source_db": "semantic"
+    },
+    {
+      "title": "Multi-Sensor Flood Mapping in Urban and Agricultural Landscapes of the Netherlands Using SAR and Optical Data with Random Forest Classifier",
+      "year": 2025,
+      "citations": 3,
+      "authors": "Omer Gokberk Narin, A. Şekertekin, Ç. Bayık",
+      "query": "multisensor fusion flood detection SAR optical NDWI",
+      "source_db": "semantic"
+    },
+    {
+      "title": "Ensemble Machine Learning-Based Feature Selection for Flood Susceptibility Mapping Under Climate and Land Use Change Scenarios",
+      "year": 2025,
+      "citations": 3,
+      "authors": "A. Akinsoji, B. Adelodun, Q. Adeyi",
+      "query": "ensemble machine learning flood susceptibility",
+      "source_db": "semantic"
+    },
+    {
+      "title": "Flood Detection using Google Earth Engine: A Comparison of Optical and SAR-based Remote Sensing Methods",
+      "year": 2025,
+      "citations": 1,
+      "authors": "Y.S. Dhotre, Y.U. Jadhav, S.S. Rawoot",
+      "query": "multisensor fusion flood detection SAR optical NDWI",
+      "source_db": "semantic"
+    },
+    {
+      "title": "Rapid flood layer extraction from EOS-04 SAR data through temporal backscatter analysis and machine learning",
+      "year": 2025,
+      "citations": 1,
+      "authors": "Sai Bhageerath Y V, Suresh Babu A V, D. K. H. V.",
+      "query": "multisensor fusion flood detection SAR optical NDWI",
+      "source_db": "semantic"
+    },
+    {
+      "title": "Evaluating machine learning efficiency and accuracy for real time flash flood mapping",
+      "year": 2025,
+      "citations": 1,
+      "authors": "H. Mirzapour, Ali Haghizadeh, Mahdi Soleimani Motlagh",
+      "query": "XGBoost LightGBM flood prediction machine learning",
+      "source_db": "semantic"
+    },
+    {
+      "title": "Robust Ensemble Machine Learning for Flash Flood Susceptibility Mapping Across Semiarid Regions",
+      "year": 2025,
+      "citations": 1,
+      "authors": "Soukaina Talha, A. Akhssas, A. Aarab",
+      "query": "ensemble machine learning flood susceptibility",
+      "source_db": "semantic"
+    },
+    {
+      "title": "Towards Early Flood Detection: A Comparative Study of Machine Learning Classifiers on Kerala Rainfall Data",
+      "year": 2025,
+      "citations": 0,
+      "authors": "B. Justin, H. Shihabudeen, N. Nikhila",
+      "query": "XGBoost LightGBM flood prediction machine learning",
+      "source_db": "semantic"
+    },
+    {
+      "title": "Robust blue-green urban flood risk management optimised with a genetic algorithm for multiple rainstorm return periods",
+      "year": 2025,
+      "authors": "Asid Ur Rehman, Vassilis Glenis, Elizabeth Lewis",
+      "abstract": "Flood risk managers seek to optimise Blue-Green Infrastructure (BGI) designs to maximise return on investment. Current systems often use optimisation algorithms and detailed flood models to maximise b",
+      "source": "arXiv",
+      "query": "SAR flood mapping Sentinel-1",
+      "source_db": "arxiv"
+    },
+    {
+      "title": "Cancer-Net PCa-Seg: Benchmarking Deep Learning Models for Prostate Cancer Segmentation Using Synthetic Correlated Diffusion Imaging",
+      "year": 2025,
+      "authors": "Jarett Dewbury, Chi-en Amy Tai, Alexander Wong",
+      "abstract": "Prostate cancer (PCa) is the most prevalent cancer among men in the United States, accounting for nearly 300,000 cases, 29\\% of all diagnoses and 35,000 total deaths in 2024. Traditional screening met",
+      "source": "arXiv",
+      "query": "deep learning flood segmentation U-Net",
+      "source_db": "arxiv"
+    },
+    {
+      "title": "SGDFuse: SAM-Guided Diffusion Model for High-Fidelity Infrared and Visible Image Fusion",
+      "year": 2025,
+      "authors": "Xiaoyang Zhang, jinjiang Li, Guodong Fan",
+      "abstract": "Infrared and visible image fusion (IVIF) is essential for integrating thermal saliency with textural details to support downstream perception. However, most existing approaches suffer from \"semantic b",
+      "source": "arXiv",
+      "query": "multisensor fusion flood detection",
+      "source_db": "arxiv"
+    },
+    {
+      "title": "Vision-Language Modeling Meets Remote Sensing: Models, Datasets and Perspectives",
+      "year": 2025,
+      "authors": "Xingxing Weng, Chao Pang, Gui-Song Xia",
+      "abstract": "Vision-language modeling (VLM) aims to bridge the information gap between images and natural language. Under the new paradigm of first pre-training on massive image-text pairs and then fine-tuning on ",
+      "source": "arXiv",
+      "query": "NDWI water index remote sensing",
+      "source_db": "arxiv"
+    },
+    {
+      "title": "TimeSenCLIP: A Time Series Vision-Language Model for Remote Sensing",
+      "year": 2025,
+      "authors": "Pallavi Jain, Diego Marcos, Dino Ienco",
+      "abstract": "Vision-language models (VLMs) have shown significant promise in remote sensing applications, particularly for land-use and land-cover (LULC) mapping via zero-shot classification and retrieval. However",
+      "source": "arXiv",
+      "query": "NDWI water index remote sensing",
+      "source_db": "arxiv"
+    },
+    {
+      "title": "Fourier Learning Machines: Nonharmonic Fourier-Based Neural Networks for Scientific Machine Learning",
+      "year": 2025,
+      "authors": "Mominul Rubel, Adam Meyers, Gabriel Nicolosi",
+      "abstract": "We introduce the Fourier Learning Machine (FLM), a neural network (NN) architecture designed to represent a multidimensional nonharmonic Fourier series. The FLM uses a simple feedforward structure wit",
+      "source": "arXiv",
+      "query": "XGBoost flood prediction machine learning",
+      "source_db": "arxiv"
+    },
+    {
+      "title": "Predictive Modeling of Flood-Prone Areas Using SAR and Environmental Variables",
+      "year": 2025,
+      "authors": "Edwin Oluoch Awino, Denis Machanda",
+      "abstract": "Flooding is one of the most destructive natural hazards worldwide, posing serious risks to ecosystems, infrastructure, and human livelihoods. This study combines Synthetic Aperture Radar (SAR) imagery",
+      "source": "arXiv",
+      "query": "change detection flood SAR",
+      "source_db": "arxiv"
+    },
+    {
+      "title": "Automated flood detection from Sentinel-1 GRD time series using Bayesian analysis for change point problems",
+      "year": 2025,
+      "authors": "Narumasa Tsutsumida, Tomohiro Tanaka, Nifat Sultana",
+      "abstract": "Current Synthetic Aperture Radar (SAR)-based flood detection methods face critical limitations that hinder operational deployment. Supervised learning approaches require extensive labeled training dat",
+      "source": "arXiv",
+      "query": "change detection flood SAR",
+      "source_db": "arxiv"
+    },
+    {
+      "title": "Dynamic Pricing for On-Demand DNN Inference in the Edge-AI Market",
+      "year": 2025,
+      "authors": "Songyuan Li, Jia Hu, Geyong Min",
+      "abstract": "The convergence of edge computing and Artificial Intelligence (AI) gives rise to Edge-AI, which enables the deployment of real-time AI applications at the network edge. A key research challenge in Edg",
+      "source": "arXiv",
+      "query": "edge deployment geospatial inference",
+      "source_db": "arxiv"
+    },
+    {
+      "title": "GeoResponder: Towards Building Geospatial LLMs for Time-Critical Disaster Response",
+      "year": 2025,
+      "authors": "Ahmed El Fekih Zguir, Ferda Ofli, Muhammad Imran",
+      "abstract": "LLMs excel at linguistic tasks but lack the inner geospatial capabilities needed for time-critical disaster response, where reasoning about road networks, coordinates, and access to essential infrastr",
+      "source": "arXiv",
+      "query": "edge deployment geospatial inference",
+      "source_db": "arxiv"
+    },
+    {
+      "title": "AI-Powered Document Compliance Analysis for Rental Car Sales: A Hybrid Rule-Based and Language Model Approach",
+      "year": 2025,
+      "citations": 0,
+      "authors": "Zalak Patel",
+      "doi": "https://doi.org/10.36227/techrxiv.175099771.13258046/v1",
+      "query": "FastAPI Celery microservices",
+      "source_db": "openalex"
+    },
+    {
+      "title": "Enhancing mobility services through Dynamic partner connections: a case study of the SignAir Project",
+      "year": 2025,
+      "citations": 0,
+      "authors": "Igen, Arystan",
+      "doi": null,
+      "query": "FastAPI Celery microservices",
+      "source_db": "openalex"
+    },
+    {
+      "title": "Loss of Life Transformer Prediction Based on Stacking Ensemble Improved by Genetic Algorithm By IJISRT",
+      "year": 2024,
+      "citations": 1320,
+      "authors": "Rosena Shintabella, Catur Edi Widodo, Adi Wibowo",
+      "doi": "https://doi.org/10.38124/ijisrt/ijisrt24mar1125",
+      "query": "ensemble machine learning flood susceptibility",
+      "source_db": "openalex"
+    },
+    {
+      "title": "The 2024 report of the Lancet Countdown on health and climate change: facing record-breaking threats from delayed action",
+      "year": 2024,
+      "citations": 691,
+      "authors": "Marina Romanello, Maria Walawender, Shih-Che Hsu",
+      "doi": "https://doi.org/10.1016/s0140-6736(24)01822-1",
+      "journal": "The Lancet",
+      "query": "connected component analysis flood cleanup"
+    },
+    {
+      "title": "Rapid groundwater decline and some cases of recovery in aquifers globally",
+      "year": 2024,
+      "citations": 575,
+      "authors": "Scott Jasechko, Hansjörg Seybold, Debra Perrone",
+      "doi": "https://doi.org/10.1038/s41586-023-06879-8",
+      "journal": "Nature",
+      "query": "data augmentation flood mapping SAR"
+    },
+    {
+      "title": "Advances in hydrogen storage materials: harnessing innovative technology, from machine learning to computational chemistry, for energy storage solutions",
+      "year": 2024,
+      "citations": 225,
+      "authors": "Ahmed I. Osman, Mahmoud Nasr, Abdelazeem S. Eltaweil",
+      "doi": "https://doi.org/10.1016/j.ijhydene.2024.03.223",
+      "query": "XGBoost LightGBM flood prediction",
+      "source_db": "openalex"
+    },
+    {
+      "title": "Advances in machine learning and IoT for water quality monitoring: A comprehensive review",
+      "year": 2024,
+      "citations": 205,
+      "authors": "Ismail Essamlali, Hasna Nhaila, Mohamed El Khaïli",
+      "doi": "https://doi.org/10.1016/j.heliyon.2024.e27920",
+      "journal": "Heliyon",
+      "query": "KMeans clustering water detection SAR"
+    },
+    {
+      "title": "Flood Detection with SAR: A Review of Techniques and Datasets",
+      "year": 2024,
+      "citations": 176,
+      "authors": "Donato Amitrano, Gerardo Di Martino, Alessio Di Simone",
+      "doi": "https://doi.org/10.3390/rs16040656",
+      "journal": "Remote Sensing",
+      "query": "Refined Lee speckle filter SAR despeckling"
+    },
+    {
+      "title": "Urban flood susceptibility mapping using remote sensing, social sensing and an ensemble machine learning model",
+      "year": 2024,
+      "citations": 57,
+      "authors": "Xiaotong Zhu, H. Guo, Jinhui Jeanne Huang",
+      "query": "ensemble machine learning flood susceptibility",
+      "source_db": "semantic"
+    },
+    {
+      "title": "Internet of Things-Based Automated Solutions Utilizing Machine Learning for Smart and Real-Time Irrigation Management: A Review",
+      "year": 2024,
+      "citations": 53,
+      "authors": "Bryan Nsoh, Abia Katimbo, Hongzhi Guo",
+      "doi": "https://doi.org/10.3390/s24237480",
+      "journal": "Sensors",
+      "query": "ONNX Runtime edge inference geospatial"
+    },
+    {
+      "title": "Review on Hardware Devices and Software Techniques Enabling Neural Network Inference Onboard Satellites",
+      "year": 2024,
+      "citations": 34,
+      "authors": "Lorenzo Diana, Pierpaolo Dini",
+      "doi": "https://doi.org/10.3390/rs16213957",
+      "journal": "Remote Sensing",
+      "query": "ONNX Runtime edge inference geospatial"
+    },
+    {
+      "title": "Advancing flood susceptibility modeling using stacking ensemble machine learning: A multi-model approach",
+      "year": 2024,
+      "citations": 20,
+      "authors": "Huilin Yang, R. Yao, Linyao Dong",
+      "query": "ensemble machine learning flood susceptibility",
+      "source_db": "semantic"
+    },
+    {
+      "title": "Machine Learning Models for Predicting Flood Events Using Weather Data: An Evaluation of Logistic Regression, LightGBM, and XGBoost",
+      "year": 2024,
+      "citations": 7,
+      "authors": "Maharina Maharina",
+      "query": "XGBoost LightGBM flood prediction machine learning",
+      "source_db": "semantic"
+    },
+    {
+      "title": "A Secure Data Publishing and Access Service for Sensitive Data from Living Labs: Enabling Collaboration with External Researchers via Shareable Data",
+      "year": 2024,
+      "citations": 3,
+      "authors": "Mikel Hernandez, Evdokimos Konstantinidis, Gorka Epelde",
+      "doi": "https://doi.org/10.3390/bdcc8060055",
+      "query": "FastAPI Celery microservices",
+      "source_db": "openalex"
+    },
+    {
+      "title": "Lite2: A Schemaless Zero-Copy Serialization Format",
+      "year": 2024,
+      "citations": 2,
+      "authors": "Tianyi Chen, Xiaotong Guan, Shuai Shi",
+      "doi": "https://doi.org/10.3390/computers13040089",
+      "query": "PyO3 Rust geospatial",
+      "source_db": "openalex"
+    },
+    {
+      "title": "An Empirical Investigation on the Challenges in Scientific Workflow Systems Development",
+      "year": 2024,
+      "citations": 1,
+      "authors": "Khairul Alam, Roy, Banani, Roy, Chanchal K.",
+      "doi": "https://doi.org/10.48550/arxiv.2411.10890",
+      "query": "FastAPI Celery microservices",
+      "source_db": "openalex"
+    },
+    {
+      "title": "SAR-FM: SAR-based flood rapid mapping using multi-modal data fusion",
+      "year": 2024,
+      "citations": 0,
+      "authors": "Krishna Kanth Rokkam, Smriti Rani, Kriti Kumar",
+      "query": "multisensor fusion flood detection SAR optical NDWI",
+      "source_db": "semantic"
+    },
+    {
+      "title": "UrbanSARFloods: Sentinel-1 SLC-Based Benchmark Dataset for Urban and Open-Area Flood Mapping",
+      "year": 2024,
+      "authors": "Jie Zhao, Zhitong Xiong, Xiao Xiang Zhu",
+      "abstract": "Due to its cloud-penetrating capability and independence from solar illumination, satellite Synthetic Aperture Radar (SAR) is the preferred data source for large-scale flood mapping, providing global ",
+      "source": "arXiv",
+      "query": "SAR flood mapping Sentinel-1",
+      "source_db": "arxiv"
+    },
+    {
+      "title": "Portraying the Need for Temporal Data in Flood Detection via Sentinel-1",
+      "year": 2024,
+      "authors": "Xavier Bou, Thibaud Ehret, Rafael Grompone von Gioi",
+      "abstract": "Identifying flood affected areas in remote sensing data is a critical problem in earth observation to analyze flood impact and drive responses. While a number of methods have been proposed in the lite",
+      "source": "arXiv",
+      "query": "SAR flood mapping Sentinel-1",
+      "source_db": "arxiv"
+    },
+    {
+      "title": "Change-Agent: Towards Interactive Comprehensive Remote Sensing Change Interpretation and Analysis",
+      "year": 2024,
+      "authors": "Chenyang Liu, Keyan Chen, Haotian Zhang",
+      "abstract": "Monitoring changes in the Earth's surface is crucial for understanding natural processes and human impacts, necessitating precise and comprehensive interpretation methodologies. Remote sensing satelli",
+      "source": "arXiv",
+      "query": "NDWI water index remote sensing",
+      "source_db": "arxiv"
+    },
+    {
+      "title": "Remote Sensing SpatioTemporal Vision-Language Models: A Comprehensive Survey",
+      "year": 2024,
+      "authors": "Chenyang Liu, Jiafan Zhang, Keyan Chen",
+      "abstract": "The interpretation of multi-temporal remote sensing imagery is critical for monitoring Earth's dynamic processes-yet previous change detection methods, which produce binary or semantic masks, fall sho",
+      "source": "arXiv",
+      "query": "NDWI water index remote sensing",
+      "source_db": "arxiv"
+    },
+    {
+      "title": "A Progressive Image Restoration Network for High-order Degradation Imaging in Remote Sensing",
+      "year": 2024,
+      "authors": "Yujie Feng, Yin Yang, Xiaohong Fan",
+      "abstract": "Recently, deep learning methods have gained remarkable achievements in the field of image restoration for remote sensing (RS). However, most existing RS image restoration methods focus mainly on conve",
+      "source": "arXiv",
+      "query": "NDWI water index remote sensing",
+      "source_db": "arxiv"
+    },
+    {
+      "title": "QSpeckleFilter: a Quantum Machine Learning approach for SAR speckle filtering",
+      "year": 2024,
+      "authors": "Francesco Mauro, Alessandro Sebastianelli, Maria Pia Del Rosso",
+      "abstract": "The use of Synthetic Aperture Radar (SAR) has greatly advanced our capacity for comprehensive Earth monitoring, providing detailed insights into terrestrial surface use and cover regardless of weather",
+      "source": "arXiv",
+      "query": "SAR speckle filter flood",
+      "source_db": "arxiv"
+    },
+    {
+      "title": "Deep Learning Based Speckle Filtering for Polarimetric SAR Images. Application to Sentinel-1",
+      "year": 2024,
+      "authors": "Alejandro Mestre-Quereda, Juan M. Lopez-Sanchez",
+      "abstract": "Speckle suppression in synthetic aperture radar (SAR) images is a key processing step which continues to be a research topic. A wide variety of methods, using either spatially-based approaches or tran",
+      "source": "arXiv",
+      "query": "SAR speckle filter flood",
+      "source_db": "arxiv"
+    },
+    {
+      "title": "Speckle Noise Analysis for Synthetic Aperture Radar (SAR) Space Data",
+      "year": 2024,
+      "authors": "Sanjjushri Varshini R, Rohith Mahadevan, Bagiya Lakshmi S",
+      "abstract": "This research tackles the challenge of speckle noise in Synthetic Aperture Radar (SAR) space data, a prevalent issue that hampers the clarity and utility of SAR images. The study presents a comparativ",
+      "source": "arXiv",
+      "query": "SAR speckle filter flood",
+      "source_db": "arxiv"
+    },
+    {
+      "title": "Ensemble quantile-based deep learning framework for streamflow and flood prediction in Australian catchments",
+      "year": 2024,
+      "authors": "Rohitash Chandra, Arpit Kapoor, Siddharth Khedkar",
+      "abstract": "In recent years, climate extremes such as floods have created significant environmental and economic hazards for Australia. Deep learning methods have been promising for predicting extreme climate eve",
+      "source": "arXiv",
+      "query": "ensemble learning flood susceptibility",
+      "source_db": "arxiv"
+    },
+    {
+      "title": "Climate Adaptation with Reinforcement Learning: Experiments with Flooding and Transportation in Copenhagen",
+      "year": 2024,
+      "authors": "Miguel Costa, Morten W. Petersen, Arthur Vandervoort",
+      "abstract": "Due to climate change the frequency and intensity of extreme rainfall events, which contribute to urban flooding, are expected to increase in many places. These floods can damage transport infrastruct",
+      "source": "arXiv",
+      "query": "ensemble learning flood susceptibility",
+      "source_db": "arxiv"
+    },
+    {
+      "title": "Identification of Anomalous Geospatial Trajectories via Persistent Homology",
+      "year": 2024,
+      "authors": "Kyle Evans-Lee, Kevin Lamb",
+      "abstract": "We present a novel method for analyzing geospatial trajectory data using topological data analysis (TDA) to identify a specific class of anomalies, commonly referred to as crop circles, in AIS data. T",
+      "source": "arXiv",
+      "query": "edge deployment geospatial inference",
+      "source_db": "arxiv"
+    },
+    {
+      "title": "On the Road to 6G: Visions, Requirements, Key Technologies, and Testbeds",
+      "year": 2023,
+      "citations": 1919,
+      "authors": "Cheng‐Xiang Wang, Xiaohu You, Xiqi Gao",
+      "doi": "https://doi.org/10.1109/comst.2023.3249835",
+      "journal": "IEEE Communications Surveys & Tutorials",
+      "query": "graph neural network flood susceptibility"
+    },
+    {
+      "title": "Weather and Climate Extreme Events in a Changing Climate",
+      "year": 2023,
+      "citations": 1789,
+      "authors": "Intergovernmental Panel on Climate Change",
+      "doi": "https://doi.org/10.1017/9781009157896.013",
+      "journal": "Cambridge University Press eBooks",
+      "query": "HAND model flood inundation drainage"
+    },
+    {
+      "title": "Interpreting Black-Box Models: A Review on Explainable Artificial Intelligence",
+      "year": 2023,
+      "citations": 1743,
+      "authors": "Vikas Hassija, Vinay Chamola, Atmesh Mahapatra",
+      "doi": "https://doi.org/10.1007/s12559-023-10179-8",
+      "query": "deep learning U-Net flood segmentation",
+      "source_db": "openalex"
+    },
+    {
+      "title": "Unmanned aerial vehicles (UAVs): practical aspects, applications, open challenges, security issues, and future trends",
+      "year": 2023,
+      "citations": 926,
+      "authors": "Syed Agha Hassnain Mohsan, Nawaf Qasem Hamood Othman, Yanlong Li",
+      "doi": "https://doi.org/10.1007/s11370-022-00452-4",
+      "query": "incidence angle normalization SAR",
+      "source_db": "openalex"
+    },
+    {
+      "title": "Wicked Problems in Public Policy",
+      "year": 2023,
+      "citations": 738,
+      "authors": "Brian Head",
+      "doi": "https://doi.org/10.1007/978-3-030-90434-0_43-1",
+      "journal": "",
+      "query": "focal loss class imbalance flood detection"
+    },
+    {
+      "title": "Fake news, disinformation and misinformation in social media: a review",
+      "year": 2023,
+      "citations": 677,
+      "authors": "Esma Aı̈meur, Sabrine Amri, Gilles Brassard",
+      "doi": "https://doi.org/10.1007/s13278-023-01028-5",
+      "query": "ensemble machine learning flood susceptibility",
+      "source_db": "openalex"
+    },
+    {
+      "title": "A systematic review of industrial wastewater management: Evaluating challenges and enablers",
+      "year": 2023,
+      "citations": 538,
+      "authors": "Bikram Jit Singh, Ayon Chakraborty, Rippin Sehgal",
+      "doi": "https://doi.org/10.1016/j.jenvman.2023.119230",
+      "journal": "Journal of Environmental Management",
+      "query": "fuzzy logic flood detection SAR"
+    },
+    {
+      "title": "An advanced deep learning models-based plant disease detection: A review of recent research",
+      "year": 2023,
+      "citations": 458,
+      "authors": "Muhammad Shoaib, Babar Shah, Shaker El–Sappagh",
+      "doi": "https://doi.org/10.3389/fpls.2023.1158933",
+      "journal": "Frontiers in Plant Science",
+      "query": "KMeans clustering water detection SAR"
+    },
+    {
+      "title": "Six Human-Centered Artificial Intelligence Grand Challenges",
+      "year": 2023,
+      "citations": 450,
+      "authors": "Özlem Özmen Garibay, Brent Winslow, Salvatore Andolina",
+      "doi": "https://doi.org/10.1080/10447318.2022.2153320",
+      "query": "ESG audit flood reporting",
+      "source_db": "openalex"
+    },
+    {
+      "title": "Machine Learning Methods for Small Data Challenges in Molecular Science",
+      "year": 2023,
+      "citations": 449,
+      "authors": "Bozheng Dou, Zailiang Zhu, Ekaterina Merkurjev",
+      "doi": "https://doi.org/10.1021/acs.chemrev.3c00189",
+      "journal": "Chemical Reviews",
+      "query": "dice loss imbalanced segmentation flood"
+    },
+    {
+      "title": "Environmental-, social-, and governance-related factors for business investment and sustainability: a scientometric review of global trends",
+      "year": 2023,
+      "citations": 307,
+      "authors": "Hadiqa Ahmad, Muhammad Yaqub, Seung Hwan Lee",
+      "doi": "https://doi.org/10.1007/s10668-023-02921-x",
+      "query": "ESG audit flood reporting",
+      "source_db": "openalex"
+    },
+    {
+      "title": "Immunogenicity of decellularized extracellular matrix scaffolds: a bottleneck in tissue engineering and regenerative medicine",
+      "year": 2023,
+      "citations": 273,
+      "authors": "Mohammadreza Kasravi, Armin Ahmadi, Amirhesam Babajani",
+      "doi": "https://doi.org/10.1186/s40824-023-00348-z",
+      "query": "Otsu threshold SAR water detection",
+      "source_db": "openalex"
+    },
+    {
+      "title": "Revolutionizing the circular economy through new technologies: A new era of sustainable progress",
+      "year": 2023,
+      "citations": 271,
+      "authors": "Eduardo Sánchez‐García, Javier Martínez‐Falcó, Bartolomé Marco‐Lajara",
+      "doi": "https://doi.org/10.1016/j.eti.2023.103509",
+      "query": "ESG audit flood reporting",
+      "source_db": "openalex"
+    },
+    {
+      "title": "eXtreme Gradient Boosting Algorithm with Machine Learning: a Review",
+      "year": 2023,
+      "citations": 255,
+      "authors": "Zeravan Arif Ali, Ziyad H. Abduljabbar, Hanan A. Tahir",
+      "doi": "https://doi.org/10.25007/ajnu.v12n2a1612",
+      "query": "XGBoost LightGBM flood prediction",
+      "source_db": "openalex"
+    },
+    {
+      "title": "Fracture detection in pediatric wrist trauma X-ray images using YOLOv8 algorithm",
+      "year": 2023,
+      "citations": 230,
+      "authors": "Rui‐Yang Ju, Weiming Cai",
+      "doi": "https://doi.org/10.1038/s41598-023-47460-7",
+      "query": "edge deployment ONNX inference",
+      "source_db": "openalex"
+    },
+    {
+      "title": "Advanced Machine Learning Techniques to Improve Hydrological Prediction: A Comparative Analysis of Streamflow Prediction Models",
+      "year": 2023,
+      "citations": 213,
+      "authors": "Vijendra Kumar, Naresh Kedam, Kul Vaibhav Sharma",
+      "doi": "https://doi.org/10.3390/w15142572",
+      "journal": "Water",
+      "query": "CatBoost flood prediction categorical"
+    },
+    {
+      "title": "Statistical Analysis of Design Aspects of Various YOLO-Based Deep Learning Models for Object Detection",
+      "year": 2023,
+      "citations": 211,
+      "authors": "Uddagiri Sirisha, S. Phani Praveen, Parvathaneni Naga Srinivasu",
+      "doi": "https://doi.org/10.1007/s44196-023-00302-w",
+      "query": "edge deployment ONNX inference",
+      "source_db": "openalex"
+    },
+    {
+      "title": "Advancing green finance: a review of sustainable development",
+      "year": 2023,
+      "citations": 210,
+      "authors": "Chengbo Fu, Lei Lü, Mansoor Pirabi",
+      "doi": "https://doi.org/10.1007/s44265-023-00020-3",
+      "query": "ESG audit flood reporting",
+      "source_db": "openalex"
+    },
+    {
+      "title": "Review of Remote Sensing-Based Methods for Forest Aboveground Biomass Estimation: Progress, Challenges, and Prospects",
+      "year": 2023,
+      "citations": 192,
+      "authors": "Lei Tian, Xiaocan Wu, Tao Yu",
+      "doi": "https://doi.org/10.3390/f14061086",
+      "journal": "Forests",
+      "query": "CatBoost flood prediction categorical"
+    },
+    {
+      "title": "A Review of Generative Adversarial Networks (GANs) and Its Applications in a Wide Variety of Disciplines: From Medical to Remote Sensing",
+      "year": 2023,
+      "citations": 166,
+      "authors": "Ankan Dash, Junyi Ye, Guiling Wang",
+      "doi": "https://doi.org/10.1109/access.2023.3346273",
+      "journal": "IEEE Access",
+      "query": "Refined Lee speckle filter SAR despeckling"
+    },
+    {
+      "title": "Revolutionizing Medicinal Chemistry: The Application of Artificial Intelligence (AI) in Early Drug Discovery",
+      "year": 2023,
+      "citations": 159,
+      "authors": "Ri Han, Hongryul Yoon, Gahee Kim",
+      "doi": "https://doi.org/10.3390/ph16091259",
+      "journal": "Pharmaceuticals",
+      "query": "KMeans clustering water detection SAR"
+    },
+    {
+      "title": "A LightGBM-based landslide susceptibility model considering the uncertainty of non-landslide samples",
+      "year": 2023,
+      "citations": 98,
+      "authors": "Deliang Sun, Xiaoqing Wu, Haijia Wen",
+      "doi": "https://doi.org/10.1080/19475705.2023.2213807",
+      "journal": "Geomatics Natural Hazards and Risk",
+      "query": "LightGBM histogram-based flood detection"
+    },
+    {
+      "title": "A Survey on Deep-Learning-Based Real-Time SAR Ship Detection",
+      "year": 2023,
+      "citations": 66,
+      "authors": "Jianwei Li, Jie Chen, Pu Cheng",
+      "doi": "https://doi.org/10.1109/jstars.2023.3244616",
+      "journal": "IEEE Journal of Selected Topics in Applied Earth Observations and Remote Sensing",
+      "query": "ONNX Runtime edge inference geospatial"
+    },
+    {
+      "title": "Integration of machine learning and hydrodynamic modeling to solve the extrapolation problem in flood depth estimation",
+      "year": 2023,
+      "citations": 25,
+      "authors": "H. Nguyen, Dinh Kha Dang, Y. N. Nguyen",
+      "query": "XGBoost LightGBM flood prediction machine learning",
+      "source_db": "semantic"
+    },
+    {
+      "title": "Landscape of High-Performance Python to Develop Data Science and Machine Learning Applications",
+      "year": 2023,
+      "citations": 19,
+      "authors": "Oscar Castro, Pierrick Bruneau, Jean-Sébastien Sottet",
+      "doi": "https://doi.org/10.1145/3617588",
+      "journal": "ACM Computing Surveys",
+      "query": "Celery distributed task queue geospatial"
+    },
+    {
+      "title": "Pest Alert Tool—a web-based application for flagging species of concern in metabarcoding datasets",
+      "year": 2023,
+      "citations": 15,
+      "authors": "Anastasija Zaiko, Maximilian Scheel, Jessica Schattschneider",
+      "doi": "https://doi.org/10.1093/nar/gkad364",
+      "journal": "Nucleic Acids Research",
+      "query": "Celery distributed task queue geospatial"
+    },
+    {
+      "title": "Reproducibility as a service",
+      "year": 2023,
+      "citations": 11,
+      "authors": "Joseph Wonsil, Nichole Boufford, Prakhar Agrawal",
+      "doi": "https://doi.org/10.1002/spe.3202",
+      "journal": "Software Practice and Experience",
+      "query": "Celery distributed task queue geospatial"
+    },
+    {
+      "title": "Combining Time-Series Variation Modeling and Fuzzy Spatiotemporal Feature Fusion: A Novel Approach for Unsupervised Flood Mapping Using Dual-Polarized Sentinel-1 SAR Images",
+      "year": 2023,
+      "citations": 8,
+      "authors": "Congyu Li, Jiaqi Liu, Xinxin Liu",
+      "query": "multisensor fusion flood detection SAR optical NDWI",
+      "source_db": "semantic"
+    },
+    {
+      "title": "2018 Kerala Flood Damage: Survey, Identification, and Damage Prediction Models Using Machine Learning",
+      "year": 2023,
+      "citations": 4,
+      "authors": "",
+      "query": "XGBoost LightGBM flood prediction machine learning",
+      "source_db": "semantic"
+    },
+    {
+      "title": "Comparison of Machine Learning Algorithms for Flood Prediction",
+      "year": 2023,
+      "citations": 2,
+      "authors": "Rineka Brylian Akbar Satriani, Aris Puji Widodo, Adi Wibowo",
+      "query": "XGBoost LightGBM flood prediction machine learning",
+      "source_db": "semantic"
+    },
+    {
+      "title": "Massively Scalable Workflows for Quantum Chemistry: BIGCHEM and CHEMCLOUD",
+      "year": 2023,
+      "citations": 1,
+      "authors": "Colton B. Hicks, Todd J. Martı́nez",
+      "doi": "https://doi.org/10.26434/chemrxiv-2023-bn0jv",
+      "query": "FastAPI Celery microservices",
+      "source_db": "openalex"
+    },
+    {
+      "title": "Standardized Analysis Ready (STAR) data cube for high-resolution Flood mapping using Sentinel-1 data",
+      "year": 2023,
+      "authors": "Surajit Ghosh, Arpan Dawn, Sneha Kour",
+      "abstract": "Floods are one of the most common disasters globally. Flood affects humans in many ways. Therefore, rapid assessment is needed to assess the effect of floods and to take early action to support the vu",
+      "source": "arXiv",
+      "query": "SAR flood mapping Sentinel-1",
+      "source_db": "arxiv"
+    },
+    {
+      "title": "Estimating ensemble likelihoods for the Sentinel-1 based Global Flood Monitoring product of the Copernicus Emergency Management Service",
+      "year": 2023,
+      "authors": "Christian Krullikowski, Candace Chow, Marc Wieland",
+      "abstract": "The Global Flood Monitoring (GFM) system of the Copernicus Emergency Management Service (CEMS) addresses the challenges and impacts that are caused by flooding. The GFM system provides global, near-re",
+      "source": "arXiv",
+      "query": "SAR flood mapping Sentinel-1",
+      "source_db": "arxiv"
+    },
+    {
+      "title": "Learn to Accumulate Evidence from All Training Samples: Theory and Practice",
+      "year": 2023,
+      "authors": "Deep Pandey, Qi Yu",
+      "abstract": "Evidential deep learning, built upon belief theory and subjective logic, offers a principled and computationally efficient way to turn a deterministic neural network uncertainty-aware. The resultant e",
+      "source": "arXiv",
+      "query": "deep learning flood segmentation U-Net",
+      "source_db": "arxiv"
+    },
+    {
+      "title": "Deep Learning and Computational Physics (Lecture Notes)",
+      "year": 2023,
+      "authors": "Deep Ray, Orazio Pinti, Assad A. Oberai",
+      "abstract": "These notes were compiled as lecture notes for a course developed and taught at the University of the Southern California. They should be accessible to a typical engineering graduate student with a st",
+      "source": "arXiv",
+      "query": "deep learning flood segmentation U-Net",
+      "source_db": "arxiv"
+    },
+    {
+      "title": "InMyFace: Inertial and Mechanomyography-Based Sensor Fusion for Wearable Facial Activity Recognition",
+      "year": 2023,
+      "authors": "Hymalai Bello, Luis Alfredo Sanchez Marin, Sungho Suh",
+      "abstract": "Recognizing facial activity is a well-understood (but non-trivial) computer vision problem. However, reliable solutions require a camera with a good view of the face, which is often unavailable in wea",
+      "source": "arXiv",
+      "query": "multisensor fusion flood detection",
+      "source_db": "arxiv"
+    },
+    {
+      "title": "A Multi-scale Generalized Shrinkage Threshold Network for Image Blind Deblurring in Remote Sensing",
+      "year": 2023,
+      "authors": "Yujie Feng, Yin Yang, Xiaohong Fan",
+      "abstract": "Remote sensing images are essential for many applications of the earth's sciences, but their quality can usually be degraded due to limitations in sensor technology and complex imaging environments. T",
+      "source": "arXiv",
+      "query": "NDWI water index remote sensing",
+      "source_db": "arxiv"
+    },
+    {
+      "title": "Building-road Collaborative Extraction from Remotely Sensed Images via Cross-Interaction",
+      "year": 2023,
+      "authors": "Haonan Guo, Xin Su, Chen Wu",
+      "abstract": "Buildings are the basic carrier of social production and human life; roads are the links that interconnect social networks. Building and road information has important application value in the frontie",
+      "source": "arXiv",
+      "query": "NDWI water index remote sensing",
+      "source_db": "arxiv"
+    },
+    {
+      "title": "Changing Data Sources in the Age of Machine Learning for Official Statistics",
+      "year": 2023,
+      "authors": "Cedric De Boom, Michael Reusens",
+      "abstract": "Data science has become increasingly essential for the production of official statistics, as it enables the automated collection, processing, and analysis of large amounts of data. With such data scie",
+      "source": "arXiv",
+      "query": "XGBoost flood prediction machine learning",
+      "source_db": "arxiv"
+    },
+    {
+      "title": "Active learning for data streams: a survey",
+      "year": 2023,
+      "authors": "Davide Cacciarelli, Murat Kulahci",
+      "abstract": "Online active learning is a paradigm in machine learning that aims to select the most informative data points to label from a data stream. The problem of minimizing the cost associated with collecting",
+      "source": "arXiv",
+      "query": "XGBoost flood prediction machine learning",
+      "source_db": "arxiv"
+    },
+    {
+      "title": "Physics-Inspired Interpretability Of Machine Learning Models",
+      "year": 2023,
+      "authors": "Maximilian P Niroomand, David J Wales",
+      "abstract": "The ability to explain decisions made by machine learning models remains one of the most significant hurdles towards widespread adoption of AI in highly sensitive areas such as medicine, cybersecurity",
+      "source": "arXiv",
+      "query": "XGBoost flood prediction machine learning",
+      "source_db": "arxiv"
+    },
+    {
+      "title": "Privacy-preserving machine learning for healthcare: open challenges and future perspectives",
+      "year": 2023,
+      "authors": "Alejandro Guerra-Manzanares, L. Julian Lechuga Lopez, Michail Maniatakos",
+      "abstract": "Machine Learning (ML) has recently shown tremendous success in modeling various healthcare prediction tasks, ranging from disease diagnosis and prognosis to patient treatment. Due to the sensitive nat",
+      "source": "arXiv",
+      "query": "XGBoost flood prediction machine learning",
+      "source_db": "arxiv"
+    },
+    {
+      "title": "Purely Speckled Intensity Images Need for SAR Despeckling with SDS-SAR",
+      "year": 2023,
+      "authors": "Liang Chen, Yifei Yin, Hao Shi",
+      "abstract": "Speckle noise is generated along with the SAR imaging mechanism and degrades the quality of SAR images, leading to difficult interpretation. Hence, despeckling is an indispensable step in SAR pre-proc",
+      "source": "arXiv",
+      "query": "SAR speckle filter flood",
+      "source_db": "arxiv"
+    },
+    {
+      "title": "Improved Flood Insights: Diffusion-Based SAR to EO Image Translation",
+      "year": 2023,
+      "authors": "Minseok Seo, Youngtack Oh, Doyi Kim",
+      "abstract": "Driven by rapid climate change, the frequency and intensity of flood events are increasing. Electro-Optical (EO) satellite imagery is commonly utilized for rapid response. However, its utilities in fl",
+      "source": "arXiv",
+      "query": "SAR speckle filter flood",
+      "source_db": "arxiv"
+    },
+    {
+      "title": "DAM-Net: Global Flood Detection from SAR Imagery Using Differential Attention Metric-Based Vision Transformers",
+      "year": 2023,
+      "authors": "Tamer Saleh, Xingxing Weng, Shimaa Holail",
+      "abstract": "The detection of flooded areas using high-resolution synthetic aperture radar (SAR) imagery is a critical task with applications in crisis and disaster management, as well as environmental resource pl",
+      "source": "arXiv",
+      "query": "change detection flood SAR",
+      "source_db": "arxiv"
+    },
+    {
+      "title": "Scientific Machine Learning Through Physics–Informed Neural Networks: Where we are and What’s Next",
+      "year": 2022,
+      "citations": 2316,
+      "authors": "Salvatore Cuomo, Vincenzo Schiano Di Cola, Fabio Giampaolo",
+      "doi": "https://doi.org/10.1007/s10915-022-01939-z",
+      "query": "deep learning U-Net flood segmentation",
+      "source_db": "openalex"
+    },
+    {
+      "title": "A review of the global climate change impacts, adaptation, and sustainable mitigation measures",
+      "year": 2022,
+      "citations": 2197,
+      "authors": "Kashif Abbass, Muhammad Qasim, Huaming Song",
+      "doi": "https://doi.org/10.1007/s11356-022-19718-6",
+      "journal": "Environmental Science and Pollution Research",
+      "query": "flood duration mapping SAR time series"
+    },
+    {
+      "title": "Ensemble deep learning: A review",
+      "year": 2022,
+      "citations": 2040,
+      "authors": "M. A. Ganaie, Minghui Hu, A. K. Malik",
+      "doi": "https://doi.org/10.1016/j.engappai.2022.105151",
+      "query": "deep learning U-Net flood segmentation",
+      "source_db": "openalex"
+    },
+    {
+      "title": "Particle Swarm Optimization Algorithm and Its Applications: A Systematic Review",
+      "year": 2022,
+      "citations": 1739,
+      "authors": "Ahmed G. Gad",
+      "doi": "https://doi.org/10.1007/s11831-021-09694-4",
+      "query": "deep learning U-Net flood segmentation",
+      "source_db": "openalex"
+    },
+    {
+      "title": "Strategies to achieve a carbon neutral society: a review",
+      "year": 2022,
+      "citations": 1242,
+      "authors": "Lin Chen, Goodluck Msigwa, Mingyu Yang",
+      "doi": "https://doi.org/10.1007/s10311-022-01435-8",
+      "journal": "Environmental Chemistry Letters",
+      "query": "HAND model flood inundation drainage"
+    },
+    {
+      "title": "Recent advances and applications of deep learning methods in materials science",
+      "year": 2022,
+      "citations": 1055,
+      "authors": "Kamal Choudhary, Brian DeCost, Chi Chen",
+      "doi": "https://doi.org/10.1038/s41524-022-00734-6",
+      "journal": "npj Computational Materials",
+      "query": "semantic segmentation water body satellite"
+    },
+    {
+      "title": "Internet of Things Strategic Research Roadmap",
+      "year": 2022,
+      "citations": 996,
+      "authors": "Ovidiu Vermesan, Peter Friess, Patrick Guillemin",
+      "doi": "https://doi.org/10.1201/9781003338604-2",
+      "journal": "River Publishers eBooks",
+      "query": "active learning flood annotation remote sensing"
+    },
+    {
+      "title": "Sea Level Rise and Implications for Low-Lying Islands, Coasts and Communities",
+      "year": 2022,
+      "citations": 880,
+      "authors": "Intergovernmental Panel on Climate Change (IPCC)",
+      "doi": "https://doi.org/10.1017/9781009157964.012",
+      "query": "DEM HAND height drainage flood",
+      "source_db": "openalex"
+    },
+    {
+      "title": "Tackling Climate Change with Machine Learning",
+      "year": 2022,
+      "citations": 863,
+      "authors": "Lynn H. Kaack, David Rolnick, Priya L. Donti",
+      "doi": "https://doi.org/10.1145/3485128",
+      "journal": "OPUS 4 (Zuse Institute Berlin)",
+      "query": "multi-sensor data fusion flood inundation mapping"
+    },
+    {
+      "title": "AI-big data analytics for building automation and management systems: a survey, actual challenges and future perspectives",
+      "year": 2022,
+      "citations": 492,
+      "authors": "Yassine Himeur, Mariam Elnour, Fodil Fadli",
+      "doi": "https://doi.org/10.1007/s10462-022-10286-2",
+      "query": "XGBoost LightGBM flood prediction",
+      "source_db": "openalex"
+    },
+    {
+      "title": "The role of deep learning in urban water management: A critical review",
+      "year": 2022,
+      "citations": 400,
+      "authors": "Guangtao Fu, Yiwen Jin, Siao Sun",
+      "doi": "https://doi.org/10.1016/j.watres.2022.118973",
+      "query": "XGBoost LightGBM flood prediction",
+      "source_db": "openalex"
+    },
+    {
+      "title": "Explainable Artificial Intelligence Applications in Cyber Security: State-of-the-Art in Research",
+      "year": 2022,
+      "citations": 385,
+      "authors": "Zhibo Zhang, Hussam Al Hamadi, Ernesto Damiani",
+      "doi": "https://doi.org/10.1109/access.2022.3204051",
+      "query": "XGBoost LightGBM flood prediction",
+      "source_db": "openalex"
+    },
+    {
+      "title": "Deep Learning-Based Change Detection in Remote Sensing Images: A Review",
+      "year": 2022,
+      "citations": 376,
+      "authors": "Ayesha Shafique, Guo Cao, Zia U. Khan",
+      "doi": "https://doi.org/10.3390/rs14040871",
+      "query": "SAR speckle filter Refined Lee",
+      "source_db": "openalex"
+    },
+    {
+      "title": "A Review of Ensemble Learning Algorithms Used in Remote Sensing Applications",
+      "year": 2022,
+      "citations": 356,
+      "authors": "Yuzhen Zhang, Jingjing Liu, Wenjuan Shen",
+      "doi": "https://doi.org/10.3390/app12178654",
+      "query": "XGBoost LightGBM flood prediction",
+      "source_db": "openalex"
+    },
+    {
+      "title": "Efficient Acceleration of Deep Learning Inference on Resource-Constrained Edge Devices: A Review",
+      "year": 2022,
+      "citations": 341,
+      "authors": "Md Maruf Hossain Shuvo, Syed K. Islam, Jianlin Cheng",
+      "doi": "https://doi.org/10.1109/jproc.2022.3226481",
+      "query": "edge deployment ONNX inference",
+      "source_db": "openalex"
+    },
+    {
+      "title": "A highly photostable and bright green fluorescent protein",
+      "year": 2022,
+      "citations": 299,
+      "authors": "Masahiko Hirano, Ryoko Ando, Satoshi Shimozono",
+      "doi": "https://doi.org/10.1038/s41587-022-01278-2",
+      "query": "Otsu threshold SAR water detection",
+      "source_db": "openalex"
+    },
+    {
+      "title": "Challenges and opportunities in remote sensing-based crop monitoring: a review",
+      "year": 2022,
+      "citations": 285,
+      "authors": "Bingfang Wu, Miao Zhang, Hongwei Zeng",
+      "doi": "https://doi.org/10.1093/nsr/nwac290",
+      "query": "Sentinel-2 NDWI flood verification",
+      "source_db": "openalex"
+    },
+    {
+      "title": "Biological Magnetic Resonance Data Bank",
+      "year": 2022,
+      "citations": 282,
+      "authors": "Jeffrey C. Hoch, Kumaran Baskaran, Harrison Burr",
+      "doi": "https://doi.org/10.1093/nar/gkac1050",
+      "query": "Sentinel Hub API satellite data",
+      "source_db": "openalex"
+    },
+    {
+      "title": "Climate‐related risks in financial assets",
+      "year": 2022,
+      "citations": 269,
+      "authors": "Emanuele Campiglio, Louis Daumas, Pierre Monnin",
+      "doi": "https://doi.org/10.1111/joes.12525",
+      "query": "ESG audit flood reporting",
+      "source_db": "openalex"
+    },
+    {
+      "title": "Remote Sensing Methods for Flood Prediction: A Review",
+      "year": 2022,
+      "citations": 268,
+      "authors": "Hafiz Suliman Munawar, Ahmed W. A. Hammad, S. Travis Waller",
+      "doi": "https://doi.org/10.3390/s22030960",
+      "query": "Otsu threshold SAR water detection",
+      "source_db": "openalex"
+    },
+    {
+      "title": "A review of Earth Artificial Intelligence",
+      "year": 2022,
+      "citations": 260,
+      "authors": "Ziheng Sun, L. Sandoval, Robert Crystal‐Ornelas",
+      "doi": "https://doi.org/10.1016/j.cageo.2022.105034",
+      "query": "Sentinel Hub API satellite data",
+      "source_db": "openalex"
+    },
+    {
+      "title": "A Survey on Deep Learning-Based Change Detection from High-Resolution Remote Sensing Images",
+      "year": 2022,
+      "citations": 259,
+      "authors": "Huiwei Jiang, Min Peng, Yuanjun Zhong",
+      "doi": "https://doi.org/10.3390/rs14071552",
+      "query": "Otsu threshold SAR water detection",
+      "source_db": "openalex"
+    },
+    {
+      "title": "Google Earth Engine and Artificial Intelligence (AI): A Comprehensive Review",
+      "year": 2022,
+      "citations": 248,
+      "authors": "Liping Yang, Joshua Driscol, Sarigai Sarigai",
+      "doi": "https://doi.org/10.3390/rs14143253",
+      "query": "Sentinel-2 NDWI flood verification",
+      "source_db": "openalex"
+    },
+    {
+      "title": "AI-Based Intrusion Detection Systems for In-Vehicle Networks: A Survey",
+      "year": 2022,
+      "citations": 208,
+      "authors": "Sampath Rajapaksha, Harsha Kalutarage, M. Omar Al-Kadri",
+      "doi": "https://doi.org/10.1145/3570954",
+      "query": "XGBoost LightGBM flood prediction",
+      "source_db": "openalex"
+    },
+    {
+      "title": "Multiclass feature selection with metaheuristic optimization algorithms: a review",
+      "year": 2022,
+      "citations": 183,
+      "authors": "Olatunji Akinola, Absalom E. Ezugwu, Jeffrey O. Agushaka",
+      "doi": "https://doi.org/10.1007/s00521-022-07705-4",
+      "journal": "Neural Computing and Applications",
+      "query": "CatBoost flood prediction categorical"
+    },
+    {
+      "title": "Real-time denoising enables high-sensitivity fluorescence time-lapse imaging beyond the shot-noise limit",
+      "year": 2022,
+      "citations": 178,
+      "authors": "Xinyang Li, Yixin Li, Yiliang Zhou",
+      "doi": "https://doi.org/10.1038/s41587-022-01450-8",
+      "query": "edge deployment ONNX inference",
+      "source_db": "openalex"
+    },
+    {
+      "title": "Predicting and analyzing flood susceptibility using boosting-based ensemble machine learning algorithms with SHapley Additive exPlanations",
+      "year": 2022,
+      "citations": 140,
+      "authors": "Halit Enes Aydin, Muzaffer Can Iban",
+      "query": "ensemble machine learning flood susceptibility",
+      "source_db": "semantic"
+    },
+    {
+      "title": "Mapping three-dimensional morphological characteristics of tidal salt-marsh channels using UAV structure-from-motion photogrammetry",
+      "year": 2022,
+      "citations": 40,
+      "authors": "Chunpeng Chen, Ce Zhang, Christian Schwarz",
+      "doi": "https://doi.org/10.1016/j.geomorph.2022.108235",
+      "query": "geodesic area WGS84 flood",
+      "source_db": "openalex"
+    },
+    {
+      "title": "Incorporation of Synthetic Data Generation Techniques within a Controlled Data Processing Workflow in the Health and Wellbeing Domain",
+      "year": 2022,
+      "citations": 27,
+      "authors": "Mikel Hernandez, Gorka Epelde, Andoni Beristain",
+      "doi": "https://doi.org/10.3390/electronics11050812",
+      "query": "FastAPI Celery microservices",
+      "source_db": "openalex"
+    },
+    {
+      "title": "AAU-net: An Adaptive Attention U-net for Breast Lesions Segmentation in Ultrasound Images",
+      "year": 2022,
+      "authors": "Gongping Chen, Yu Dai, Jianxun Zhang",
+      "abstract": "Various deep learning methods have been proposed to segment breast lesion from ultrasound images. However, similar intensity distributions, variable tumor morphology and blurred boundaries present cha",
+      "source": "arXiv",
+      "query": "deep learning flood segmentation U-Net",
+      "source_db": "arxiv"
+    },
+    {
+      "title": "Learning Curves for Decision Making in Supervised Machine Learning: A Survey",
+      "year": 2022,
+      "authors": "Felix Mohr, Jan N. van Rijn",
+      "abstract": "Learning curves are a concept from social sciences that has been adopted in the context of machine learning to assess the performance of a learning algorithm with respect to a certain resource, e.g., ",
+      "source": "arXiv",
+      "query": "XGBoost flood prediction machine learning",
+      "source_db": "arxiv"
+    },
+    {
+      "title": "Unsupervised Flood Detection on SAR Time Series",
+      "year": 2022,
+      "authors": "Ritu Yadav, Andrea Nascetti, Hossein Azizpour",
+      "abstract": "Human civilization has an increasingly powerful influence on the earth system. Affected by climate change and land-use change, natural disasters such as flooding have been increasing in recent years. ",
+      "source": "arXiv",
+      "query": "change detection flood SAR",
+      "source_db": "arxiv"
+    },
+    {
+      "title": "An experimental and theoretical investigation of HCN production in the Hadean Earth atmosphere",
+      "year": 2022,
+      "authors": "Ben K. D. Pearce, Chao He, Sarah M. Hörst",
+      "abstract": "A critical early stage for the origin of life on Earth may have involved the production of hydrogen cyanide (HCN) in a reducing, predominantly H$_2$ atmosphere. HCN is crucial for the origin of life a",
+      "source": "arXiv",
+      "query": "Google Earth Engine flood",
+      "source_db": "arxiv"
+    },
+    {
+      "title": "Review of deep learning: concepts, CNN architectures, challenges, applications, future directions",
+      "year": 2021,
+      "citations": 7551,
+      "authors": "Laith Alzubaidi, Jinglan Zhang, Amjad J. Humaidi",
+      "doi": "https://doi.org/10.1186/s40537-021-00444-8",
+      "query": "deep learning U-Net flood segmentation",
+      "source_db": "openalex"
+    },
+    {
+      "title": "Physics-informed machine learning",
+      "year": 2021,
+      "citations": 6629,
+      "authors": "George Em Karniadakis, Ioannis G. Kevrekidis, Lu Lu",
+      "doi": "https://doi.org/10.1038/s42254-021-00314-5",
+      "query": "spatial cross-validation remote sensing",
+      "source_db": "openalex"
+    },
+    {
+      "title": "A Survey of Convolutional Neural Networks: Analysis, Applications, and Prospects",
+      "year": 2021,
+      "citations": 4837,
+      "authors": "Zewen Li, Fan Liu, Wenjie Yang",
+      "doi": "https://doi.org/10.1109/tnnls.2021.3084827",
+      "journal": "IEEE Transactions on Neural Networks and Learning Systems",
+      "query": "spatial cross-validation block CV remote sensing"
+    },
+    {
+      "title": "SoilGrids 2.0: producing soil information for the globe with quantified spatial uncertainty",
+      "year": 2021,
+      "citations": 2064,
+      "authors": "Laura Poggio, Luís Moreira de Sousa, N.H. Batjes",
+      "doi": "https://doi.org/10.5194/soil-7-217-2021",
+      "query": "Sentinel Hub API satellite data",
+      "source_db": "openalex"
+    },
+    {
+      "title": "U-Net and Its Variants for Medical Image Segmentation: A Review of Theory and Applications",
+      "year": 2021,
+      "citations": 1881,
+      "authors": "Nahian Siddique, Sidike Paheding, Colin Elkin",
+      "doi": "https://doi.org/10.1109/access.2021.3086020",
+      "query": "edge deployment ONNX inference",
+      "source_db": "openalex"
+    },
+    {
+      "title": "Autophagy in major human diseases",
+      "year": 2021,
+      "citations": 1548,
+      "authors": "Daniel J. Klionsky, Giulia Petroni, Ravi K. Amaravadi",
+      "doi": "https://doi.org/10.15252/embj.2021108863",
+      "query": "incidence angle normalization SAR",
+      "source_db": "openalex"
+    },
+    {
+      "title": "The 2021 report of the Lancet Countdown on health and climate change: code red for a healthy future",
+      "year": 2021,
+      "citations": 1536,
+      "authors": "Marina Romanello, Alice McGushin, Claudia Di Napoli",
+      "doi": "https://doi.org/10.1016/s0140-6736(21)01787-6",
+      "query": "change detection flood multi-temporal SAR",
+      "source_db": "openalex"
+    },
+    {
+      "title": "Engineering organoids",
+      "year": 2021,
+      "citations": 1145,
+      "authors": "Moritz Hofer, Matthias P. Lütolf",
+      "doi": "https://doi.org/10.1038/s41578-021-00279-y",
+      "query": "multisensor fusion flood detection SAR optical",
+      "source_db": "openalex"
+    },
+    {
+      "title": "GLC_FCS30: global land-cover product with fine classification system at 30 m using time-series Landsat imagery",
+      "year": 2021,
+      "citations": 1007,
+      "authors": "Xiao Zhang, Liangyun Liu, Xidong Chen",
+      "doi": "https://doi.org/10.5194/essd-13-2753-2021",
+      "query": "SAR flood mapping Sentinel-1 automated",
+      "source_db": "openalex"
+    },
+    {
+      "title": "Digital Transformation and Environmental Sustainability: A Review and Research Agenda",
+      "year": 2021,
+      "citations": 661,
+      "authors": "A. Karim Feroz, Hangjung Zo, Ananth Chiravuri",
+      "doi": "https://doi.org/10.3390/su13031530",
+      "query": "ensemble machine learning flood susceptibility",
+      "source_db": "openalex"
+    },
+    {
+      "title": "A review on deep learning in medical image analysis",
+      "year": 2021,
+      "citations": 620,
+      "authors": "S. Suganyadevi, V. Seethalakshmi, K. Balasamy",
+      "doi": "https://doi.org/10.1007/s13735-021-00218-1",
+      "query": "edge deployment ONNX inference",
+      "source_db": "openalex"
+    },
+    {
+      "title": "Influence of Data Splitting on Performance of Machine Learning Models in Prediction of Shear Strength of Soil",
+      "year": 2021,
+      "citations": 610,
+      "authors": "Quang Hung Nguyen, Hai‐Bang Ly, Lanh Si Ho",
+      "doi": "https://doi.org/10.1155/2021/4832864",
+      "query": "ensemble machine learning flood susceptibility",
+      "source_db": "openalex"
+    },
+    {
+      "title": "Artificial intelligence and machine learning for medical imaging: A technology review",
+      "year": 2021,
+      "citations": 428,
+      "authors": "Ana María Barragán Montero, Umair Javaid, Gilmer Valdés",
+      "doi": "https://doi.org/10.1016/j.ejmp.2021.04.016",
+      "journal": "Physica Medica",
+      "query": "dice loss imbalanced segmentation flood"
+    },
+    {
+      "title": "Coupling machine learning and crop modeling improves crop yield prediction in the US Corn Belt",
+      "year": 2021,
+      "citations": 406,
+      "authors": "Mohsen Shahhosseini, Guiping Hu, Isaiah Huber",
+      "doi": "https://doi.org/10.1038/s41598-020-80820-1",
+      "query": "XGBoost LightGBM flood prediction",
+      "source_db": "openalex"
+    },
+    {
+      "title": "The 10-m crop type maps in Northeast China during 2017–2019",
+      "year": 2021,
+      "citations": 370,
+      "authors": "Nanshan You, Jinwei Dong, Jianxi Huang",
+      "doi": "https://doi.org/10.1038/s41597-021-00827-9",
+      "journal": "Scientific Data",
+      "query": "GLCM texture flood mapping"
+    },
+    {
+      "title": "A Comprehensive Review of Crop Yield Prediction Using Machine Learning Approaches With Special Emphasis on Palm Oil Yield Prediction",
+      "year": 2021,
+      "citations": 343,
+      "authors": "Mamunur Rashid, Bifta Sama Bari, Yusri Yusup",
+      "doi": "https://doi.org/10.1109/access.2021.3075159",
+      "query": "XGBoost LightGBM flood prediction",
+      "source_db": "openalex"
+    },
+    {
+      "title": "Progress and Trends in the Application of Google Earth and Google Earth Engine",
+      "year": 2021,
+      "citations": 304,
+      "authors": "Qiang Zhao, Le Yu, Xuecao Li",
+      "doi": "https://doi.org/10.3390/rs13183778",
+      "query": "Sentinel Hub API satellite data",
+      "source_db": "openalex"
+    },
+    {
+      "title": "Towards Aircraft Maintenance Metaverse Using Speech Interactions with Virtual Objects in Mixed Reality",
+      "year": 2021,
+      "citations": 263,
+      "authors": "Aziz Siyaev, Geun‐Sik Jo",
+      "doi": "https://doi.org/10.3390/s21062066",
+      "query": "edge deployment ONNX inference",
+      "source_db": "openalex"
+    },
+    {
+      "title": "Monocyte-driven atypical cytokine storm and aberrant neutrophil activation as key mediators of COVID-19 disease severity",
+      "year": 2021,
+      "citations": 260,
+      "authors": "Lore Vanderbeke, Pierre Van Mol, Yannick Van Herck",
+      "doi": "https://doi.org/10.1038/s41467-021-24360-w",
+      "journal": "Nature Communications",
+      "query": "KMeans clustering water detection SAR"
+    },
+    {
+      "title": "Annual 30 m dataset for glacial lakes in High Mountain Asia from 2008 to 2017",
+      "year": 2021,
+      "citations": 236,
+      "authors": "Fang Chen, Meimei Zhang, Huadong Guo",
+      "doi": "https://doi.org/10.5194/essd-13-741-2021",
+      "query": "Sentinel-2 NDWI flood verification",
+      "source_db": "openalex"
+    },
+    {
+      "title": "A Comprehensive Assessment of XGBoost Algorithm for Landslide Susceptibility Mapping in the Upper Basin of Ataturk Dam, Turkey",
+      "year": 2021,
+      "citations": 162,
+      "authors": "R. Can, Sultan Kocaman, Candan Gökçeoğlu",
+      "doi": "https://doi.org/10.3390/app11114993",
+      "journal": "Applied Sciences",
+      "query": "LightGBM histogram-based flood detection"
+    },
+    {
+      "title": "Novel ensemble machine learning models in flood susceptibility mapping",
+      "year": 2021,
+      "citations": 146,
+      "authors": "Pankaj Prasad, Victor J. Loveson, Bappa Das",
+      "query": "ensemble machine learning flood susceptibility",
+      "source_db": "semantic"
+    },
+    {
+      "title": "Generalized Buffering Algorithm",
+      "year": 2021,
+      "citations": 117,
+      "authors": "Guoqing Zhou, Rongting Zhang, Shengxin Huang",
+      "doi": "https://doi.org/10.1109/access.2021.3057719",
+      "journal": "IEEE Access",
+      "query": "Douglas Peucker polygon simplification geodesic"
+    },
+    {
+      "title": "The QXS-SAROPT Dataset for Deep Learning in SAR-Optical Data Fusion",
+      "year": 2021,
+      "citations": 82,
+      "authors": "Meiyu Huang, Yao Xu, Lixin Qian",
+      "query": "multisensor fusion flood detection SAR optical NDWI",
+      "source_db": "semantic"
+    },
+    {
+      "title": "Flood Segmentation on Sentinel-1 SAR Imagery with Semi-Supervised Learning",
+      "year": 2021,
+      "authors": "Sayak Paul, Siddha Ganju",
+      "abstract": "Floods wreak havoc throughout the world, causing billions of dollars in damages, and uprooting communities, ecosystems and economies. The NASA Impact Flood Detection competition tasked participants wi",
+      "source": "arXiv",
+      "query": "SAR flood mapping Sentinel-1",
+      "source_db": "arxiv"
+    },
+    {
+      "title": "The Modern Mathematics of Deep Learning",
+      "year": 2021,
+      "authors": "Julius Berner, Philipp Grohs, Gitta Kutyniok",
+      "abstract": "We describe the new field of mathematical analysis of deep learning. This field emerged around a list of research questions that were not answered within the classical framework of learning theory. Th",
+      "source": "arXiv",
+      "query": "deep learning flood segmentation U-Net",
+      "source_db": "arxiv"
+    },
+    {
+      "title": "A Question of Time: Revisiting the Use of Recursive Filtering for Temporal Calibration of Multisensor Systems",
+      "year": 2021,
+      "authors": "Jonathan Kelly, Christopher Grebe, Matthew Giamou",
+      "abstract": "We examine the problem of time delay estimation, or temporal calibration, in the context of multisensor data fusion. Differences in processing intervals and other factors typically lead to a relative ",
+      "source": "arXiv",
+      "query": "multisensor fusion flood detection",
+      "source_db": "arxiv"
+    },
+    {
+      "title": "An Attention-Fused Network for Semantic Segmentation of Very-High-Resolution Remote Sensing Imagery",
+      "year": 2021,
+      "authors": "Xuan Yang, Shanshan Li, Zhengchao Chen",
+      "abstract": "Semantic segmentation is an essential part of deep learning. In recent years, with the development of remote sensing big data, semantic segmentation has been increasingly used in remote sensing. Deep ",
+      "source": "arXiv",
+      "query": "NDWI water index remote sensing",
+      "source_db": "arxiv"
+    },
+    {
+      "title": "Lunar-like silicate material forms the Earth quasisatellite (469219) 2016 HO3 Kamo`oalewa",
+      "year": 2021,
+      "authors": "Benjamin N. L. Sharkey, Vishnu Reddy, Renu Malhotra",
+      "abstract": "Little is known about Earth quasi-satellites, a class of near-Earth small solar system bodies that orbit the sun but remain close to the Earth, because they are faint and difficult to observe. Here we",
+      "source": "arXiv",
+      "query": "Google Earth Engine flood",
+      "source_db": "arxiv"
+    },
+    {
+      "title": "Geospatial Reasoning with Shapefiles for Supporting Policy Decisions",
+      "year": 2021,
+      "authors": "Henrique Santos, James P. McCusker, Deborah L. McGuinness",
+      "abstract": "Policies are authoritative assets that are present in multiple domains to support decision-making. They describe what actions are allowed or recommended when domain entities and their attributes satis",
+      "source": "arXiv",
+      "query": "edge deployment geospatial inference",
+      "source_db": "arxiv"
+    },
+    {
+      "title": "Characteristics of SARS-CoV-2 and COVID-19",
+      "year": 2020,
+      "citations": 5451,
+      "authors": "Ben Hu, Hua Guo, Peng Zhou",
+      "doi": "https://doi.org/10.1038/s41579-020-00459-7",
+      "query": "change detection flood multi-temporal SAR",
+      "source_db": "openalex"
+    },
+    {
+      "title": "A Survey on Explainable Artificial Intelligence (XAI): Toward Medical XAI",
+      "year": 2020,
+      "citations": 2191,
+      "authors": "Erico Tjoa, Cuntai Guan",
+      "doi": "https://doi.org/10.1109/tnnls.2020.3027314",
+      "query": "deep learning U-Net flood segmentation",
+      "source_db": "openalex"
+    },
+    {
+      "title": "The 2020 report of The Lancet Countdown on health and climate change: responding to converging crises",
+      "year": 2020,
+      "citations": 1880,
+      "authors": "Nick Watts, Markus Amann, Nigel W. Arnell",
+      "doi": "https://doi.org/10.1016/s0140-6736(20)32290-x",
+      "query": "change detection flood multi-temporal SAR",
+      "source_db": "openalex"
+    },
+    {
+      "title": "A Spatial-Temporal Attention-Based Method and a New Dataset for Remote Sensing Image Change Detection",
+      "year": 2020,
+      "citations": 1702,
+      "authors": "Hao Chen, Zhenwei Shi",
+      "doi": "https://doi.org/10.3390/rs12101662",
+      "query": "change detection flood multi-temporal SAR",
+      "source_db": "openalex"
+    },
+    {
+      "title": "Global lake responses to climate change",
+      "year": 2020,
+      "citations": 1420,
+      "authors": "R. Iestyn Woolway, Benjamin M. Kraemer, John D. Lenters",
+      "doi": "https://doi.org/10.1038/s43017-020-0067-5",
+      "query": "change detection flood multi-temporal SAR",
+      "source_db": "openalex"
+    },
+    {
+      "title": "Polycyclic Aromatic Hydrocarbons: Sources, Toxicity, and Remediation Approaches",
+      "year": 2020,
+      "citations": 1289,
+      "authors": "Avani Bharatkumar Patel, Shabnam Shaikh, Kunal Jain",
+      "doi": "https://doi.org/10.3389/fmicb.2020.562813",
+      "journal": "Frontiers in Microbiology",
+      "query": "connected component analysis flood cleanup"
+    },
+    {
+      "title": "Google Earth Engine Cloud Computing Platform for Remote Sensing Big Data Applications: A Comprehensive Review",
+      "year": 2020,
+      "citations": 1099,
+      "authors": "Meisam Amani, Arsalan Ghorbanian, Seyed Ali Ahmadi",
+      "doi": "https://doi.org/10.1109/jstars.2020.3021052",
+      "query": "SAR flood mapping Sentinel-1 automated",
+      "source_db": "openalex"
+    },
+    {
+      "title": "Dual-Functional Plasmonic Photothermal Biosensors for Highly Accurate Severe Acute Respiratory Syndrome Coronavirus 2 Detection",
+      "year": 2020,
+      "citations": 1057,
+      "authors": "Guangyu Qiu, Zhibo Gai, Yile Tao",
+      "doi": "https://doi.org/10.1021/acsnano.0c02439",
+      "query": "incidence angle normalization SAR",
+      "source_db": "openalex"
+    },
+    {
+      "title": "Selecting critical features for data classification based on machine learning methods",
+      "year": 2020,
+      "citations": 977,
+      "authors": "Rung-Ching Chen, Christine Dewi, Su-Wen Huang",
+      "doi": "https://doi.org/10.1186/s40537-020-00327-4",
+      "query": "ensemble machine learning flood susceptibility",
+      "source_db": "openalex"
+    },
+    {
+      "title": "A review of machine learning applications in wildfire science and management",
+      "year": 2020,
+      "citations": 703,
+      "authors": "Piyush Jain, Sean C.P. Coogan, Sriram Ganapathi Subramanian",
+      "doi": "https://doi.org/10.1139/er-2020-0019",
+      "query": "ensemble machine learning flood susceptibility",
+      "source_db": "openalex"
+    },
+    {
+      "title": "A comprehensive review of deep learning applications in hydrology and water resources",
+      "year": 2020,
+      "citations": 579,
+      "authors": "Muhammed Sit, Bekir Zahit Demiray, Zhongrun Xiang",
+      "doi": "https://doi.org/10.2166/wst.2020.369",
+      "query": "SAR flood mapping Sentinel-1 automated",
+      "source_db": "openalex"
+    },
+    {
+      "title": "Change Detection Based on Artificial Intelligence: State-of-the-Art and Challenges",
+      "year": 2020,
+      "citations": 571,
+      "authors": "Wenzhong Shi, Min Zhang, Rui Zhang",
+      "doi": "https://doi.org/10.3390/rs12101688",
+      "query": "SAR flood mapping Sentinel-1 automated",
+      "source_db": "openalex"
+    },
+    {
+      "title": "A Review on Early Forest Fire Detection Systems Using Optical Remote Sensing",
+      "year": 2020,
+      "citations": 505,
+      "authors": "Panagiotis Barmpoutis, Periklis Papaioannou, Kosmas Dimitropoulos",
+      "doi": "https://doi.org/10.3390/s20226442",
+      "query": "Otsu threshold SAR water detection",
+      "source_db": "openalex"
+    },
+    {
+      "title": "Remote Sensing for Precision Agriculture: Sentinel-2 Improved Features and Applications",
+      "year": 2020,
+      "citations": 483,
+      "authors": "Joel Segarra, Ma. Luisa Buchaillot, J. L. Araus",
+      "doi": "https://doi.org/10.3390/agronomy10050641",
+      "query": "Sentinel Hub API satellite data",
+      "source_db": "openalex"
+    },
+    {
+      "title": "Flood susceptibility modelling using advanced ensemble machine learning models",
+      "year": 2020,
+      "citations": 476,
+      "authors": "A. Islam, Swapan Talukdar, Susanta Mahato",
+      "query": "ensemble machine learning flood susceptibility",
+      "source_db": "semantic"
+    },
+    {
+      "title": "Deep-learning-based information mining from ocean remote-sensing imagery",
+      "year": 2020,
+      "citations": 395,
+      "authors": "Xiaofeng Li, Bin Liu, Gang Zheng",
+      "doi": "https://doi.org/10.1093/nsr/nwaa047",
+      "journal": "National Science Review",
+      "query": "dice loss imbalanced segmentation flood"
+    },
+    {
+      "title": "Internet of Things in arable farming: Implementation, applications, challenges and potential",
+      "year": 2020,
+      "citations": 369,
+      "authors": "Andrés Villa‐Henriksen, Gareth Edwards, Liisa Pesonen",
+      "doi": "https://doi.org/10.1016/j.biosystemseng.2019.12.013",
+      "query": "Sentinel Hub API satellite data",
+      "source_db": "openalex"
+    },
+    {
+      "title": "A Review of Intrusion Detection Systems Using Machine and Deep Learning in Internet of Things: Challenges, Solutions and Future Directions",
+      "year": 2020,
+      "citations": 355,
+      "authors": "Javed Asharf, Nour Moustafa, Hasnat Khurshid",
+      "doi": "https://doi.org/10.3390/electronics9071177",
+      "journal": "Electronics",
+      "query": "DBSCAN flood clustering spatial"
+    },
+    {
+      "title": "Transition towards green banking: role of financial regulators and financial institutions",
+      "year": 2020,
+      "citations": 349,
+      "authors": "Hyoungkun Park, Jong Dae Kim",
+      "doi": "https://doi.org/10.1186/s41180-020-00034-3",
+      "query": "ESG audit flood reporting",
+      "source_db": "openalex"
+    },
+    {
+      "title": "Machine learning for metabolic engineering: A review",
+      "year": 2020,
+      "citations": 300,
+      "authors": "Christopher E. Lawson, Jose Manuel Martí, Tijana Radivojević",
+      "doi": "https://doi.org/10.1016/j.ymben.2020.10.005",
+      "journal": "Metabolic Engineering",
+      "query": "KMeans clustering water detection SAR"
+    },
+    {
+      "title": "High-Throughput Estimation of Crop Traits: A Review of Ground and Aerial Phenotyping Platforms",
+      "year": 2020,
+      "citations": 275,
+      "authors": "Xiuliang Jin, Pablo J. Zarco‐Tejada, Urs Schmidhalter",
+      "doi": "https://doi.org/10.1109/mgrs.2020.2998816",
+      "query": "SAR speckle filter Refined Lee",
+      "source_db": "openalex"
+    },
+    {
+      "title": "An enhancement to sea ice motion and age products at the National Snow and Ice Data Center (NSIDC)",
+      "year": 2020,
+      "citations": 247,
+      "authors": "M. A. Tschudi, Walter N. Meier, J. Scott Stewart",
+      "doi": "https://doi.org/10.5194/tc-14-1519-2020",
+      "query": "SAR speckle filter Refined Lee",
+      "source_db": "openalex"
+    },
+    {
+      "title": "A survey and analysis of intrusion detection models based on CSE-CIC-IDS2018 Big Data",
+      "year": 2020,
+      "citations": 245,
+      "authors": "Joffrey L. Leevy, Taghi M. Khoshgoftaar",
+      "doi": "https://doi.org/10.1186/s40537-020-00382-x",
+      "query": "XGBoost LightGBM flood prediction",
+      "source_db": "openalex"
+    },
+    {
+      "title": "Shifting the focus of sustainability accounting from impacts to risks and dependencies: researching the transformative potential of TCFD reporting",
+      "year": 2020,
+      "citations": 220,
+      "authors": "Brendan O’Dwyer, Jeffrey Unerman",
+      "doi": "https://doi.org/10.1108/aaaj-02-2020-4445",
+      "query": "ESG audit flood reporting",
+      "source_db": "openalex"
+    },
+    {
+      "title": "Hardware and Software Optimizations for Accelerating Deep Neural Networks: Survey of Current Trends, Challenges, and the Road Ahead",
+      "year": 2020,
+      "citations": 212,
+      "authors": "Maurizio Capra, Beatrice Bussolino, Alberto Marchisio",
+      "doi": "https://doi.org/10.1109/access.2020.3039858",
+      "query": "edge deployment ONNX inference",
+      "source_db": "openalex"
+    },
+    {
+      "title": "Towards reproducible computational drug discovery",
+      "year": 2020,
+      "citations": 200,
+      "authors": "Nalini Schaduangrat, Samuel Lampa, Saw Simeon",
+      "doi": "https://doi.org/10.1186/s13321-020-0408-x",
+      "query": "edge deployment ONNX inference",
+      "source_db": "openalex"
+    },
+    {
+      "title": "Enabling Serverless Deployment of Large-Scale AI Workloads",
+      "year": 2020,
+      "citations": 37,
+      "authors": "Angelos Christidis, Sotiris Moschoyiannis, Ching‐Hsien Hsu",
+      "doi": "https://doi.org/10.1109/access.2020.2985282",
+      "journal": "IEEE Access",
+      "query": "ONNX Runtime edge inference geospatial"
+    },
+    {
+      "title": "DILIE: Deep Internal Learning for Image Enhancement",
+      "year": 2020,
+      "authors": "Indra Deep Mastan, Shanmuganathan Raman",
+      "abstract": "We consider the generic deep image enhancement problem where an input image is transformed into a perceptually better-looking image. Recent methods for image enhancement consider the problem by perfor",
+      "source": "arXiv",
+      "query": "deep learning flood segmentation U-Net",
+      "source_db": "arxiv"
+    },
+    {
+      "title": "SemanticVoxels: Sequential Fusion for 3D Pedestrian Detection using LiDAR Point Cloud and Semantic Segmentation",
+      "year": 2020,
+      "authors": "Juncong Fei, Wenbo Chen, Philipp Heidenreich",
+      "abstract": "3D pedestrian detection is a challenging task in automated driving because pedestrians are relatively small, frequently occluded and easily confused with narrow vertical objects. LiDAR and camera are ",
+      "source": "arXiv",
+      "query": "multisensor fusion flood detection",
+      "source_db": "arxiv"
+    },
+    {
+      "title": "DOME: Recommendations for supervised machine learning validation in biology",
+      "year": 2020,
+      "authors": "Ian Walsh, Dmytro Fishman, Dario Garcia-Gasulla",
+      "abstract": "Modern biology frequently relies on machine learning to provide predictions and improve decision processes. There have been recent calls for more scrutiny on machine learning performance and possible ",
+      "source": "arXiv",
+      "query": "XGBoost flood prediction machine learning",
+      "source_db": "arxiv"
+    },
+    {
+      "title": "SAR Image Despeckling by Deep Neural Networks: from a pre-trained model to an end-to-end training strategy",
+      "year": 2020,
+      "authors": "Emanuele Dalsasso, Xiangli Yang, Loïc Denis",
+      "abstract": "Speckle reduction is a longstanding topic in synthetic aperture radar (SAR) images. Many different schemes have been proposed for the restoration of intensity SAR images. Among the different possible ",
+      "source": "arXiv",
+      "query": "SAR speckle filter flood",
+      "source_db": "arxiv"
+    },
+    {
+      "title": "Deep Learning Techniques for Geospatial Data Analysis",
+      "year": 2020,
+      "authors": "Arvind W. Kiwelekar, Geetanjali S. Mahamunkar, Laxman D. Netak",
+      "abstract": "Consumer electronic devices such as mobile handsets, goods tagged with RFID labels, location and position sensors are continuously generating a vast amount of location enriched data called geospatial ",
+      "source": "arXiv",
+      "query": "edge deployment geospatial inference",
+      "source_db": "arxiv"
+    },
+    {
+      "title": "Artificial Intelligence (AI): Multidisciplinary perspectives on emerging challenges, opportunities, and agenda for research, practice and policy",
+      "year": 2019,
+      "citations": 4051,
+      "authors": "Yogesh K. Dwivedi, Laurie Hughes, Elvira Ismagilova",
+      "doi": "https://doi.org/10.1016/j.ijinfomgt.2019.08.002",
+      "journal": "International Journal of Information Management",
+      "query": "ensemble learning flood prediction remote sensing"
+    },
+    {
+      "title": "Present and Future of Surface-Enhanced Raman Scattering",
+      "year": 2019,
+      "citations": 3744,
+      "authors": "Judith Langer, Dorleta Jiménez de Aberasturi, Javier Aizpurua",
+      "doi": "https://doi.org/10.1021/acsnano.9b04224",
+      "journal": "ACS Nano",
+      "query": "spatial cross-validation block CV remote sensing"
+    },
+    {
+      "title": "The Global Methane Budget 2000-2017",
+      "year": 2019,
+      "citations": 2643,
+      "authors": "Marielle Saunois, Ann R. Stavert, Benjamin Poulter",
+      "doi": "https://doi.org/10.5194/essd-12-1561-2020",
+      "journal": "NOAA Institutional Repository",
+      "query": "morphological operations flood post-processing"
+    },
+    {
+      "title": "Wireless Communications and Applications Above 100 GHz: Opportunities and Challenges for 6G and Beyond",
+      "year": 2019,
+      "citations": 2459,
+      "authors": "Theodore S. Rappaport, Yunchou Xing, Ojas Kanhere",
+      "doi": "https://doi.org/10.1109/access.2019.2921522",
+      "query": "incidence angle normalization SAR",
+      "source_db": "openalex"
+    },
+    {
+      "title": "Unmanned Aerial Vehicles (UAVs): A Survey on Civil Applications and Key Research Challenges",
+      "year": 2019,
+      "citations": 2232,
+      "authors": "Hazim Shakhatreh, Ahmad Sawalmeh, Ala Al‐Fuqaha",
+      "doi": "https://doi.org/10.1109/access.2019.2909530",
+      "query": "change detection flood multi-temporal SAR",
+      "source_db": "openalex"
+    },
+    {
+      "title": "Review of Deep Learning Algorithms and Architectures",
+      "year": 2019,
+      "citations": 1840,
+      "authors": "Ajay Shrestha, Ausif Mahmood",
+      "doi": "https://doi.org/10.1109/access.2019.2912200",
+      "journal": "IEEE Access",
+      "query": "graph neural network flood susceptibility"
+    },
+    {
+      "title": "Survey of intrusion detection systems: techniques, datasets and challenges",
+      "year": 2019,
+      "citations": 1827,
+      "authors": "Ansam Khraisat, Iqbal Gondal, Peter Vamplew",
+      "doi": "https://doi.org/10.1186/s42400-019-0038-7",
+      "journal": "Cybersecurity",
+      "query": "semi-supervised flood detection limited labels"
+    },
+    {
+      "title": "The 2019 report of The Lancet Countdown on health and climate change: ensuring that the health of a child born today is not defined by a changing climate",
+      "year": 2019,
+      "citations": 1461,
+      "authors": "Nick Watts, Markus Amann, Nigel W. Arnell",
+      "doi": "https://doi.org/10.1016/s0140-6736(19)32596-6",
+      "journal": "The Lancet",
+      "query": "focal loss class imbalance flood detection"
+    },
+    {
+      "title": "Internet-of-Things (IoT)-Based Smart Agriculture: Toward Making the Fields Talk",
+      "year": 2019,
+      "citations": 1226,
+      "authors": "Muhammad Ayaz, Mohammad Ammad-Uddin, Zubair Sharif",
+      "doi": "https://doi.org/10.1109/access.2019.2932609",
+      "query": "deep learning U-Net flood segmentation",
+      "source_db": "openalex"
+    },
+    {
+      "title": "MERIT Hydro: A High‐Resolution Global Hydrography Map Based on Latest Topography Dataset",
+      "year": 2019,
+      "citations": 1154,
+      "authors": "Dai Yamazaki, Daiki Ikeshima, Jeison Sosa",
+      "doi": "https://doi.org/10.1029/2019wr024873",
+      "query": "change detection flood multi-temporal SAR",
+      "source_db": "openalex"
+    },
+    {
+      "title": "Current status of Landsat program, science, and applications",
+      "year": 2019,
+      "citations": 1106,
+      "authors": "Michael A. Wulder, Thomas R. Loveland, David P. Roy",
+      "doi": "https://doi.org/10.1016/j.rse.2019.02.015",
+      "query": "SAR flood mapping Sentinel-1 automated",
+      "source_db": "openalex"
+    },
+    {
+      "title": "Earthquake‐Induced Chains of Geologic Hazards: Patterns, Mechanisms, and Impacts",
+      "year": 2019,
+      "citations": 957,
+      "authors": "Xuanmei Fan, Gianvito Scaringi, Oliver Korup",
+      "doi": "https://doi.org/10.1029/2018rg000626",
+      "query": "SAR flood mapping Sentinel-1 automated",
+      "source_db": "openalex"
+    },
+    {
+      "title": "Inferring causation from time series in Earth system sciences",
+      "year": 2019,
+      "citations": 948,
+      "authors": "Jakob Runge, Sebastian Bathiany, Erik M. Bollt",
+      "doi": "https://doi.org/10.1038/s41467-019-10105-3",
+      "journal": "Nature Communications",
+      "query": "graph neural network flood susceptibility"
+    },
+    {
+      "title": "Machine Learning and Deep Learning frameworks and libraries for large-scale data mining: a survey",
+      "year": 2019,
+      "citations": 855,
+      "authors": "Giang Nguyen, Štefan Dlugolinský, Martin Bobák",
+      "doi": "https://doi.org/10.1007/s10462-018-09679-z",
+      "query": "edge deployment ONNX inference",
+      "source_db": "openalex"
+    },
+    {
+      "title": "Evaluation of Different Machine Learning Methods and Deep-Learning Convolutional Neural Networks for Landslide Detection",
+      "year": 2019,
+      "citations": 851,
+      "authors": "Omid Ghorbanzadeh, Thomas Blaschke, Khalil Gholamnia",
+      "doi": "https://doi.org/10.3390/rs11020196",
+      "query": "ensemble machine learning flood susceptibility",
+      "source_db": "openalex"
+    },
+    {
+      "title": "The FLUXCOM ensemble of global land-atmosphere energy fluxes",
+      "year": 2019,
+      "citations": 813,
+      "authors": "Martin Jung, Sujan Koirala, Ulrich Weber",
+      "doi": "https://doi.org/10.1038/s41597-019-0076-8",
+      "query": "NDWI water index extraction remote sensing",
+      "source_db": "openalex"
+    },
+    {
+      "title": "A Brief Review of Random Forests for Water Scientists and Practitioners and Their Recent History in Water Resources",
+      "year": 2019,
+      "citations": 738,
+      "authors": "Hristos Tyralis, Georgia Papacharalampous, Andreas Langousis",
+      "doi": "https://doi.org/10.3390/w11050910",
+      "query": "multisensor fusion flood detection SAR optical",
+      "source_db": "openalex"
+    },
+    {
+      "title": "Ground, Proximal, and Satellite Remote Sensing of Soil Moisture",
+      "year": 2019,
+      "citations": 666,
+      "authors": "Ebrahim Babaeian, Morteza Sadeghi, Scott B. Jones",
+      "doi": "https://doi.org/10.1029/2018rg000618",
+      "query": "SAR flood mapping Sentinel-1 automated",
+      "source_db": "openalex"
+    },
+    {
+      "title": "Remote sensing of the terrestrial carbon cycle: A review of advances over 50 years",
+      "year": 2019,
+      "citations": 627,
+      "authors": "Jingfeng Xiao, Frédéric Chevallier, Cécile Gomez",
+      "doi": "https://doi.org/10.1016/j.rse.2019.111383",
+      "query": "NDWI water index extraction remote sensing",
+      "source_db": "openalex"
+    },
+    {
+      "title": "Temporal Convolutional Neural Network for the Classification of Satellite Image Time Series",
+      "year": 2019,
+      "citations": 596,
+      "authors": "Charlotte Pelletier",
+      "doi": "https://doi.org/10.3390/rs11050523",
+      "query": "SAR flood mapping Sentinel-1 automated",
+      "source_db": "openalex"
+    },
+    {
+      "title": "Google Earth Engine Applications",
+      "year": 2019,
+      "citations": 585,
+      "authors": "Onisimo Mutanga, Lalit Kumar",
+      "doi": "https://doi.org/10.3390/rs11050591",
+      "query": "SAR flood mapping Sentinel-1 automated",
+      "source_db": "openalex"
+    },
+    {
+      "title": "Multisource and Multitemporal Data Fusion in Remote Sensing: A Comprehensive Review of the State of the Art",
+      "year": 2019,
+      "citations": 570,
+      "authors": "Pedram Ghamisi, Richard Gloaguen, Peter M. Atkinson",
+      "doi": "https://doi.org/10.1109/mgrs.2018.2890023",
+      "query": "SAR flood mapping Sentinel-1 automated",
+      "source_db": "openalex"
+    },
+    {
+      "title": "A Survey of Deep Learning Methods for Cyber Security",
+      "year": 2019,
+      "citations": 548,
+      "authors": "Daniel S. Berman, Anna L. Buczak, Jeffrey S. Chavis",
+      "doi": "https://doi.org/10.3390/info10040122",
+      "journal": "Information",
+      "query": "XGBoost gradient boosting flood susceptibility"
+    },
+    {
+      "title": "Sentinel-1 GRD Preprocessing Workflow",
+      "year": 2019,
+      "citations": 524,
+      "authors": "Federico Filipponi",
+      "doi": "https://doi.org/10.3390/ecrs-3-06201",
+      "query": "SAR speckle filter Refined Lee",
+      "source_db": "openalex"
+    },
+    {
+      "title": "A cloud detection algorithm for satellite imagery based on deep learning",
+      "year": 2019,
+      "citations": 393,
+      "authors": "Jacob Høxbroe Jeppesen, Rune Hylsberg Jacobsen, Fadil Inceoglu",
+      "doi": "https://doi.org/10.1016/j.rse.2019.03.039",
+      "journal": "Remote Sensing of Environment",
+      "query": "dice loss imbalanced segmentation flood"
+    },
+    {
+      "title": "The European Space Agency BIOMASS mission: Measuring forest above-ground biomass from space",
+      "year": 2019,
+      "citations": 342,
+      "authors": "S. Quegan, Thuy Le Toan, Jérôme Chave",
+      "doi": "https://doi.org/10.1016/j.rse.2019.03.032",
+      "journal": "Remote Sensing of Environment",
+      "query": "SAR polarimetry flood detection dual-pol"
+    },
+    {
+      "title": "Modelling of the tsunami from the December 22, 2018 lateral collapse of Anak Krakatau volcano in the Sunda Straits, Indonesia",
+      "year": 2019,
+      "citations": 310,
+      "authors": "Stéphan T. Grilli, David R. Tappin, Steven Carey",
+      "doi": "https://doi.org/10.1038/s41598-019-48327-6",
+      "query": "Sentinel Hub API satellite data",
+      "source_db": "openalex"
+    },
+    {
+      "title": "Airborne and spaceborne remote sensing for archaeological and cultural heritage applications: A review of the century (1907–2017)",
+      "year": 2019,
+      "citations": 293,
+      "authors": "Lei Luo, Xinyuan Wang, Huadong Guo",
+      "doi": "https://doi.org/10.1016/j.rse.2019.111280",
+      "journal": "Remote Sensing of Environment",
+      "query": "object-based flood mapping SAR OBIA"
+    },
+    {
+      "title": "The future of forecasting for renewable energy",
+      "year": 2019,
+      "citations": 281,
+      "authors": "C. Sweeney, Ricardo J. Bessa, Jethro Browell",
+      "doi": "https://doi.org/10.1002/wene.365",
+      "query": "Sentinel Hub API satellite data",
+      "source_db": "openalex"
+    },
+    {
+      "title": "Mapping Europe into local climate zones",
+      "year": 2019,
+      "citations": 250,
+      "authors": "Matthias Demuzere, Benjamin Bechtel, Ariane Middel",
+      "doi": "https://doi.org/10.1371/journal.pone.0214474",
+      "query": "Sentinel-2 NDWI flood verification",
+      "source_db": "openalex"
+    },
+    {
+      "title": "Object Recognition, Segmentation, and Classification of Mobile Laser Scanning Point Clouds: A State of the Art Review",
+      "year": 2019,
+      "citations": 245,
+      "authors": "Erzhuo Che, Jaehoon Jung, Michael J. Olsen",
+      "doi": "https://doi.org/10.3390/s19040810",
+      "journal": "Sensors",
+      "query": "Douglas Peucker polygon simplification geodesic"
+    },
+    {
+      "title": "Sand mining in the Mekong Delta revisited - current scales of local sediment deficits",
+      "year": 2019,
+      "citations": 202,
+      "authors": "Christian Jordan, Jan Tiede, Oliver Lojek",
+      "doi": "https://doi.org/10.1038/s41598-019-53804-z",
+      "query": "Sentinel-2 NDWI flood verification",
+      "source_db": "openalex"
+    },
+    {
+      "title": "A segmentation approach for the reproducible extraction and quantification of knickpoints from river long profiles",
+      "year": 2019,
+      "citations": 76,
+      "authors": "Boris Gailleton, Simon M. Mudd, Fiona J. Clubb",
+      "doi": "https://doi.org/10.5194/esurf-7-211-2019",
+      "query": "geodesic area WGS84 flood",
+      "source_db": "openalex"
+    },
+    {
+      "title": "Deriving High Spatial-Resolution Coastal Topography From Sub-meter Satellite Stereo Imagery",
+      "year": 2019,
+      "citations": 72,
+      "authors": "Luís Pedro Almeida, Rafaël Almar, Erwin W. J. Bergsma",
+      "doi": "https://doi.org/10.3390/rs11050590",
+      "query": "geodesic area WGS84 flood",
+      "source_db": "openalex"
+    },
+    {
+      "title": "Use of Drones for the Topo-Bathymetric Monitoring of the Reservoirs of the Segura River Basin",
+      "year": 2019,
+      "citations": 61,
+      "authors": "Manuel Erena, Joaquín F. Atenza, Sandra García-Galiano",
+      "doi": "https://doi.org/10.3390/w11030445",
+      "query": "geodesic area WGS84 flood",
+      "source_db": "openalex"
+    },
+    {
+      "title": "Deep learning observables in computational fluid dynamics",
+      "year": 2019,
+      "authors": "Kjetil O. Lye, Siddhartha Mishra, Deep Ray",
+      "abstract": "Many large scale problems in computational fluid dynamics such as uncertainty quantification, Bayesian inversion, data assimilation and PDE constrained optimization are considered very challenging com",
+      "source": "arXiv",
+      "query": "deep learning flood segmentation U-Net",
+      "source_db": "arxiv"
+    },
+    {
+      "title": "Retrospective of the ARPA-E ALPHA fusion program",
+      "year": 2019,
+      "authors": "C. L. Nehl, R. J. Umstattd, W. R. Regan",
+      "abstract": "This paper provides a retrospective of the ALPHA (Accelerating Low-cost Plasma Heating and Assembly) fusion program of the Advanced Research Projects Agency-Energy (ARPA-E) of the U.S. Department of E",
+      "source": "arXiv",
+      "query": "multisensor fusion flood detection",
+      "source_db": "arxiv"
+    },
+    {
+      "title": "Aggregated Deep Local Features for Remote Sensing Image Retrieval",
+      "year": 2019,
+      "authors": "Raffaele Imbriaco, Clint Sebastian, Egor Bondarev",
+      "abstract": "Remote Sensing Image Retrieval remains a challenging topic due to the special nature of Remote Sensing Imagery. Such images contain various different semantic objects, which clearly complicates the re",
+      "source": "arXiv",
+      "query": "NDWI water index remote sensing",
+      "source_db": "arxiv"
+    },
+    {
+      "title": "A Benchmark Study of Machine Learning Models for Online Fake News Detection",
+      "year": 2019,
+      "authors": "Junaed Younus Khan, Md. Tawkat Islam Khondaker, Sadia Afroz",
+      "abstract": "The proliferation of fake news and its propagation on social media has become a major concern due to its ability to create devastating impacts. Different machine learning approaches have been suggeste",
+      "source": "arXiv",
+      "query": "XGBoost flood prediction machine learning",
+      "source_db": "arxiv"
+    },
+    {
+      "title": "A Practical Solution for SAR Despeckling With Adversarial Learning Generated Speckled-to-Speckled Images",
+      "year": 2019,
+      "authors": "Ye Yuan, Jian Guan, Pengming Feng",
+      "abstract": "In this letter, we aim to address a synthetic aperture radar (SAR) despeckling problem with the necessity of neither clean (speckle-free) SAR images nor independent speckled image pairs from the same ",
+      "source": "arXiv",
+      "query": "SAR speckle filter flood",
+      "source_db": "arxiv"
+    },
+    {
+      "title": "An Urban Water Extraction Method Combining Deep Learning and Google Earth Engine",
+      "year": 2019,
+      "authors": "Yudie Wang, Zhiwei Li, Chao Zeng",
+      "abstract": "Urban water is important for the urban ecosystem. Accurate and efficient detection of urban water with remote sensing data is of great significance for urban management and planning. In this paper, we",
+      "source": "arXiv",
+      "query": "Google Earth Engine flood",
+      "source_db": "arxiv"
+    },
+    {
+      "title": "Machine Learning for Generalizable Prediction of Flood Susceptibility",
+      "year": 2019,
+      "authors": "Chelsea Sidrane, Dylan J Fitzpatrick, Andrew Annex",
+      "abstract": "Flooding is a destructive and dangerous hazard and climate change appears to be increasing the frequency of catastrophic flooding events around the world. Physics-based flood models are costly to cali",
+      "source": "arXiv",
+      "query": "ensemble learning flood susceptibility",
+      "source_db": "arxiv"
+    },
+    {
+      "title": "High Performance Computing for Geospatial Applications: A Retrospective View",
+      "year": 2019,
+      "authors": "Marc P. Armstrong",
+      "abstract": "Many types of geospatial analyses are computationally complex, involving, for example, solution processes that require numerous iterations or combinatorial comparisons. This complexity has motivated t",
+      "source": "arXiv",
+      "query": "edge deployment geospatial inference",
+      "source_db": "arxiv"
+    },
+    {
+      "title": "Big Data and Geospatial Analysis",
+      "year": 2019,
+      "authors": "Guy Lansley, Michael de Smith, Michael Goodchild",
+      "abstract": "Perhaps one of the mostly hotly debated topics in recent years has been the question of \"GIS and Big Data\". Much of the discussion has been about the data: huge volumes of 2D and 3D spatial data and s",
+      "source": "arXiv",
+      "query": "edge deployment geospatial inference",
+      "source_db": "arxiv"
+    },
+    {
+      "title": "Hyperledger fabric",
+      "year": 2018,
+      "citations": 3376,
+      "authors": "Elli Androulaki, Artem Barger, Vita Bortnikov",
+      "doi": "https://doi.org/10.1145/3190508.3190538",
+      "journal": "",
+      "query": "transfer learning remote sensing flood"
+    },
+    {
+      "title": "Machine Learning in Agriculture: A Review",
+      "year": 2018,
+      "citations": 3046,
+      "authors": "Κωνσταντίνος Λιάκος, Patrizia Busato, Dimitrios Moshou",
+      "doi": "https://doi.org/10.3390/s18082674",
+      "journal": "Sensors",
+      "query": "convolutional neural network water extraction"
+    },
+    {
+      "title": "A global map of travel time to cities to assess inequalities in accessibility in 2015",
+      "year": 2018,
+      "citations": 1206,
+      "authors": "D. J. Weiss, Andrew Nelson, Harry S. Gibson",
+      "doi": "https://doi.org/10.1038/nature25181",
+      "query": "Google Earth Engine flood mapping",
+      "source_db": "openalex"
+    },
+    {
+      "title": "The State of the World’s Beaches",
+      "year": 2018,
+      "citations": 1107,
+      "authors": "Arjen Luijendijk, Gerben Hagenaars, Roshanka Ranasinghe",
+      "doi": "https://doi.org/10.1038/s41598-018-24630-6",
+      "query": "NDWI water index extraction remote sensing",
+      "source_db": "openalex"
+    },
+    {
+      "title": "Human mobility: Models and applications",
+      "year": 2018,
+      "citations": 1029,
+      "authors": "Hugo Barbosa, Marc Barthélemy, Gourab Ghoshal",
+      "doi": "https://doi.org/10.1016/j.physrep.2018.01.001",
+      "query": "incidence angle normalization SAR",
+      "source_db": "openalex"
+    },
+    {
+      "title": "An Overview on Application of Machine Learning Techniques in Optical Networks",
+      "year": 2018,
+      "citations": 629,
+      "authors": "Francesco Musumeci, Cristina Rottondi, Avishek Nag",
+      "doi": "https://doi.org/10.1109/comst.2018.2880039",
+      "journal": "IEEE Communications Surveys & Tutorials",
+      "query": "DBSCAN flood clustering spatial"
+    },
+    {
+      "title": "Satellite Remote Sensing for Water Resources Management: Potential for Supporting Sustainable Development in Data‐Poor Regions",
+      "year": 2018,
+      "citations": 541,
+      "authors": "Justin Sheffield, Eric F. Wood, Ming Pan",
+      "doi": "https://doi.org/10.1029/2017wr022437",
+      "query": "multisensor fusion flood detection SAR optical",
+      "source_db": "openalex"
+    },
+    {
+      "title": "Does ESG Performance Enhance Firm Value? Evidence from Korea",
+      "year": 2018,
+      "citations": 531,
+      "authors": "Bo-Hyun Yoon, J Lee, Ryan Byun",
+      "doi": "https://doi.org/10.3390/su10103635",
+      "journal": "Sustainability",
+      "query": "ESG environmental reporting automated audit"
+    },
+    {
+      "title": "Remote Sensing and Cropping Practices: A Review",
+      "year": 2018,
+      "citations": 449,
+      "authors": "Agnès Bégué, Damien Arvor, Beatriz Bellón",
+      "doi": "https://doi.org/10.3390/rs10010099",
+      "journal": "Remote Sensing",
+      "query": "object-based flood mapping SAR OBIA"
+    },
+    {
+      "title": "Spatio-Temporal Data Mining",
+      "year": 2018,
+      "citations": 441,
+      "authors": "Gowtham Atluri, Anuj Karpatne, Vipin Kumar",
+      "doi": "https://doi.org/10.1145/3161602",
+      "journal": "ACM Computing Surveys",
+      "query": "DBSCAN flood clustering spatial"
+    },
+    {
+      "title": "From BoW to CNN: Two Decades of Texture Representation for Texture Classification",
+      "year": 2018,
+      "citations": 378,
+      "authors": "Li Liu, Jie Chen, Paul Fieguth",
+      "doi": "https://doi.org/10.1007/s11263-018-1125-z",
+      "query": "SAR speckle filter Refined Lee",
+      "source_db": "openalex"
+    },
+    {
+      "title": "Deep Learning with Unsupervised Data Labeling for Weed Detection in Line Crops in UAV Images",
+      "year": 2018,
+      "citations": 304,
+      "authors": "Mamadou Dian Bah, Adel Hafiane, Raphaël Canals",
+      "doi": "https://doi.org/10.3390/rs10111690",
+      "query": "Otsu threshold SAR water detection",
+      "source_db": "openalex"
+    },
+    {
+      "title": "Synergistic Use of Radar Sentinel-1 and Optical Sentinel-2 Imagery for Crop Mapping: A Case Study for Belgium",
+      "year": 2018,
+      "citations": 261,
+      "authors": "Kristof Van Tricht, Anne Gobin, Sven Gilliams",
+      "doi": "https://doi.org/10.3390/rs10101642",
+      "query": "SAR speckle filter Refined Lee",
+      "source_db": "openalex"
+    },
+    {
+      "title": "Automated Extraction of Surface Water Extent from Sentinel-1 Data",
+      "year": 2018,
+      "citations": 250,
+      "authors": "Wenli Huang, Ben DeVries, Chengquan Huang",
+      "doi": "https://doi.org/10.3390/rs10050797",
+      "journal": "Remote Sensing",
+      "query": "SAR polarimetry flood detection dual-pol"
+    },
+    {
+      "title": "Classification and Mapping of Paddy Rice by Combining Landsat and SAR Time Series Data",
+      "year": 2018,
+      "citations": 159,
+      "authors": "Seonyoung Park, Jungho Im, Seohui Park",
+      "doi": "https://doi.org/10.3390/rs10030447",
+      "journal": "Remote Sensing",
+      "query": "Refined Lee speckle filter SAR despeckling"
+    },
+    {
+      "title": "Multi$^{\\mathbf{3}}$Net: Segmenting Flooded Buildings via Fusion of Multiresolution, Multisensor, and Multitemporal Satellite Imagery",
+      "year": 2018,
+      "authors": "Tim G. J. Rudner, Marc Rußwurm, Jakub Fil",
+      "abstract": "We propose a novel approach for rapid segmentation of flooded buildings by fusing multiresolution, multisensor, and multitemporal satellite imagery in a convolutional neural network. Our model signifi",
+      "source": "arXiv",
+      "query": "multisensor fusion flood detection",
+      "source_db": "arxiv"
+    },
+    {
+      "title": "eDisco: Discovering Edge Nodes Along the Path",
+      "year": 2018,
+      "authors": "Aleksandr Zavodovski, Nitinder Mohan, Jussi Kangasharju",
+      "abstract": "Edge computing is seen as an enabler for upcoming applications requiring low latency offloading, such as augmented reality, and as a key building block for Internet of Things. Edge computing extends t",
+      "source": "arXiv",
+      "query": "edge deployment geospatial inference",
+      "source_db": "arxiv"
+    },
+    {
+      "title": "The HITRAN2016 molecular spectroscopic database",
+      "year": 2017,
+      "citations": 7943,
+      "authors": "Iouli E. Gordon, Laurence S. Rothman, C. Hill",
+      "doi": "https://doi.org/10.1016/j.jqsrt.2017.06.038",
+      "query": "spatial cross-validation remote sensing",
+      "source_db": "openalex"
+    },
+    {
+      "title": "ImageJ2: ImageJ for the next generation of scientific image data",
+      "year": 2017,
+      "citations": 6247,
+      "authors": "Curtis Rueden, Johannes Schindelin, Mark Hiner",
+      "doi": "https://doi.org/10.1186/s12859-017-1934-z",
+      "query": "spatial cross-validation remote sensing",
+      "source_db": "openalex"
+    },
+    {
+      "title": "Visual Genome: Connecting Language and Vision Using Crowdsourced Dense Image Annotations",
+      "year": 2017,
+      "citations": 5190,
+      "authors": "Ranjay Krishna, Yuke Zhu, Oliver Groth",
+      "doi": "https://doi.org/10.1007/s11263-016-0981-7",
+      "journal": "International Journal of Computer Vision",
+      "query": "convolutional neural network water extraction"
+    },
+    {
+      "title": "SoilGrids250m: Global gridded soil information based on machine learning",
+      "year": 2017,
+      "citations": 4662,
+      "authors": "Tomislav Hengl, Jorge Mendes de Jesus, G.B.M. Heuvelink",
+      "doi": "https://doi.org/10.1371/journal.pone.0169748",
+      "journal": "PLoS ONE",
+      "query": "ensemble learning flood prediction remote sensing"
+    },
+    {
+      "title": "MoleculeNet: a benchmark for molecular machine learning",
+      "year": 2017,
+      "citations": 2949,
+      "authors": "Zhenqin Wu, Bharath Ramsundar, Evan N. Feinberg",
+      "doi": "https://doi.org/10.1039/c7sc02664a",
+      "journal": "Chemical Science",
+      "query": "convolutional neural network water extraction"
+    },
+    {
+      "title": "Significant Remote Sensing Vegetation Indices: A Review of Developments and Applications",
+      "year": 2017,
+      "citations": 2401,
+      "authors": "Jinru Xue, Baofeng Su",
+      "doi": "https://doi.org/10.1155/2017/1353691",
+      "query": "NDWI water index extraction remote sensing",
+      "source_db": "openalex"
+    },
+    {
+      "title": "Internet of Things: Architectures, Protocols, and Applications",
+      "year": 2017,
+      "citations": 1669,
+      "authors": "Pallavi Sethi, Smruti R. Sarangi",
+      "doi": "https://doi.org/10.1155/2017/9324035",
+      "query": "Google Earth Engine flood mapping",
+      "source_db": "openalex"
+    },
+    {
+      "title": "A high‐accuracy map of global terrain elevations",
+      "year": 2017,
+      "citations": 1576,
+      "authors": "Dai Yamazaki, Daiki Ikeshima, Ryunosuke Tawatari",
+      "doi": "https://doi.org/10.1002/2017gl072874",
+      "query": "change detection flood multi-temporal SAR",
+      "source_db": "openalex"
+    },
+    {
+      "title": "Comparison of Random Forest, k-Nearest Neighbor, and Support Vector Machine Classifiers for Land Cover Classification Using Sentinel-2 Imagery",
+      "year": 2017,
+      "citations": 1329,
+      "authors": "Phan Thanh Noi, Martin Kappas",
+      "doi": "https://doi.org/10.3390/s18010018",
+      "query": "NDWI water index extraction remote sensing",
+      "source_db": "openalex"
+    },
+    {
+      "title": "Pathways to zoonotic spillover",
+      "year": 2017,
+      "citations": 1239,
+      "authors": "Raina K. Plowright, Colin R. Parrish, Hamish McCallum",
+      "doi": "https://doi.org/10.1038/nrmicro.2017.45",
+      "journal": "Nature Reviews Microbiology",
+      "query": "flood duration mapping SAR time series"
+    },
+    {
+      "title": "Human occupation of northern Australia by 65,000 years ago",
+      "year": 2017,
+      "citations": 1165,
+      "authors": "Chris Clarkson, Zenobia Jacobs, Ben Marwick",
+      "doi": "https://doi.org/10.1038/nature22968",
+      "journal": "Nature",
+      "query": "SAR texture features flood detection"
+    },
+    {
+      "title": "Doubling of coastal flooding frequency within decades due to sea-level rise",
+      "year": 2017,
+      "citations": 921,
+      "authors": "Sean Vitousek, Patrick L. Barnard, Charles H. Fletcher",
+      "doi": "https://doi.org/10.1038/s41598-017-01362-7",
+      "query": "DEM HAND height drainage flood",
+      "source_db": "openalex"
+    },
+    {
+      "title": "Sentinel-2 cropland mapping using pixel-based and object-based time-weighted dynamic time warping analysis",
+      "year": 2017,
+      "citations": 890,
+      "authors": "Mariana Belgiu, Ovidiu Csillik",
+      "doi": "https://doi.org/10.1016/j.rse.2017.10.005",
+      "query": "NDWI water index extraction remote sensing",
+      "source_db": "openalex"
+    },
+    {
+      "title": "Information Avoidance",
+      "year": 2017,
+      "citations": 809,
+      "authors": "Russell Golman, David Hagmann, George Loewenstein",
+      "doi": "https://doi.org/10.1257/jel.20151245",
+      "journal": "Journal of Economic Literature",
+      "query": "focal loss class imbalance flood detection"
+    },
+    {
+      "title": "Superoleophobic surfaces",
+      "year": 2017,
+      "citations": 804,
+      "authors": "Jiale Yong, Feng Chen, Qing Yang",
+      "doi": "https://doi.org/10.1039/c6cs00751a",
+      "journal": "Chemical Society Reviews",
+      "query": "connected component analysis flood cleanup"
+    },
+    {
+      "title": "A review of spatial downscaling of satellite remotely sensed soil moisture",
+      "year": 2017,
+      "citations": 752,
+      "authors": "Jian Peng, Alexander Loew, Olivier Merlin",
+      "doi": "https://doi.org/10.1002/2016rg000543",
+      "query": "multisensor fusion flood detection SAR optical",
+      "source_db": "openalex"
+    },
+    {
+      "title": "Unmanned Aerial Vehicle Remote Sensing for Field-Based Crop Phenotyping: Current Status and Perspectives",
+      "year": 2017,
+      "citations": 745,
+      "authors": "Guijun Yang, Jiangang Liu, Chunjiang Zhao",
+      "doi": "https://doi.org/10.3389/fpls.2017.01111",
+      "query": "NDWI water index extraction remote sensing",
+      "source_db": "openalex"
+    },
+    {
+      "title": "Validation of SMAP surface soil moisture products with core validation sites",
+      "year": 2017,
+      "citations": 737,
+      "authors": "Andreas Colliander, Thomas J. Jackson, Rajat Bindlish",
+      "doi": "https://doi.org/10.1016/j.rse.2017.01.021",
+      "journal": "Remote Sensing of Environment",
+      "query": "incidence angle SAR backscatter normalization"
+    },
+    {
+      "title": "Comprehensive survey of deep learning in remote sensing: theories, tools, and challenges for the community",
+      "year": 2017,
+      "citations": 591,
+      "authors": "John E. Ball, Derek T. Anderson, Chee Seng Chan",
+      "doi": "https://doi.org/10.1117/1.jrs.11.042609",
+      "query": "multisensor fusion flood detection SAR optical",
+      "source_db": "openalex"
+    },
+    {
+      "title": "Saying more with less? Disclosure conciseness, completeness and balance in Integrated Reports",
+      "year": 2017,
+      "citations": 429,
+      "authors": "Gaia Melloni, Ariela Caglio, Paolo Perego",
+      "doi": "https://doi.org/10.1016/j.jaccpubpol.2017.03.001",
+      "journal": "Journal of Accounting and Public Policy",
+      "query": "ESG environmental reporting automated audit"
+    },
+    {
+      "title": "Green practices and financial performance: A global outlook",
+      "year": 2017,
+      "citations": 408,
+      "authors": "Ivan Miroshnychenko, Roberto Barontini, Francesco Testa",
+      "doi": "https://doi.org/10.1016/j.jclepro.2017.01.058",
+      "journal": "Journal of Cleaner Production",
+      "query": "ESG environmental reporting automated audit"
+    },
+    {
+      "title": "National-scale soybean mapping and area estimation in the United States using medium resolution satellite imagery and field survey",
+      "year": 2017,
+      "citations": 277,
+      "authors": "Xiao‐Peng Song, Peter Potapov, Alexander Krylov",
+      "doi": "https://doi.org/10.1016/j.rse.2017.01.008",
+      "query": "Sentinel-2 NDWI flood verification",
+      "source_db": "openalex"
+    },
+    {
+      "title": "Rapid flood inundation mapping using social media, remote sensing and topographic data",
+      "year": 2017,
+      "citations": 260,
+      "authors": "Julian Rosser, Didier Leibovici, Michael Jackson",
+      "doi": "https://doi.org/10.1007/s11069-017-2755-0",
+      "query": "Otsu threshold SAR water detection",
+      "source_db": "openalex"
+    },
+    {
+      "title": "Spatio-Temporal Analysis of Epidemic Phenomena Using the <i>R</i> Package <b>surveillance</b>",
+      "year": 2017,
+      "citations": 139,
+      "authors": "Sebastian Meyer, Leonhard Held, Michael Höhle",
+      "doi": "https://doi.org/10.18637/jss.v077.i11",
+      "journal": "Journal of Statistical Software",
+      "query": "Douglas Peucker polygon simplification geodesic"
+    },
+    {
+      "title": "Visual grasp point localization, classification and state recognition in robotic manipulation of cloth: An overview",
+      "year": 2017,
+      "citations": 42,
+      "authors": "P. Jiménez",
+      "doi": "https://doi.org/10.1016/j.robot.2017.03.009",
+      "journal": "Robotics and Autonomous Systems",
+      "query": "Douglas Peucker polygon simplification geodesic"
+    },
+    {
+      "title": "A multitask deep learning model for real-time deployment in embedded systems",
+      "year": 2017,
+      "authors": "Miquel Martí, Atsuto Maki",
+      "abstract": "We propose an approach to Multitask Learning (MTL) to make deep learning models faster and lighter for applications in which multiple tasks need to be solved simultaneously, which is particularly usef",
+      "source": "arXiv",
+      "query": "deep learning flood segmentation U-Net",
+      "source_db": "arxiv"
+    },
+    {
+      "title": "Emotion in Reinforcement Learning Agents and Robots: A Survey",
+      "year": 2017,
+      "authors": "Thomas M. Moerland, Joost Broekens, Catholijn M. Jonker",
+      "abstract": "This article provides the first survey of computational models of emotion in reinforcement learning (RL) agents. The survey focuses on agent/robot emotions, and mostly ignores human user emotions. Emo",
+      "source": "arXiv",
+      "query": "XGBoost flood prediction machine learning",
+      "source_db": "arxiv"
+    },
+    {
+      "title": "Geospatial Semantics",
+      "year": 2017,
+      "authors": "Yingjie Hu",
+      "abstract": "Geospatial semantics is a broad field that involves a variety of research areas. The term semantics refers to the meaning of things, and is in contrast with the term syntactics. Accordingly, studies o",
+      "source": "arXiv",
+      "query": "edge deployment geospatial inference",
+      "source_db": "arxiv"
+    },
+    {
+      "title": "Water Bodies’ Mapping from Sentinel-2 Imagery with Modified Normalized Difference Water Index at 10-m Spatial Resolution Produced by Sharpening the SWIR Band",
+      "year": 2016,
+      "citations": 858,
+      "authors": "Yun Du, Yihang Zhang, Feng Ling",
+      "doi": "https://doi.org/10.3390/rs8040354",
+      "query": "NDWI water index extraction remote sensing",
+      "source_db": "openalex"
+    },
+    {
+      "title": "Modeling Soil Processes: Review, Key Challenges, and New Perspectives",
+      "year": 2016,
+      "citations": 813,
+      "authors": "Harry Vereecken, Andrea Schnepf, J. W. Hopmans",
+      "doi": "https://doi.org/10.2136/vzj2015.09.0131",
+      "query": "multisensor fusion flood detection SAR optical",
+      "source_db": "openalex"
+    },
+    {
+      "title": "An overview of current applications, challenges, and future trends in distributed process-based models in hydrology",
+      "year": 2016,
+      "citations": 673,
+      "authors": "Simone Fatichi, Enrique R. Vivoni, Fred L. Ogden",
+      "doi": "https://doi.org/10.1016/j.jhydrol.2016.03.026",
+      "journal": "Journal of Hydrology",
+      "query": "multi-sensor data fusion flood inundation mapping"
+    },
+    {
+      "title": "A Review of the Application of Optical and Radar Remote Sensing Data Fusion to Land Use Mapping and Monitoring",
+      "year": 2016,
+      "citations": 657,
+      "authors": "Neha Joshi, Matthias Baumann, Andrea Ehammer",
+      "doi": "https://doi.org/10.3390/rs8010070",
+      "journal": "Remote Sensing",
+      "query": "incidence angle SAR backscatter normalization"
+    },
+    {
+      "title": "The Salmonella In Silico Typing Resource (SISTR): An Open Web-Accessible Tool for Rapidly Typing and Subtyping Draft Salmonella Genome Assemblies",
+      "year": 2016,
+      "citations": 605,
+      "authors": "Catherine E. Yoshida, Peter Kruczkiewicz, Chad Laing",
+      "doi": "https://doi.org/10.1371/journal.pone.0147101",
+      "journal": "PLoS ONE",
+      "query": "Celery distributed task queue geospatial"
+    },
+    {
+      "title": "Slums from Space—15 Years of Slum Mapping Using Remote Sensing",
+      "year": 2016,
+      "citations": 391,
+      "authors": "Monika Kuffer, Karin Pfeffer, Richard Sliuzas",
+      "doi": "https://doi.org/10.3390/rs8060455",
+      "journal": "Remote Sensing",
+      "query": "object-based flood mapping SAR OBIA"
+    },
+    {
+      "title": "Lake Volume Monitoring from Space",
+      "year": 2016,
+      "citations": 322,
+      "authors": "J.-F. Crétaux, Rodrigo Abarca-del-Río, Muriel Bergé‐Nguyen",
+      "doi": "https://doi.org/10.1007/s10712-016-9362-6",
+      "query": "Otsu threshold SAR water detection",
+      "source_db": "openalex"
+    },
+    {
+      "title": "OSoMe: the IUNI observatory on social media",
+      "year": 2016,
+      "citations": 61,
+      "authors": "Clayton A. Davis, Giovanni Luca Ciampaglia, Luca Maria Aiello",
+      "doi": "https://doi.org/10.7717/peerj-cs.87",
+      "journal": "PeerJ Computer Science",
+      "query": "Celery distributed task queue geospatial"
+    },
+    {
+      "title": "SAR/optical data fusion for flood detection",
+      "year": 2016,
+      "citations": 12,
+      "authors": "A. D’Addabbo, A. Refice, G. Pasquariello",
+      "query": "multisensor fusion flood detection SAR optical NDWI",
+      "source_db": "semantic"
+    },
+    {
+      "title": "A Survey on Object Detection in Optical Remote Sensing Images",
+      "year": 2016,
+      "authors": "Gong Cheng, Junwei Han",
+      "abstract": "Object detection in optical remote sensing images, being a fundamental but challenging problem in the field of aerial and satellite image analysis, plays an important role for a wide range of applicat",
+      "source": "arXiv",
+      "query": "NDWI water index remote sensing",
+      "source_db": "arxiv"
+    },
+    {
+      "title": "The climate hazards infrared precipitation with stations—a new environmental record for monitoring extremes",
+      "year": 2015,
+      "citations": 6068,
+      "authors": "Chris Funk, Pete Peterson, M. F. Landsfeld",
+      "doi": "https://doi.org/10.1038/sdata.2015.66",
+      "query": "spatial cross-validation remote sensing",
+      "source_db": "openalex"
+    },
+    {
+      "title": "Climate Change 2014 - Synthesis Report",
+      "year": 2015,
+      "citations": 5314,
+      "authors": "Watson, R. T., Albritton, D. L., Barker, T.",
+      "doi": "https://doi.org/10.59327/ipcc/ar5-9789291691432",
+      "journal": "",
+      "query": "deep learning flood prediction time series"
+    },
+    {
+      "title": "Coastal and Environmental Remote Sensing from Unmanned Aerial Vehicles: An Overview",
+      "year": 2015,
+      "citations": 365,
+      "authors": "Victor Klemas",
+      "doi": "https://doi.org/10.2112/jcoastres-d-15-00005.1",
+      "journal": "Journal of Coastal Research",
+      "query": "object-based flood mapping SAR OBIA"
+    },
+    {
+      "title": "SimpleTree —An Efficient Open Source Tool to Build Tree Models from TLS Clouds",
+      "year": 2015,
+      "citations": 356,
+      "authors": "Jan Hackenberg, Heinrich Spiecker, Kim Calders",
+      "doi": "https://doi.org/10.3390/f6114245",
+      "journal": "Forests",
+      "query": "DBSCAN flood clustering spatial"
+    },
+    {
+      "title": "A Collection of SAR Methodologies for Monitoring Wetlands",
+      "year": 2015,
+      "citations": 213,
+      "authors": "Lori White, Brian Brisco, Mohammed Dabboor",
+      "doi": "https://doi.org/10.3390/rs70607615",
+      "journal": "Remote Sensing",
+      "query": "SAR polarimetry flood detection dual-pol"
+    },
+    {
+      "title": "SAR Image Despeckling Using Refined Lee Filter",
+      "year": 2015,
+      "citations": 159,
+      "authors": "Aiyeola Sikiru Yommy, Rongke Liu, And Shuang Wu",
+      "doi": "https://doi.org/10.1109/ihmsc.2015.236",
+      "journal": "",
+      "query": "Refined Lee speckle filter SAR despeckling"
+    },
+    {
+      "title": "Earth and Terrestrial Planet Formation",
+      "year": 2015,
+      "authors": "Seth A. Jacobson, Kevin J. Walsh",
+      "abstract": "The growth and composition of Earth is a direct consequence of planet formation throughout the Solar System. We discuss the known history of the Solar System, the proposed stages of growth and how the",
+      "source": "arXiv",
+      "query": "Google Earth Engine flood",
+      "source_db": "arxiv"
+    },
+    {
+      "title": "The Pascal Visual Object Classes Challenge: A Retrospective",
+      "year": 2014,
+      "citations": 7301,
+      "authors": "Mark Everingham, S. M. Ali Eslami, Luc Van Gool",
+      "doi": "https://doi.org/10.1007/s11263-014-0733-5",
+      "query": "spatial cross-validation remote sensing",
+      "source_db": "openalex"
+    },
+    {
+      "title": "The Multimodal Brain Tumor Image Segmentation Benchmark (BRATS)",
+      "year": 2014,
+      "citations": 6519,
+      "authors": "Bjoern Menze, András Jakab, Stefan Bauer",
+      "doi": "https://doi.org/10.1109/tmi.2014.2377694",
+      "journal": "IEEE Transactions on Medical Imaging",
+      "query": "convolutional neural network water extraction"
+    },
+    {
+      "title": "Recent advances in zinc–air batteries",
+      "year": 2014,
+      "citations": 2271,
+      "authors": "Yanguang Li, Hongjie Dai",
+      "doi": "https://doi.org/10.1039/c4cs00015c",
+      "journal": "Chemical Society Reviews",
+      "query": "morphological operations flood post-processing"
+    },
+    {
+      "title": "What Do We Learn from the Weather? The New Climate-Economy Literature",
+      "year": 2014,
+      "citations": 2218,
+      "authors": "Melissa Dell, Benjamin F. Jones, Benjamin Olken",
+      "doi": "https://doi.org/10.1257/jel.52.3.740",
+      "journal": "Journal of Economic Literature",
+      "query": "random forest flood mapping feature importance"
+    },
+    {
+      "title": "Big Data: New Tricks for Econometrics",
+      "year": 2014,
+      "citations": 1544,
+      "authors": "Hal R. Varian",
+      "doi": "https://doi.org/10.1257/jep.28.2.3",
+      "query": "deep learning U-Net flood segmentation",
+      "source_db": "openalex"
+    },
+    {
+      "title": "A Survey on Software-Defined Networking",
+      "year": 2014,
+      "citations": 1074,
+      "authors": "Wenfeng Xia, Yonggang Wen, Chuan Heng Foh",
+      "doi": "https://doi.org/10.1109/comst.2014.2330903",
+      "query": "Google Earth Engine flood mapping",
+      "source_db": "openalex"
+    },
+    {
+      "title": "Water Feature Extraction and Change Detection Using Multitemporal Landsat Imagery",
+      "year": 2014,
+      "citations": 672,
+      "authors": "Komeil Rokni, Anuar Ahmad, Ali Selamat",
+      "doi": "https://doi.org/10.3390/rs6054173",
+      "query": "NDWI water index extraction remote sensing",
+      "source_db": "openalex"
+    },
+    {
+      "title": "Methods for Nuclei Detection, Segmentation, and Classification in Digital Histopathology: A Review—Current Status and Future Potential",
+      "year": 2014,
+      "citations": 634,
+      "authors": "Humayun Irshad, Antoine Veillard, Ludovic Roux",
+      "doi": "https://doi.org/10.1109/rbme.2013.2295804",
+      "journal": "IEEE Reviews in Biomedical Engineering",
+      "query": "batch normalization flood segmentation U-Net"
+    },
+    {
+      "title": "Soil Salinity Characterization Using Polarimetric InSAR Coherence: Case Studies in Tunisia and Morocco",
+      "year": 2014,
+      "citations": 44,
+      "authors": "Meriem Barbouchi, Riadh Abdelfattah, Karem Chokmani",
+      "doi": "https://doi.org/10.1109/jstars.2014.2333535",
+      "query": "geodesic area WGS84 flood",
+      "source_db": "openalex"
+    },
+    {
+      "title": "Dissimilarity-based Ensembles for Multiple Instance Learning",
+      "year": 2014,
+      "authors": "Veronika Cheplygina, David M. J. Tax, Marco Loog",
+      "abstract": "In multiple instance learning, objects are sets (bags) of feature vectors (instances) rather than individual feature vectors. In this paper we address the problem of how these bags can best be represe",
+      "source": "arXiv",
+      "query": "ensemble learning flood susceptibility",
+      "source_db": "arxiv"
+    },
+    {
+      "title": "Edge-state enhanced transport in a 2-dimensional quantum walk",
+      "year": 2014,
+      "authors": "Janos K. Asboth, Jonathan M. Edge",
+      "abstract": "Quantum walks on translation invariant regular graphs spread quadratically faster than their classical counterparts. The same coherence that gives them this quantum speedup inhibits, or even stops the",
+      "source": "arXiv",
+      "query": "edge deployment geospatial inference",
+      "source_db": "arxiv"
+    },
+    {
+      "title": "Gradient boosting machines, a tutorial",
+      "year": 2013,
+      "citations": 3757,
+      "authors": "Alexey Natekin, Alois Knoll",
+      "doi": "https://doi.org/10.3389/fnbot.2013.00021",
+      "journal": "Frontiers in Neurorobotics",
+      "query": "random forest flood mapping feature importance"
+    },
+    {
+      "title": "A decade of Predictions in Ungauged Basins (PUB)—a review",
+      "year": 2013,
+      "citations": 1328,
+      "authors": "Markus Hrachowitz, H. H. G. Savenije, Günter Blöschl",
+      "doi": "https://doi.org/10.1080/02626667.2013.803183",
+      "query": "DEM HAND height drainage flood",
+      "source_db": "openalex"
+    },
+    {
+      "title": "Computer Aided Diagnostic Support System for Skin Cancer: A Review of Techniques and Algorithms",
+      "year": 2013,
+      "citations": 342,
+      "authors": "Ammara Masood, Adel Al-Jumaily",
+      "doi": "https://doi.org/10.1155/2013/323268",
+      "journal": "International Journal of Biomedical Imaging",
+      "query": "GLCM texture flood mapping"
+    },
+    {
+      "title": "Target detection in synthetic aperture radar imagery: a state-of-the-art survey",
+      "year": 2013,
+      "citations": 234,
+      "authors": "Khalid El-Darymli, Peter McGuire, Desmond Power",
+      "doi": "https://doi.org/10.1117/1.jrs.7.071598",
+      "query": "SAR speckle filter Refined Lee",
+      "source_db": "openalex"
+    },
+    {
+      "title": "On the Performance of Filters for Reduction of Speckle Noise in SAR Images off the Coast of the Gulf of Guinea",
+      "year": 2013,
+      "authors": "Griffith S. Klogo, Akpeko Gasonoo, Isaac K. E. Ampomah",
+      "abstract": "Synthetic Aperture Radar (SAR) imagery to monitor oil spills are some methods that have been proposed for the West African sub-region. With the increase in the number of oil exploration companies in G",
+      "source": "arXiv",
+      "query": "SAR speckle filter flood",
+      "source_db": "arxiv"
+    },
+    {
+      "title": "Quickest Change Point Detection and Identification Across a Generic Sensor Array",
+      "year": 2013,
+      "authors": "Di Li, Lifeng Lai, Shuguang Cui",
+      "abstract": "In this paper, we consider the problem of quickest change point detection and identification over a linear array of $N$ sensors, where the change pattern could first reach any of these sensors, and th",
+      "source": "arXiv",
+      "query": "change detection flood SAR",
+      "source_db": "arxiv"
+    },
+    {
+      "title": "Moving dunes on the Google Earth",
+      "year": 2013,
+      "authors": "Amelia Carolina Sparavigna",
+      "abstract": "Several methods exist for surveying the dunes and estimate their migration rate. Among methods suitable for the macroscopic scale, the use of the satellite images available on Google Earth is a conven",
+      "source": "arXiv",
+      "query": "Google Earth Engine flood",
+      "source_db": "arxiv"
+    },
+    {
+      "title": "The Formation and Dynamics of Super-Earth Planets",
+      "year": 2013,
+      "authors": "Nader Haghighipour",
+      "abstract": "Super-Earths, objects slightly larger than Earth and slightly smaller than Uranus, have found a special place in exoplanetary science. As a new class of planetary bodies, these objects have challenged",
+      "source": "arXiv",
+      "query": "Google Earth Engine flood",
+      "source_db": "arxiv"
+    },
+    {
+      "title": "Heart Disease and Stroke Statistics—2013 Update",
+      "year": 2012,
+      "citations": 5186,
+      "authors": "Alan S. Go, Dariush Mozaffarian, Véronique L. Roger",
+      "doi": "https://doi.org/10.1161/cir.0b013e31828124ad",
+      "journal": "Circulation",
+      "query": "flood early warning system real-time"
+    },
+    {
+      "title": "AMPK: a nutrient and energy sensor that maintains energy homeostasis",
+      "year": 2012,
+      "citations": 4471,
+      "authors": "D. Grahame Hardie, Fiona A. Ross, Simon A. Hawley",
+      "doi": "https://doi.org/10.1038/nrm3311",
+      "journal": "Nature Reviews Molecular Cell Biology",
+      "query": "graph neural network flood susceptibility"
+    },
+    {
+      "title": "Global‐scale attribution of anthropogenic and natural dust sources and their emission rates based on MODIS Deep Blue aerosol products",
+      "year": 2012,
+      "citations": 1661,
+      "authors": "Paul Ginoux, Joseph M. Prospero, Thomas E. Gill",
+      "doi": "https://doi.org/10.1029/2012rg000388",
+      "journal": "Reviews of Geophysics",
+      "query": "HAND model flood inundation drainage"
+    },
+    {
+      "title": "A Survey on Clustering Routing Protocols in Wireless Sensor Networks",
+      "year": 2012,
+      "citations": 654,
+      "authors": "Xuxun Liu",
+      "doi": "https://doi.org/10.3390/s120811113",
+      "journal": "Sensors",
+      "query": "fuzzy logic flood detection SAR"
+    },
+    {
+      "title": "Report of the Secretary-General",
+      "year": 2012,
+      "citations": 484,
+      "authors": "Crompvoets, Johan",
+      "doi": "https://doi.org/10.4324/9780203044315-9",
+      "query": "Sentinel Hub API satellite data",
+      "source_db": "openalex"
+    },
+    {
+      "title": "Next-generation Digital Earth",
+      "year": 2012,
+      "citations": 385,
+      "authors": "Michael F. Goodchild, Huadong Guo, Alessandro Annoni",
+      "doi": "https://doi.org/10.1073/pnas.1202383109",
+      "query": "geodesic area WGS84 flood",
+      "source_db": "openalex"
+    },
+    {
+      "title": "Rice Phenology Monitoring by Means of SAR Polarimetry at X-Band",
+      "year": 2012,
+      "citations": 241,
+      "authors": "Juan M. López‐Sánchez, S.R. Cloude, J. David Ballester‐Berman",
+      "doi": "https://doi.org/10.1109/tgrs.2011.2176740",
+      "journal": "IEEE Transactions on Geoscience and Remote Sensing",
+      "query": "SAR polarimetry flood detection dual-pol"
+    },
+    {
+      "title": "Geographic information systems and science",
+      "year": 2011,
+      "citations": 1696,
+      "authors": "Rocha, Jorge, Abrantes, Patrícia",
+      "doi": "https://doi.org/10.1080/17538947.2011.582276",
+      "journal": "International Journal of Digital Earth",
+      "query": "multi-temporal change detection flood Sentinel"
+    },
+    {
+      "title": "Remote Sensing of Mangrove Ecosystems: A Review",
+      "year": 2011,
+      "citations": 770,
+      "authors": "Claudia Kuenzer, Andrea Bluemel, Steffen Gebhardt",
+      "doi": "https://doi.org/10.3390/rs3050878",
+      "journal": "Remote Sensing",
+      "query": "multi-sensor data fusion flood inundation mapping"
+    },
+    {
+      "title": "Crowdsourcing, citizen sensing and sensor web technologies for public and environmental health surveillance and crisis management: trends, OGC standards and application examples",
+      "year": 2011,
+      "citations": 494,
+      "authors": "Maged N. Kamel Boulos, Bernd Resch, David N. Crowley",
+      "doi": "https://doi.org/10.1186/1476-072x-10-67",
+      "query": "Sentinel Hub API satellite data",
+      "source_db": "openalex"
+    },
+    {
+      "title": "Broad-scale spatial pattern of forest landscape types in the Guiana Shield",
+      "year": 2011,
+      "citations": 65,
+      "authors": "Valéry Gond, Vincent Freycon, Jean‐François Molino",
+      "doi": "https://doi.org/10.1016/j.jag.2011.01.004",
+      "query": "geodesic area WGS84 flood",
+      "source_db": "openalex"
+    },
+    {
+      "title": "Determination of volumetric variations and coastal changes due to historical volcanic eruptions using historical maps and remote-sensing at Deception Island (West-Antarctica)",
+      "year": 2011,
+      "citations": 26,
+      "authors": "Cristina Torrecillas, Manuel Berrocoso, Raúl Pérez‐López",
+      "doi": "https://doi.org/10.1016/j.geomorph.2011.06.017",
+      "query": "geodesic area WGS84 flood",
+      "source_db": "openalex"
+    },
+    {
+      "title": "To Explain or to Predict?",
+      "year": 2010,
+      "citations": 2364,
+      "authors": "Galit Shmueli",
+      "doi": "https://doi.org/10.1214/10-sts330",
+      "journal": "Statistical Science",
+      "query": "ensemble learning flood prediction remote sensing"
+    },
+    {
+      "title": "Toward a complete Himalayan hydrological budget: Spatiotemporal distribution of snowmelt and rainfall and their impact on river discharge",
+      "year": 2010,
+      "citations": 1375,
+      "authors": "Bodo Bookhagen, Douglas W. Burbank",
+      "doi": "https://doi.org/10.1029/2009jf001426",
+      "query": "DEM HAND height drainage flood",
+      "source_db": "openalex"
+    },
+    {
+      "title": "Review article &amp;quot;Assessment of economic flood damage&amp;quot;",
+      "year": 2010,
+      "citations": 1293,
+      "authors": "Bruno Merz, Heidi Kreibich, Reimund Schwarze",
+      "doi": "https://doi.org/10.5194/nhess-10-1697-2010",
+      "journal": "Natural hazards and earth system sciences",
+      "query": "HAND model flood inundation drainage"
+    },
+    {
+      "title": "Use of LIDAR in landslide investigations: a review",
+      "year": 2010,
+      "citations": 1115,
+      "authors": "Michel Jaboyedoff, Thierry Oppikofer, Antonio Abellán",
+      "doi": "https://doi.org/10.1007/s11069-010-9634-2",
+      "journal": "Natural Hazards",
+      "query": "flood depth estimation SAR DEM"
+    },
+    {
+      "title": "Polymer gel dosimetry",
+      "year": 2010,
+      "citations": 868,
+      "authors": "Clive Baldock, Yves De Deene, Simon Doran",
+      "doi": "https://doi.org/10.1088/0031-9155/55/5/r01",
+      "query": "incidence angle normalization SAR",
+      "source_db": "openalex"
+    },
+    {
+      "title": "Information Fusion for Anomaly Detection with the Dendritic Cell Algorithm",
+      "year": 2010,
+      "authors": "Julie Greensmith, Uwe Aickelin, Gianni Tedesco",
+      "abstract": "Dendritic cells are antigen presenting cells that provide a vital link between the innate and adaptive immune system, providing the initial detection of pathogenic invaders. Research into this family ",
+      "source": "arXiv",
+      "query": "multisensor fusion flood detection",
+      "source_db": "arxiv"
+    },
+    {
+      "title": "Information Fusion in the Immune System",
+      "year": 2010,
+      "authors": "Jamie Twycross, Uwe Aickelin",
+      "abstract": "Biologically-inspired methods such as evolutionary algorithms and neural networks are proving useful in the field of information fusion. Artificial Immune Systems (AISs) are a biologically-inspired ap",
+      "source": "arXiv",
+      "query": "multisensor fusion flood detection",
+      "source_db": "arxiv"
+    },
+    {
+      "title": "Atmospheric dynamics of Earth-like tidally locked aquaplanets",
+      "year": 2010,
+      "authors": "Timothy M. Merlis, Tapio Schneider",
+      "abstract": "We present simulations of atmospheres of Earth-like aquaplanets that are tidally locked to their star, that is, planets whose orbital period is equal to the rotation period about their spin axis, so t",
+      "source": "arXiv",
+      "query": "Google Earth Engine flood",
+      "source_db": "arxiv"
+    },
+    {
+      "title": "CHARMM: The biomolecular simulation program",
+      "year": 2009,
+      "citations": 9138,
+      "authors": "Bernard R. Brooks, Charles L. Brooks, Alexander D. MacKerell",
+      "doi": "https://doi.org/10.1002/jcc.21287",
+      "journal": "Journal of Computational Chemistry",
+      "query": "flood early warning system real-time"
+    },
+    {
+      "title": "A Multiscalar Drought Index Sensitive to Global Warming: The Standardized Precipitation Evapotranspiration Index",
+      "year": 2009,
+      "citations": 9102,
+      "authors": "Sergio M. Vicente‐Serrano, Santiago Beguerı́a, Juan Ignacio López‐Moreno",
+      "doi": "https://doi.org/10.1175/2009jcli2909.1",
+      "journal": "Journal of Climate",
+      "query": "flood early warning system real-time"
+    },
+    {
+      "title": "Deciphering the Liquidity and Credit Crunch 2007–2008",
+      "year": 2009,
+      "citations": 3404,
+      "authors": "Markus K. Brunnermeier",
+      "doi": "https://doi.org/10.1257/jep.23.1.77",
+      "query": "ESG audit flood reporting",
+      "source_db": "openalex"
+    },
+    {
+      "title": "Lakes and reservoirs as regulators of carbon cycling and climate",
+      "year": 2009,
+      "citations": 2727,
+      "authors": "Lars J. Tranvik, John Downing, James B. Cotner",
+      "doi": "https://doi.org/10.4319/lo.2009.54.6_part_2.2298",
+      "journal": "Limnology and Oceanography",
+      "query": "flood duration mapping SAR time series"
+    },
+    {
+      "title": "Analysis of Dynamic Thresholds for the Normalized Difference Water Index",
+      "year": 2009,
+      "citations": 805,
+      "authors": "Lei Ji, Li Zhang, Bruce K. Wylie",
+      "doi": "https://doi.org/10.14358/pers.75.11.1307",
+      "journal": "Photogrammetric Engineering & Remote Sensing",
+      "query": "Normalized Difference Water Index NDWI threshold"
+    },
+    {
+      "title": "Nanomaterials for Rechargeable Lithium Batteries",
+      "year": 2008,
+      "citations": 5858,
+      "authors": "Peter G. Bruce, Bruno Scrosati, Jean‐Marie Tarascon",
+      "doi": "https://doi.org/10.1002/anie.200702505",
+      "journal": "Angewandte Chemie International Edition",
+      "query": "morphological operations flood post-processing"
+    },
+    {
+      "title": "The CMS experiment at the CERN LHC",
+      "year": 2008,
+      "citations": 5454,
+      "authors": "S. Chatrchyan, G. Hmayakyan, V. Khachatryan",
+      "doi": "https://doi.org/10.1088/1748-0221/3/08/s08004",
+      "query": "spatial cross-validation remote sensing",
+      "source_db": "openalex"
+    },
+    {
+      "title": "The Theory and Practice of Online Learning",
+      "year": 2008,
+      "citations": 1826,
+      "authors": "Terry Anderson, Mohamed Ally, M Ally",
+      "doi": "https://doi.org/10.15215/aupress/9781897425084.01",
+      "journal": "Athabasca University Press eBooks",
+      "query": "active learning flood annotation remote sensing"
+    },
+    {
+      "title": "The habitat function of mangroves for terrestrial and marine fauna: A review",
+      "year": 2008,
+      "citations": 1563,
+      "authors": "Ivan Nagelkerken, S. J. M. Blaber, Steven Bouillon",
+      "doi": "https://doi.org/10.1016/j.aquabot.2007.12.007",
+      "journal": "Aquatic Botany",
+      "query": "HAND model flood inundation drainage"
+    },
+    {
+      "title": "Spatial data for landslide susceptibility, hazard, and vulnerability assessment: An overview",
+      "year": 2008,
+      "citations": 1450,
+      "authors": "Cees J. van Westen, Enrique Castellanos, Sekhar L. Kuriakose",
+      "doi": "https://doi.org/10.1016/j.enggeo.2008.03.010",
+      "query": "change detection flood multi-temporal SAR",
+      "source_db": "openalex"
+    },
+    {
+      "title": "Baselines and Degradation of Coral Reefs in the Northern Line Islands",
+      "year": 2008,
+      "citations": 904,
+      "authors": "Stuart A. Sandin, Jennifer E. Smith, Edward E. DeMartini",
+      "doi": "https://doi.org/10.1371/journal.pone.0001548",
+      "query": "incidence angle normalization SAR",
+      "source_db": "openalex"
+    },
+    {
+      "title": "The Landslide Handbook - A Guide to Understanding Landslides",
+      "year": 2008,
+      "citations": 755,
+      "authors": "Lynn M. Highland, Peter Bobrowsky",
+      "doi": "https://doi.org/10.3133/cir1325",
+      "query": "DEM HAND height drainage flood",
+      "source_db": "openalex"
+    },
+    {
+      "title": "<scp>WSXM</scp>: A software for scanning probe microscopy and a tool for nanotechnology",
+      "year": 2007,
+      "citations": 7678,
+      "authors": "Ignacio Horcas, Robert Fernandez, José M. Gómez‐Rodríguez",
+      "doi": "https://doi.org/10.1063/1.2432410",
+      "journal": "Review of Scientific Instruments",
+      "query": "flood early warning system real-time"
+    },
+    {
+      "title": "Rankings and Reactivity: How Public Measures Recreate Social Worlds",
+      "year": 2007,
+      "citations": 2311,
+      "authors": "Wendy Nelson Espeland, Michael Sauder",
+      "doi": "https://doi.org/10.1086/517897",
+      "journal": "American Journal of Sociology",
+      "query": "transfer learning remote sensing flood"
+    },
+    {
+      "title": "Confronting the Challenges of Participatory Culture: Media Education for the 21st Century",
+      "year": 2006,
+      "citations": 3192,
+      "authors": "Henry Jenkins",
+      "doi": null,
+      "query": "Google Earth Engine flood mapping",
+      "source_db": "openalex"
+    },
+    {
+      "title": "Very high resolution interpolated climate surfaces for global land areas",
+      "year": 2005,
+      "citations": 20117,
+      "authors": "Robert J. Hijmans, Susan E. Cameron, Juan L. Parra",
+      "doi": "https://doi.org/10.1002/joc.1276",
+      "query": "spatial cross-validation remote sensing",
+      "source_db": "openalex"
+    },
+    {
+      "title": "A haplotype map of the human genome",
+      "year": 2005,
+      "citations": 5923,
+      "authors": "",
+      "doi": "https://doi.org/10.1038/nature04226",
+      "journal": "Nature",
+      "query": "encoder decoder architecture flood mapping"
+    },
+    {
+      "title": "A manifesto for the equifinality thesis",
+      "year": 2005,
+      "citations": 2630,
+      "authors": "Keith Beven",
+      "doi": "https://doi.org/10.1016/j.jhydrol.2005.07.007",
+      "journal": "Journal of Hydrology",
+      "query": "deep learning flood prediction time series"
+    },
+    {
+      "title": "Four-component scattering model for polarimetric SAR image decomposition",
+      "year": 2005,
+      "citations": 1341,
+      "authors": "Yoshio Yamaguchi, Takahiro Moriyama, Motoi Ishido",
+      "doi": "https://doi.org/10.1109/tgrs.2005.852084",
+      "query": "incidence angle normalization SAR",
+      "source_db": "openalex"
+    },
+    {
+      "title": "Natural Disaster Hotspots",
+      "year": 2005,
+      "citations": 887,
+      "authors": "Maxx Dilley, Robert S. Chen, Uwe Deichmann",
+      "doi": "https://doi.org/10.1596/0-8213-5930-4",
+      "query": "ensemble machine learning flood susceptibility",
+      "source_db": "openalex"
+    },
+    {
+      "title": "Quadric-based simplification in any dimension",
+      "year": 2005,
+      "citations": 110,
+      "authors": "Michael Garland, Yuan Zhou",
+      "doi": "https://doi.org/10.1145/1061347.1061350",
+      "journal": "ACM Transactions on Graphics",
+      "query": "Douglas Peucker polygon simplification geodesic"
+    },
+    {
+      "title": "Geo-neutrinos: a new probe of Earth's interior",
+      "year": 2005,
+      "authors": "Gianni Fiorentini, Marcello Lissia, Fabio Mantovani",
+      "abstract": "In preparation to the experimental results which will be available in the future, we study geo-neutrino production for different models of mantle convection and composition. By using global mass balan",
+      "source": "arXiv",
+      "query": "Google Earth Engine flood",
+      "source_db": "arxiv"
+    },
+    {
+      "title": "The Purchasing Power Parity Debate",
+      "year": 2004,
+      "citations": 1004,
+      "authors": "Alan M. Taylor, Mark P. Taylor",
+      "doi": "https://doi.org/10.1257/0895330042632744",
+      "journal": "The Journal of Economic Perspectives",
+      "query": "batch normalization flood segmentation U-Net"
+    },
+    {
+      "title": "Longitudinal Magnetic Resonance Imaging Studies of Older Adults: A Shrinking Brain",
+      "year": 2003,
+      "citations": 1427,
+      "authors": "Susan M. Resnick, Dzung L. Pham, Michael A. Kraut",
+      "doi": "https://doi.org/10.1523/jneurosci.23-08-03295.2003",
+      "query": "incidence angle normalization SAR",
+      "source_db": "openalex"
+    },
+    {
+      "title": "The Search for Extrasolar Earth-like planets",
+      "year": 2003,
+      "authors": "S. Seager",
+      "abstract": "The search for extrasolar Earth-like planets is underway. Over 100 extrasolar giant planets are known to orbit nearby sun-like stars, including several in multiple-planet systems. These planetary syst",
+      "source": "arXiv",
+      "query": "Google Earth Engine flood",
+      "source_db": "arxiv"
+    },
+    {
+      "title": "SAR speckle reduction using wavelet denoising and Markov random field modeling",
+      "year": 2002,
+      "citations": 407,
+      "authors": "Hua Xie, L.E. Pierce, F.T. Ulaby",
+      "doi": "https://doi.org/10.1109/tgrs.2002.802473",
+      "query": "SAR speckle filter Refined Lee",
+      "source_db": "openalex"
+    },
+    {
+      "title": "Discrete Global Grids: A Web Book",
+      "year": 2002,
+      "citations": 29,
+      "authors": "Michael F. Goodchild, A. Jon Kimerling",
+      "doi": null,
+      "query": "geodesic area WGS84 flood",
+      "source_db": "openalex"
+    },
+    {
+      "title": "Statistical Modeling: The Two Cultures (with comments and a rejoinder by the author)",
+      "year": 2001,
+      "citations": 4271,
+      "authors": "Leo Breiman",
+      "doi": "https://doi.org/10.1214/ss/1009213726",
+      "query": "deep learning U-Net flood segmentation",
+      "source_db": "openalex"
+    },
+    {
+      "title": "Wheat From Chaff: Meta-Analysis As Quantitative Literature Review",
+      "year": 2001,
+      "citations": 961,
+      "authors": "T. D. Stanley",
+      "doi": "https://doi.org/10.1257/jep.15.3.131",
+      "query": "ESG audit flood reporting",
+      "source_db": "openalex"
+    },
+    {
+      "title": "The Corticosteroid Receptor Hypothesis of Depression",
+      "year": 2000,
+      "citations": 2172,
+      "authors": "Florian Holsboer",
+      "doi": "https://doi.org/10.1016/s0893-133x(00)00159-7",
+      "journal": "Neuropsychopharmacology",
+      "query": "morphological operations flood post-processing"
+    },
+    {
+      "title": "Data clustering",
+      "year": 1999,
+      "citations": 13183,
+      "authors": "Anil K. Jain, M. Narasimha Murty, Patrick J. Flynn",
+      "doi": "https://doi.org/10.1145/331499.331504",
+      "query": "spatial cross-validation remote sensing",
+      "source_db": "openalex"
+    },
+    {
+      "title": "Pharmaceuticals and personal care products in the environment: agents of subtle change?",
+      "year": 1999,
+      "citations": 4453,
+      "authors": "Christian G. Daughton, Thomas A. Ternes",
+      "doi": "https://doi.org/10.1289/ehp.99107s6907",
+      "journal": "Environmental Health Perspectives",
+      "query": "connected component analysis flood cleanup"
+    },
+    {
+      "title": "Red on Red: Native American Literary Separatism",
+      "year": 1999,
+      "citations": 686,
+      "authors": "Craig S. Womack",
+      "doi": "https://doi.org/10.5749/9781452974637",
+      "journal": "University of Minnesota Press eBooks",
+      "query": "connected component analysis flood cleanup"
+    },
+    {
+      "title": "AERONET—A Federated Instrument Network and Data Archive for Aerosol Characterization",
+      "year": 1998,
+      "citations": 8516,
+      "authors": "B. N. Holben, T. F. Eck, I. Slutsker",
+      "doi": "https://doi.org/10.1016/s0034-4257(98)00031-5",
+      "query": "spatial cross-validation remote sensing",
+      "source_db": "openalex"
+    },
+    {
+      "title": "Machine Learning for the Detection of Oil Spills in Satellite Radar Images",
+      "year": 1998,
+      "citations": 1253,
+      "authors": "Miroslav Kubát, Robert C. Holte, Stan Matwin",
+      "doi": "https://doi.org/10.1023/a:1007452223027",
+      "query": "incidence angle normalization SAR",
+      "source_db": "openalex"
+    },
+    {
+      "title": "Evidence on Discrimination in Mortgage Lending",
+      "year": 1998,
+      "citations": 390,
+      "authors": "Helen F. Ladd",
+      "doi": "https://doi.org/10.1257/jep.12.2.41",
+      "query": "ESG audit flood reporting",
+      "source_db": "openalex"
+    },
+    {
+      "title": "The ecological significance of exchange processes between rivers and groundwater",
+      "year": 1997,
+      "citations": 1405,
+      "authors": "Matthias Brunke, Tom Gonser",
+      "doi": "https://doi.org/10.1046/j.1365-2427.1997.00143.x",
+      "query": "DEM HAND height drainage flood",
+      "source_db": "openalex"
+    }
+  ]
+}

@@ -1,0 +1,212 @@
+[
+  {
+    "title": "Uncertainty\u2010Aware Machine Learning Models for Flash Flood Prediction",
+    "year": 2026,
+    "citations": 0,
+    "authors": "Jaqueline A. J. P. Soares, Allan K. S. Soares, Luiz F. Satolo",
+    "query": "XGBoost LightGBM flood prediction machine learning"
+  },
+  {
+    "title": "Improving flood hazard susceptibility assessment by integrating hydrodynamic modeling with remote sensing and ensemble machine learning",
+    "year": 2025,
+    "citations": 48,
+    "authors": "Izhar Ahmad, Rashid Farooq, Muhammad Ashraf",
+    "query": "ensemble machine learning flood susceptibility"
+  },
+  {
+    "title": "Evolution of ensemble machine learning approaches in water resources management: a review",
+    "year": 2025,
+    "citations": 23,
+    "authors": "M. Tosan, Vahid Nourani, Ozgur Kisi",
+    "query": "XGBoost LightGBM flood prediction machine learning"
+  },
+  {
+    "title": "Flood detection and mapping through multi-resolution sensor fusion: integrating UAV optical imagery and satellite SAR data",
+    "year": 2025,
+    "citations": 20,
+    "authors": "Mulham Fawakherji, L. Hashemi-Beni",
+    "query": "multisensor fusion flood detection SAR optical NDWI"
+  },
+  {
+    "title": "Modeling Flood Susceptibility Utilizing Advanced Ensemble Machine Learning Techniques in the Marand Plain",
+    "year": 2025,
+    "citations": 8,
+    "authors": "Ali Asghar Rostami, M. Taghi Sattari, Halit Apaydin",
+    "query": "ensemble machine learning flood susceptibility"
+  },
+  {
+    "title": "Advancing Infiltration Rate Prediction in Algeria\u2019s Mitidja Plain: A Machine Learning and Empirical Model Comparison",
+    "year": 2025,
+    "citations": 7,
+    "authors": "Amina Mazighi, Mohamed Meddi, Hind Meddi",
+    "query": "XGBoost LightGBM flood prediction machine learning"
+  },
+  {
+    "title": "Unsupervised Rural Flood Mapping from Bi-Temporal Sentinel-1 Images Using an Improved Wavelet-Fusion Flood-Change Index (IWFCI) and an Uncertainty-Sensitive Markov Random Field (USMRF) Model",
+    "year": 2025,
+    "citations": 6,
+    "authors": "Amin Mohsenifar, Ali Mohammadzadeh, S. Jamali",
+    "query": "multisensor fusion flood detection SAR optical NDWI"
+  },
+  {
+    "title": "Ensemble intelligence for urban resilience: flood susceptibility modeling in Mumbai using advanced machine learning",
+    "year": 2025,
+    "citations": 6,
+    "authors": "Harekrishna Manna, Mridul Das, Malay Pramanik",
+    "query": "ensemble machine learning flood susceptibility"
+  },
+  {
+    "title": "A SAR-based flood mapping approach: application of SAR-SIFT registration and modified DeepLabV3 segmentation in flood hazard assessment",
+    "year": 2025,
+    "citations": 4,
+    "authors": "Zhuoyu Zhang, Jiaqi Xiong, X. Li",
+    "query": "multisensor fusion flood detection SAR optical NDWI"
+  },
+  {
+    "title": "Employing Machine Learning for Flood Prediction: A Comparative Study of Tree-Based Techniques",
+    "year": 2025,
+    "citations": 4,
+    "authors": "Pakpoom Chaimook, Nirattaya Khamsemanan, C. Nattee",
+    "query": "XGBoost LightGBM flood prediction machine learning"
+  },
+  {
+    "title": "Multi-Sensor Flood Mapping in Urban and Agricultural Landscapes of the Netherlands Using SAR and Optical Data with Random Forest Classifier",
+    "year": 2025,
+    "citations": 3,
+    "authors": "Omer Gokberk Narin, A. \u015eekertekin, \u00c7. Bay\u0131k",
+    "query": "multisensor fusion flood detection SAR optical NDWI"
+  },
+  {
+    "title": "Ensemble Machine Learning-Based Feature Selection for Flood Susceptibility Mapping Under Climate and Land Use Change Scenarios",
+    "year": 2025,
+    "citations": 3,
+    "authors": "A. Akinsoji, B. Adelodun, Q. Adeyi",
+    "query": "ensemble machine learning flood susceptibility"
+  },
+  {
+    "title": "Flood Detection using Google Earth Engine: A Comparison of Optical and SAR-based Remote Sensing Methods",
+    "year": 2025,
+    "citations": 1,
+    "authors": "Y.S. Dhotre, Y.U. Jadhav, S.S. Rawoot",
+    "query": "multisensor fusion flood detection SAR optical NDWI"
+  },
+  {
+    "title": "Rapid flood layer extraction from EOS-04 SAR data through temporal backscatter analysis and machine learning",
+    "year": 2025,
+    "citations": 1,
+    "authors": "Sai Bhageerath Y V, Suresh Babu A V, D. K. H. V.",
+    "query": "multisensor fusion flood detection SAR optical NDWI"
+  },
+  {
+    "title": "Evaluating machine learning efficiency and accuracy for real time flash flood mapping",
+    "year": 2025,
+    "citations": 1,
+    "authors": "H. Mirzapour, Ali Haghizadeh, Mahdi Soleimani Motlagh",
+    "query": "XGBoost LightGBM flood prediction machine learning"
+  },
+  {
+    "title": "Robust Ensemble Machine Learning for Flash Flood Susceptibility Mapping Across Semiarid Regions",
+    "year": 2025,
+    "citations": 1,
+    "authors": "Soukaina Talha, A. Akhssas, A. Aarab",
+    "query": "ensemble machine learning flood susceptibility"
+  },
+  {
+    "title": "Towards Early Flood Detection: A Comparative Study of Machine Learning Classifiers on Kerala Rainfall Data",
+    "year": 2025,
+    "citations": 0,
+    "authors": "B. Justin, H. Shihabudeen, N. Nikhila",
+    "query": "XGBoost LightGBM flood prediction machine learning"
+  },
+  {
+    "title": "Urban flood susceptibility mapping using remote sensing, social sensing and an ensemble machine learning model",
+    "year": 2024,
+    "citations": 57,
+    "authors": "Xiaotong Zhu, H. Guo, Jinhui Jeanne Huang",
+    "query": "ensemble machine learning flood susceptibility"
+  },
+  {
+    "title": "Advancing flood susceptibility modeling using stacking ensemble machine learning: A multi-model approach",
+    "year": 2024,
+    "citations": 20,
+    "authors": "Huilin Yang, R. Yao, Linyao Dong",
+    "query": "ensemble machine learning flood susceptibility"
+  },
+  {
+    "title": "Machine Learning Models for Predicting Flood Events Using Weather Data: An Evaluation of Logistic Regression, LightGBM, and XGBoost",
+    "year": 2024,
+    "citations": 7,
+    "authors": "Maharina Maharina",
+    "query": "XGBoost LightGBM flood prediction machine learning"
+  },
+  {
+    "title": "SAR-FM: SAR-based flood rapid mapping using multi-modal data fusion",
+    "year": 2024,
+    "citations": 0,
+    "authors": "Krishna Kanth Rokkam, Smriti Rani, Kriti Kumar",
+    "query": "multisensor fusion flood detection SAR optical NDWI"
+  },
+  {
+    "title": "Integration of machine learning and hydrodynamic modeling to solve the extrapolation problem in flood depth estimation",
+    "year": 2023,
+    "citations": 25,
+    "authors": "H. Nguyen, Dinh Kha Dang, Y. N. Nguyen",
+    "query": "XGBoost LightGBM flood prediction machine learning"
+  },
+  {
+    "title": "Combining Time-Series Variation Modeling and Fuzzy Spatiotemporal Feature Fusion: A Novel Approach for Unsupervised Flood Mapping Using Dual-Polarized Sentinel-1 SAR Images",
+    "year": 2023,
+    "citations": 8,
+    "authors": "Congyu Li, Jiaqi Liu, Xinxin Liu",
+    "query": "multisensor fusion flood detection SAR optical NDWI"
+  },
+  {
+    "title": "2018 Kerala Flood Damage: Survey, Identification, and Damage Prediction Models Using Machine Learning",
+    "year": 2023,
+    "citations": 4,
+    "authors": "",
+    "query": "XGBoost LightGBM flood prediction machine learning"
+  },
+  {
+    "title": "Comparison of Machine Learning Algorithms for Flood Prediction",
+    "year": 2023,
+    "citations": 2,
+    "authors": "Rineka Brylian Akbar Satriani, Aris Puji Widodo, Adi Wibowo",
+    "query": "XGBoost LightGBM flood prediction machine learning"
+  },
+  {
+    "title": "Predicting and analyzing flood susceptibility using boosting-based ensemble machine learning algorithms with SHapley Additive exPlanations",
+    "year": 2022,
+    "citations": 140,
+    "authors": "Halit Enes Aydin, Muzaffer Can Iban",
+    "query": "ensemble machine learning flood susceptibility"
+  },
+  {
+    "title": "Novel ensemble machine learning models in flood susceptibility mapping",
+    "year": 2021,
+    "citations": 146,
+    "authors": "Pankaj Prasad, Victor J. Loveson, Bappa Das",
+    "query": "ensemble machine learning flood susceptibility"
+  },
+  {
+    "title": "The QXS-SAROPT Dataset for Deep Learning in SAR-Optical Data Fusion",
+    "year": 2021,
+    "citations": 82,
+    "authors": "Meiyu Huang, Yao Xu, Lixin Qian",
+    "query": "multisensor fusion flood detection SAR optical NDWI"
+  },
+  {
+    "title": "Flood susceptibility modelling using advanced ensemble machine learning models",
+    "year": 2020,
+    "citations": 476,
+    "authors": "A. Islam, Swapan Talukdar, Susanta Mahato",
+    "query": "ensemble machine learning flood susceptibility"
+  },
+  {
+    "title": "SAR/optical data fusion for flood detection",
+    "year": 2016,
+    "citations": 12,
+    "authors": "A. D\u2019Addabbo, A. Refice, G. Pasquariello",
+    "query": "multisensor fusion flood detection SAR optical NDWI"
+  }
+]

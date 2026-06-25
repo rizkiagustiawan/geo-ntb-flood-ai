@@ -20,7 +20,7 @@ PROCESSED_DIR = PROJECT_ROOT / "data" / "processed"
 MODELS_DIR = PROJECT_ROOT / "outputs" / "models"
 PREDICTIONS_DIR = PROJECT_ROOT / "outputs" / "predictions"
 
-FEATURE_NAMES = ["NDWI", "SAR_flood_mask", "Slope_deg", "VV_dB", "VH_dB"]
+FEATURE_NAMES = ["NDWI", "SAR_flood_mask", "Slope_deg", "VV_dB", "VH_dB", "HAND_m"]
 
 
 def load_models():
@@ -107,8 +107,8 @@ def predict_unet(features, onnx_model_path, patch_size=256, stride=128):
     import flood_rs
 
     n_bands, height, width = features.shape
-    if n_bands != 5:
-        raise ValueError(f"U-Net expects 5 bands, got {n_bands}")
+    if n_bands != 6:
+        raise ValueError(f"U-Net expects 6 bands, got {n_bands}")
 
     logger.info("Predicting %dx%d using U-Net (ONNX via Rust) with %dx%d patches and stride %d", 
                 height, width, patch_size, patch_size, stride)

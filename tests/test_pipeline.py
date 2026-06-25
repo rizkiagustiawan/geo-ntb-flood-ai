@@ -495,3 +495,179 @@ class TestAPIFavicon:
         r = client.get("/favicon.ico")
         assert r.status_code == 200
         assert r.headers.get("content-type") == "image/png"
+
+
+class TestSpatialCrossValidation:
+    """Tests for spatial cross-validation (Roberts et al. 2017)."""
+
+    def test_scv_returns_metrics(self):
+        """SCV should return per-fold metrics and summary statistics."""
+        from model import spatial_cross_validate
+        np.random.seed(42)
+        n_bands, h, w = 5, 30, 30
+        features = np.random.randn(n_bands, h, w).astype(np.float32)
+        labels = np.random.choice([0, 1], (h, w), p=[0.9, 0.1]).astype(np.uint8)
+
+        result = spatial_cross_validate(features, labels, n_folds=2, model_type="random_forest")
+
+        assert "f1_mean" in result
+        assert "f1_std" in result
+        assert "per_fold" in result
+        assert len(result["per_fold"]) > 0
+        for fold in result["per_fold"]:
+            assert "f1" in fold
+            assert "precision" in fold
+            assert "recall" in fold
+
+    def test_scv_different_models(self):
+        """SCV should work with different model types."""
+        from model import spatial_cross_validate
+        np.random.seed(42)
+        features = np.random.randn(5, 30, 30).astype(np.float32)
+        labels = np.random.choice([0, 1], (30, 30), p=[0.9, 0.1]).astype(np.uint8)
+
+        result = spatial_cross_validate(features, labels, n_folds=2, model_type="random_forest")
+        assert "f1_mean" in result
+
+
+class TestChangeDetection:
+    """Tests for multi-temporal change detection (Schlaffer 2015, Clement 2018)."""
+
+    def test_compute_delta_sar(self):
+        """Delta SAR should compute difference between current and baseline."""
+        from change_detection import compute_delta_sar
+        np.random.seed(42)
+        vv_curr = np.full((10, 10), -10.0, dtype=np.float32)
+        vh_curr = np.full((10, 10), -18.0, dtype=np.float32)
+        vv_base = np.full((10, 10), -8.0, dtype=np.float32)
+        vh_base = np.full((10, 10), -15.0, dtype=np.float32)
+
+        dvv, dvh = compute_delta_sar(vv_curr, vh_curr, vv_base, vh_base)
+        assert dvv.shape == (10, 10)
+        np.testing.assert_allclose(dvv, -2.0, atol=0.01)
+        np.testing.assert_allclose(dvh, -3.0, atol=0.01)
+
+    def test_detect_flood_by_change(self):
+        """Change detection should flag negative anomalies as flood."""
+        from change_detection import detect_flood_by_change
+        dvv = np.array([[-5.0, -1.0, -4.0], [0.0, -3.5, -0.5]], dtype=np.float32)
+        dvh = np.array([[-4.0, -1.0, -3.5], [0.0, -4.0, -0.5]], dtype=np.float32)
+
+        mask = detect_flood_by_change(dvv, dvh, vv_thresh=-3.0, vh_thresh=-3.0)
+        assert mask[0, 0] == 1   # both < -3
+        assert mask[0, 1] == 0   # both > -3
+        assert mask[1, 0] == 0   # both > -3
+        assert mask[1, 2] == 0   # both > -3
+
+    def test_temporal_statistics(self):
+        """Temporal stats should compute mean, std, cv correctly."""
+        from change_detection import compute_temporal_statistics
+        np.random.seed(42)
+        stack = np.random.randn(5, 10, 10).astype(np.float32) * 2 - 10
+
+        stats = compute_temporal_statistics(stack)
+        assert "mean" in stats
+        assert "std" in stats
+        assert "cv" in stats
+        assert stats["mean"].shape == (10, 10)
+
+    def test_adaptive_change_detection(self):
+        """Adaptive change detection should use Otsu on delta signal."""
+        from change_detection import detect_adaptive_change
+        np.random.seed(42)
+        # Simulate clear bimodal distribution
+        normal = np.random.normal(0, 1, 500).astype(np.float32)
+        flood = np.random.normal(-6, 1, 500).astype(np.float32)
+        dvv = np.concatenate([normal, flood])
+        dvh = np.concatenate([normal, flood])
+
+        mask = detect_adaptive_change(dvv, dvh, method="otsu")
+        assert mask.dtype == np.uint8
+        assert set(np.unique(mask)).issubset({0, 1})
+
+
+class TestGroundTruth:
+    """Tests for ground truth validation module."""
+
+    def test_validate_against_gsw_metrics(self):
+        """GSW validation should compute precision, recall, F1, IoU."""
+        from ground_truth import validate_against_gsw
+        import rasterio
+        import tempfile
+
+        np.random.seed(42)
+        h, w = 50, 50
+
+        # Create synthetic flood map
+        flood = np.zeros((h, w), dtype=np.uint8)
+        flood[10:20, 10:20] = 1  # flood in one area
+
+        # Create synthetic GSW (some overlap, some not)
+        gsw = np.zeros((h, w), dtype=np.uint8)
+        gsw[10:20, 10:20] = 100  # same area = perfect overlap
+        gsw[30:40, 30:40] = 100  # additional permanent water
+
+        # Write to temp files
+        with tempfile.NamedTemporaryFile(suffix=".tif", delete=False) as f:
+            flood_path = f.name
+        with tempfile.NamedTemporaryFile(suffix=".tif", delete=False) as f:
+            gsw_path = f.name
+
+        transform = rasterio.transform.from_bounds(116, -9, 119, -8, w, h)
+        profile = {
+            "driver": "GTiff", "height": h, "width": w,
+            "count": 1, "dtype": "uint8", "crs": "EPSG:4326",
+            "transform": transform, "nodata": 255,
+        }
+
+        with rasterio.open(flood_path, "w", **profile) as dst:
+            dst.write(flood, 1)
+        with rasterio.open(gsw_path, "w", **profile) as dst:
+            dst.write(gsw, 1)
+
+        result = validate_against_gsw(flood_path, gsw_path, gsw_threshold=50)
+
+        assert "precision" in result
+        assert "recall" in result
+        assert "f1_score" in result
+        assert "iou" in result
+        assert result["f1_score"] > 0  # should have some overlap
+        assert result["precision"] > 0
+
+        # Cleanup
+        Path(flood_path).unlink()
+        Path(gsw_path).unlink()
+
+
+class TestAttentionFusion:
+    """Tests for attention-based multi-modal fusion."""
+
+    def test_attention_fusion_returns_score(self):
+        """Attention fusion should return probability score [0, 1]."""
+        from attention_fusion import attention_weighted_fusion
+        np.random.seed(42)
+        h, w = 20, 20
+        ndwi = np.random.randn(h, w).astype(np.float32) * 0.3
+        sar_vv = np.random.randn(h, w).astype(np.float32) * 5 - 15
+        sar_vh = np.random.randn(h, w).astype(np.float32) * 5 - 22
+        slope = np.random.rand(h, w).astype(np.float32) * 10
+        hand = np.random.rand(h, w).astype(np.float32) * 5
+
+        score = attention_weighted_fusion(ndwi, sar_vv, sar_vh, slope, hand)
+        assert score.shape == (h, w)
+        assert score.dtype == np.float32
+        assert np.all(score >= 0)
+        assert np.all(score <= 1)
+
+    def test_adaptive_flood_mask(self):
+        """Adaptive flood mask should produce binary output."""
+        from attention_fusion import adaptive_flood_mask
+        np.random.seed(42)
+        score = np.concatenate([
+            np.random.uniform(0.7, 1.0, 100),  # flood-like
+            np.random.uniform(0.0, 0.3, 900),  # non-flood
+        ]).astype(np.float32)
+
+        mask = adaptive_flood_mask(score, method="otsu")
+        assert mask.dtype == np.uint8
+        assert set(np.unique(mask)).issubset({0, 1})

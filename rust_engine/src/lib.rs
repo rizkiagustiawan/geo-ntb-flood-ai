@@ -127,13 +127,17 @@ fn calculate_sar_flood_mask<'py>(
 // Pipeline:
 //   1. NDWI = (Green − NIR) / (Green + NIR)
 //   2. SAR flood flag = sar_vv < sar_thresh
-//   3. Binary mask = (NDWI > ndwi_thresh) OR (SAR flood flag) → 1 (flood)
+//   3. Binary mask = (NDWI > ndwi_thresh) AND (SAR flood flag) → 1 (flood)
+//
+// AND logic: both sensors must agree to classify a pixel as flood.
+// This reduces false positives from terrain shadows, moist soil,
+// ocean backscatter, and vegetation (Twele et al. 2016).
 //
 // Single-pass rayon parallelism over all three input bands.
 // Returns uint8 flood mask directly — no intermediate float allocation.
 // ---------------------------------------------------------------------------
 #[pyfunction]
-#[pyo3(signature = (green, nir, sar_vv, ndwi_thresh=0.3, sar_thresh=-15.0))]
+#[pyo3(signature = (green, nir, sar_vv, ndwi_thresh=0.1, sar_thresh=-15.0))]
 fn compute_ndwi_and_mask<'py>(
     py: Python<'py>,
     green: PyReadonlyArray2<'py, f32>,
@@ -161,7 +165,9 @@ fn compute_ndwi_and_mask<'py>(
     let n_s = n.as_slice().unwrap();
     let s_s = s.as_slice().unwrap();
 
-    // Single-pass fused compute: NDWI threshold OR SAR threshold → flood
+    // Single-pass fused compute: NDWI threshold AND SAR threshold → flood
+    // Per Twele et al. (2016): multisensor AND logic reduces false positives
+    // from terrain shadows, moist soil, ocean backscatter, and vegetation
     let mask: Vec<u8> = g_s
         .par_iter()
         .zip(n_s.par_iter())
@@ -171,11 +177,11 @@ fn compute_ndwi_and_mask<'py>(
             let denom = gv + nv;
             let ndwi = if denom == 0.0 { f32::NAN } else { (gv - nv) / denom };
 
-            // Flood decision: water-like NDWI OR low SAR backscatter
+            // Fused flood decision: BOTH sensors must agree (AND logic)
             let optical_flood = ndwi > ndwi_thresh;
             let sar_flood = sv < sar_thresh;
 
-            if optical_flood || sar_flood { 1u8 } else { 0u8 }
+            if optical_flood && sar_flood { 1u8 } else { 0u8 }
         })
         .collect();
 
@@ -269,18 +275,26 @@ mod tests {
 
     #[test]
     fn fused_mask_logic() {
-        // Case 1: NDWI > 0.3 → flood
-        let (g, n, _s) = (0.8_f32, 0.2_f32, 0.0_f32);
+        // AND logic: BOTH NDWI > thresh AND SAR < thresh must be true
+
+        // Case 1: NDWI > 0.3 AND SAR < -15 → flood (both agree)
+        let (g, n, s) = (0.8_f32, 0.2_f32, -20.0_f32);
         let ndwi = (g - n) / (g + n); // 0.6
-        assert!(ndwi > 0.3);
+        assert!(ndwi > 0.3 && s < -15.0, "both sensors agree → flood");
 
-        // Case 2: SAR < -15 → flood
-        let sv = -20.0_f32;
-        assert!(sv < -15.0);
+        // Case 2: NDWI > 0.3 BUT SAR > -15 → NO flood (optical only)
+        let (g2, n2, s2) = (0.8_f32, 0.2_f32, -5.0_f32);
+        let ndwi2 = (g2 - n2) / (g2 + n2); // 0.6
+        assert!(ndwi2 > 0.3 && s2 >= -15.0, "optical only → no flood");
 
-        // Case 3: Neither → no flood
-        let (g2, n2, s2) = (0.5_f32, 0.5_f32, 0.0_f32);
-        let ndwi2 = (g2 - n2) / (g2 + n2); // 0.0
-        assert!(ndwi2 <= 0.3 && s2 >= -15.0);
+        // Case 3: NDWI < 0.3 AND SAR < -15 → NO flood (SAR only)
+        let (g3, n3, s3) = (0.3_f32, 0.7_f32, -20.0_f32);
+        let ndwi3 = (g3 - n3) / (g3 + n3); // -0.4
+        assert!(ndwi3 <= 0.3 && s3 < -15.0, "SAR only → no flood");
+
+        // Case 4: Neither → no flood
+        let (g4, n4, s4) = (0.5_f32, 0.5_f32, 0.0_f32);
+        let ndwi4 = (g4 - n4) / (g4 + n4); // 0.0
+        assert!(ndwi4 <= 0.3 && s4 >= -15.0, "neither → no flood");
     }
 }

@@ -63,8 +63,8 @@ S1_RASTER = DATA_DIR / "processed" / "sentinel1_reproj.tif"  # Band1=VV, Band2=V
 S2_RASTER = DATA_DIR / "processed" / "sentinel2_reproj.tif"  # Band1=Green, Band2=NIR
 DEM_PATH = DATA_DIR / "dem_sumbawa.tif"
 
-# Thresholds (matching flood_agent.py)
-NDWI_THRESH = 0.3
+# Thresholds (matching flood_agent.py and features.py)
+NDWI_THRESH = 0.1
 SAR_VV_THRESH = -15.0
 
 # --- Pydantic Response Models ---
@@ -163,8 +163,64 @@ class SatelliteStatusResponse(BaseModel):
 # --- App ---
 app = FastAPI(
     title="GeoESG A.E.C.O API",
-    version="0.3.0",
-    description="Zero-copy Rust-accelerated flood detection API for NTB, Indonesia.",
+    version="3.0.0",
+    description="""## Autonomous ESG Compliance Oracle — Flood Detection API
+
+Production-grade flood monitoring API for Nusa Tenggara Barat (NTB), Indonesia.
+
+### Features
+- **Rust-accelerated compute** — Zero-copy PyO3/Rayon for NDWI, SAR mask, fused multisensor
+- **Ensemble ML** — XGBoost + Random Forest + LightGBM majority voting
+- **Deep Learning** — U-Net, Attention U-Net, FPN U-Net (ONNX Runtime)
+- **Async processing** — Celery task queue for heavy geoprocessing
+- **ESG reporting** — Automated PDF audit reports with geodesic area calculation
+
+### Authentication
+All endpoints except `/health`, `/tiles/`, and `/` require an API key:
+```
+X-API-Key: your_api_key_here
+```
+
+### Rate Limiting
+- Default: 100 requests per 60 seconds per IP
+- Configure via `RATE_LIMIT_REQUESTS` and `RATE_LIMIT_WINDOW` env vars
+
+### Data Sources
+- **Sentinel-1 SAR** — VV/VH backscatter (ASF/Sentinel Hub)
+- **Sentinel-2 Optical** — Green/NIR for NDWI (AWS Open Data)
+- **SRTM DEM** — 30m elevation for terrain analysis
+""",
+    terms_of_service="https://github.com/rizki-agustiawan/geo-ntb-flood-ai",
+    contact={
+        "name": "Rizki Agustiawan",
+        "url": "https://github.com/rizki-agustiawan",
+    },
+    license_info={
+        "name": "MIT License",
+        "url": "https://opensource.org/licenses/MIT",
+    },
+    openapi_tags=[
+        {
+            "name": "Health",
+            "description": "Liveness and readiness probes",
+        },
+        {
+            "name": "Prediction",
+            "description": "Flood detection endpoints — point query, polygon zonal stats, AOI reports",
+        },
+        {
+            "name": "Async Tasks",
+            "description": "Background Celery tasks for heavy geoprocessing",
+        },
+        {
+            "name": "Satellite",
+            "description": "Satellite data sync status and triggers",
+        },
+        {
+            "name": "Tiles",
+            "description": "Map tile rendering for web dashboard",
+        },
+    ],
 )
 
 @app.exception_handler(Exception)
@@ -182,6 +238,22 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+# Security middleware (rate limiting + API key auth)
+try:
+    from security import RateLimitMiddleware, APIKeyMiddleware
+    app.add_middleware(RateLimitMiddleware)
+    app.add_middleware(APIKeyMiddleware)
+    logger.info("Security middleware loaded (rate limiting + API key auth)")
+except ImportError:
+    logger.warning("Security middleware not available — running without auth")
+
+# Prometheus metrics
+try:
+    from metrics import setup_metrics
+    setup_metrics(app)
+except ImportError:
+    logger.warning("Metrics module not available")
 
 # Static mounts
 if ASSETS_DIR.exists():
@@ -202,7 +274,9 @@ async def favicon():
 # ---------------------------------------------------------------------------
 # /health
 # ---------------------------------------------------------------------------
-@app.get("/health", response_model=HealthResponse)
+@app.get("/health", response_model=HealthResponse, tags=["Health"],
+         summary="Liveness probe",
+         description="Returns service health status and Rust engine availability.")
 def health():
     return HealthResponse(
         status="LIVE",
@@ -215,7 +289,9 @@ def health():
 # ---------------------------------------------------------------------------
 # /stats
 # ---------------------------------------------------------------------------
-@app.get("/stats", response_model=StatsResponse)
+@app.get("/stats", response_model=StatsResponse, tags=["Prediction"],
+         summary="Flood map statistics",
+         description="Returns flood statistics from the latest generated flood map GeoTIFF.")
 def get_stats():
     if not FINAL_MAP.exists():
         raise HTTPException(404, "Flood map not found")
@@ -242,7 +318,17 @@ def get_stats():
 # ---------------------------------------------------------------------------
 # /predict/at — RTK Point Validation (Core Stage 5 Endpoint)
 # ---------------------------------------------------------------------------
-@app.get("/predict/at", response_model=FloodPrediction)
+@app.get("/predict/at", response_model=FloodPrediction, tags=["Prediction"],
+         summary="Point flood query",
+         description="""Query flood status at exact RTK coordinates.
+
+Reads a 1×1 pixel window from co-registered Sentinel-1 (VV) and
+Sentinel-2 (Green, NIR) rasters, passes them to
+`flood_rs.compute_ndwi_and_mask` via zero-copy, and returns the
+binary flood classification (0=safe, 1=flood).
+
+**Returns:** Flood status, NDWI value, SAR VV backscatter, and method used.
+""")
 def predict_at(
     lat: float = Query(..., ge=-90.0, le=90.0, description="Latitude (WGS84)"),
     lon: float = Query(..., ge=-180.0, le=180.0, description="Longitude (WGS84)"),
@@ -362,7 +448,17 @@ def _point_in_bounds(lat: float, lon: float, bounds) -> bool:
 # ---------------------------------------------------------------------------
 # /predict/area — Polygon Zonal Statistics (Stage 7 Endpoint)
 # ---------------------------------------------------------------------------
-@app.post("/predict/area", response_model=AreaReport)
+@app.post("/predict/area", response_model=AreaReport, tags=["Prediction"],
+          summary="Polygon flood area analysis",
+          description="""Compute flooded area within a GeoJSON polygon.
+
+Crops co-registered S1/S2 rasters to the polygon via rasterio.mask,
+runs flood_rs.compute_ndwi_and_mask on the masked arrays, and
+returns an audit-ready ESG area report in hectares.
+
+**Input:** GeoJSON Feature with Polygon or MultiPolygon geometry
+**Output:** Flooded area, pixel counts, geodesic area calculation
+""")
 def predict_area(feature: GeoJSONFeature):
     """Compute flooded area within a GeoJSON polygon.
 
@@ -485,7 +581,16 @@ def predict_area(feature: GeoJSONFeature):
 # ---------------------------------------------------------------------------
 # /predict/aoi-stats — AOI-Clipped Flood Statistics (JSON)
 # ---------------------------------------------------------------------------
-@app.post("/predict/aoi-stats", response_model=AOIStatsResponse)
+@app.post("/predict/aoi-stats", response_model=AOIStatsResponse, tags=["Prediction"],
+          summary="AOI flood statistics",
+          description="""Compute flood statistics clipped to the AOI boundary.
+
+Clips the final_flood_map.tif to the provided GeoJSON polygon,
+dynamically validates CRS alignment, and returns pixel-accurate
+flood statistics as structured JSON.
+
+Triggers Telegram EWS alert if flooded area > 1 hectare.
+""")
 def predict_aoi_stats(feature: GeoJSONFeature):
     """Compute flood statistics clipped to the AOI boundary.
 
@@ -525,7 +630,15 @@ def predict_aoi_stats(feature: GeoJSONFeature):
 # ---------------------------------------------------------------------------
 # /predict/report — Generate ESG PDF Report (AOI-Clipped)
 # ---------------------------------------------------------------------------
-@app.post("/predict/report")
+@app.post("/predict/report", tags=["Prediction"],
+          summary="Generate ESG PDF report",
+          description="""Generate a downloadable PDF report with AOI-clipped flood stats.
+
+Includes flood statistics, methodology description, and spatial
+overlay map with basemap. Returns PDF file for download.
+
+**Output:** PDF file (application/pdf)
+""")
 def predict_report(feature: GeoJSONFeature):
     """Generate a downloadable PDF report with AOI-clipped flood stats."""
     geom = feature.geometry
@@ -553,7 +666,14 @@ def predict_report(feature: GeoJSONFeature):
 # ---------------------------------------------------------------------------
 # /predict/aoi-stats/async — Non-blocking AOI Stats (Celery)
 # ---------------------------------------------------------------------------
-@app.post("/predict/aoi-stats/async", response_model=TaskResponse)
+@app.post("/predict/aoi-stats/async", response_model=TaskResponse, tags=["Async Tasks"],
+          summary="Async AOI flood statistics",
+          description="""Dispatch AOI flood stats to background Celery worker.
+
+Returns a task_id immediately. Poll `/predict/status/{task_id}` for results.
+
+**Use for:** Large polygons that may take >30 seconds to process.
+""")
 def predict_aoi_stats_async(feature: GeoJSONFeature):
     """Dispatch AOI flood stats to background Celery worker.
 
@@ -578,7 +698,12 @@ def predict_aoi_stats_async(feature: GeoJSONFeature):
 # ---------------------------------------------------------------------------
 # /predict/report/async — Non-blocking PDF Report (Celery)
 # ---------------------------------------------------------------------------
-@app.post("/predict/report/async", response_model=TaskResponse)
+@app.post("/predict/report/async", response_model=TaskResponse, tags=["Async Tasks"],
+          summary="Async PDF report generation",
+          description="""Dispatch PDF report generation to background Celery worker.
+
+Returns a task_id immediately. Poll `/predict/status/{task_id}` for results.
+""")
 def predict_report_async(feature: GeoJSONFeature):
     """Dispatch PDF report generation to background Celery worker."""
     geom = feature.geometry
@@ -599,7 +724,16 @@ def predict_report_async(feature: GeoJSONFeature):
 # ---------------------------------------------------------------------------
 # /predict/status/{task_id} — Poll Celery Task Progress
 # ---------------------------------------------------------------------------
-@app.get("/predict/status/{task_id}")
+@app.get("/predict/status/{task_id}", tags=["Async Tasks"],
+         summary="Poll task status",
+         description="""Check the status of a background geoprocessing task.
+
+**States:**
+- `PENDING` — Task is queued but not yet started
+- `PROCESSING` — Task is actively running (with step metadata)
+- `SUCCESS` — Task completed — result included in response
+- `FAILURE` — Task crashed — error message included
+""")
 def get_task_status(task_id: str):
     """Check the status of a background geoprocessing task.
 
@@ -629,7 +763,13 @@ def get_task_status(task_id: str):
 # ---------------------------------------------------------------------------
 # /satellite/status — Satellite Data Sync Status
 # ---------------------------------------------------------------------------
-@app.get("/satellite/status", response_model=SatelliteStatusResponse)
+@app.get("/satellite/status", response_model=SatelliteStatusResponse, tags=["Satellite"],
+         summary="Satellite sync status",
+         description="""Get satellite data sync status.
+
+Returns last sync time, Sentinel-1/2 status, next scheduled check,
+and remaining API quota.
+""")
 def satellite_status():
     """Get satellite data sync status."""
     import json
@@ -659,7 +799,13 @@ def satellite_status():
 # ---------------------------------------------------------------------------
 # /satellite/sync — Trigger Manual Satellite Sync
 # ---------------------------------------------------------------------------
-@app.post("/satellite/sync")
+@app.post("/satellite/sync", tags=["Satellite"],
+          summary="Trigger satellite sync",
+          description="""Trigger manual satellite data sync.
+
+Dispatches a Celery task to fetch new Sentinel-1/2 data from Sentinel Hub.
+Returns task_id for polling.
+""")
 def satellite_sync():
     """Trigger manual satellite data sync."""
     task = task_daily_satellite_sync.delay()
@@ -701,7 +847,15 @@ def _geom_centroid_lon(geom: dict) -> float:
 # ---------------------------------------------------------------------------
 # /tiles/{z}/{x}/{y}.png
 # ---------------------------------------------------------------------------
-@app.get("/tiles/{z}/{x}/{y}.png")
+@app.get("/tiles/{z}/{x}/{y}.png", tags=["Tiles"],
+         summary="Map tile",
+         description="""Render flood map tile as PNG.
+
+Returns a transparent PNG tile for the specified zoom/x/y coordinates.
+Flood pixels are rendered in blue, non-flood pixels are transparent.
+
+**Used by:** Web dashboard (Leaflet/MapLibre)
+""")
 async def get_tile(z: int, x: int, y: int):
     if not FINAL_MAP.exists():
         return Response(content=TRANSPARENT_PNG, media_type="image/png")
